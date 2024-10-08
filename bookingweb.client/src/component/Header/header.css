@@ -1,0 +1,8 @@
+/* styles.css */
+.navtittle {
+  color: white; /* Màu chữ mặc định */
+}
+
+.navtittle:hover {
+  color: red !important; /* Màu chữ khi hover */
+}

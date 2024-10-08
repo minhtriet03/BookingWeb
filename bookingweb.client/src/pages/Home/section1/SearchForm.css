@@ -1,0 +1,34 @@
+.home-search {
+  display: flex;
+  flex-direction: column;
+}
+
+.banner {
+  border: 1px solid #E5420C;
+  border-radius: 8px;
+  margin: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 300px;
+}
+
+.banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.search-form {
+  border: 1px solid #E5420C;
+  border-radius: 8px;
+  margin: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+}
