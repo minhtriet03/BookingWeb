@@ -12,6 +12,7 @@ function Home() {
         maxWidth: '1100px',  // Hoặc kích thước bạn muốn
         width: '100%',        // Chiếm toàn bộ chiều rộng
         padding: '15px',      // Padding tùy chỉnh
+        fontFamily:'Arial'
       }}>
         <SearchForm />
         <PromoSection />
