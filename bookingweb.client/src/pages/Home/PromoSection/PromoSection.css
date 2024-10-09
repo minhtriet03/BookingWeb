@@ -1,0 +1,33 @@
+.promo-image {
+  width: 100%; /* Để hình ảnh chiếm toàn bộ chiều rộng của cột */
+  height: 190px; /* Giữ tỷ lệ hình ảnh */
+  margin: 0 auto; /* Căn giữa hình ảnh */
+  object-fit: cover;
+}
+
+.carousel-item {
+  padding: 20px; /* Khoảng cách giữa các item trong carousel */
+}
+
+.carousel-control-prev, 
+.carousel-control-next {
+  display: none;
+}
+
+.carousel-indicators {
+  bottom: -30px !important; /* Đặt vị trí cho chỉ báo */
+}
+
+.carousel-indicators button {
+  background-color: #E4E3E3 !important; /* Màu nền cho chỉ báo */
+  border-radius: 50% !important; /* Bo tròn chỉ báo */
+  width: 12px !important; /* Đặt kích thước cho chỉ báo */
+  height: 12px !important; /* Đặt kích thước cho chỉ báo */
+  opacity: 0.7 !important; /* Độ trong suốt của chỉ báo */
+  transition: opacity 0.2s ease !important; /* Hiệu ứng chuyển tiếp */
+}
+
+.carousel-indicators button.active {
+  background-color: #EF5222 !important; /* Màu nền cho chỉ báo đang hoạt động */
+  opacity: 1; /* Độ trong suốt cho chỉ báo đang hoạt động */
+}

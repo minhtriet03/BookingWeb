@@ -3,9 +3,9 @@ import './SearchForm.css';
 
 const SearchForm = () => {
   return (
-    <div className="home-search position-relative z-30">
+    <div className="home-search position-relative z-30 t-" style={{ top: '-90px'}}>
 
-      <div className="banner shadow-lg position-relative mx-auto mb-4 d-none d-lg-flex h-250 w-100 cursor-pointer rounded object-cover">
+      <div className="banner shadow-sm position-relative mx-auto mb-4 mt-0 d-none d-lg-flex h-250 w-100 cursor-pointer rounded object-cover">
         <img
           alt=""
           loading="lazy"
@@ -38,8 +38,8 @@ const SearchForm = () => {
             </div>
           </Form>
 
-          <span className="d-none d-lg-inline-block font-weight-medium text-warning">
-            <a target="_blank" rel="noreferrer" href="/huong-dan-dat-ve-tren-web">
+          <span className="d-none d-lg-inline-block font-weight-medium text-warning ">
+            <a target="_blank" rel="noreferrer" href="/huong-dan-dat-ve-tren-web" className="text-decoration-none" style={{color: '#EF5222', fontWeight:'600'}}>
               Hướng dẫn mua vé
             </a>
           </span>
@@ -86,8 +86,8 @@ const SearchForm = () => {
           </Col>
         </Row>
 
-        <div className="d-flex justify-content-center">
-          <Button className="btn-warning text-white px-4 py-2">Tìm chuyến xe</Button>
+        <div className="d-flex justify-content-center position-absolute " style={{ width: '250px', height:'48px', bottom: '-15px'}}>
+          <Button className="text-white w-100 rounded-pill px-4  " variant='' style={{ backgroundColor: '#EF5222' }}>Tìm chuyến xe</Button>
         </div>
       </div>
 
