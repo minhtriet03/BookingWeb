@@ -23,7 +23,7 @@
 
 .search-form {
   border: 1px solid #E5420C;
-  border-radius: 8px;
+  border-radius: 20px;
   margin: 50px;
   display: flex;
   flex-direction: column;
@@ -31,4 +31,5 @@
   align-items: center;
   width: 100%;
   padding: 20px;
+  outline: 8px solid rgba(170,46,8,.1);
 }
