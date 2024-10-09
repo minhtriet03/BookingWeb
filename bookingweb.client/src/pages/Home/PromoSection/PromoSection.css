@@ -29,5 +29,5 @@
 
 .carousel-indicators button.active {
   background-color: #EF5222 !important; /* Màu nền cho chỉ báo đang hoạt động */
-  opacity: 1; /* Độ trong suốt cho chỉ báo đang hoạt động */
+  opacity: 1 !important; /* Độ trong suốt của chỉ báo */
 }

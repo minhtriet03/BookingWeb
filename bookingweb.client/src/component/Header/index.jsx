@@ -1,8 +1,17 @@
 import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 import './header.css'; // Đường dẫn tới file CSS của bạn
 import homeBanner from '@/assets/image/homeBanner.png';
+import { useNavigate } from 'react-router-dom';
 
-const MyNavbar = () => {
+
+
+function Header () {
+  const navigate = useNavigate(); // Khởi tạo hook navigate
+
+  const handleClick = () => {
+    navigate('/dang-nhap'); // Chuyển hướng đến trang "/dang-nhap"
+  };
+
   return (
     <>
       <div className="top-zero" style={{ backgroundImage: `url(${homeBanner})`, backgroundSize: 'cover', minHeight: '200px' }}>
@@ -21,7 +30,7 @@ const MyNavbar = () => {
 
             <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
               <Nav>
-                <Button variant="outline-light" className="d-flex align-items-center">
+                <Button variant="outline-light" className="d-flex align-items-center" onClick={handleClick}>
                   <span className="mx-2">Đăng nhập/Đăng ký</span>
                 </Button>
               </Nav>
@@ -47,4 +56,4 @@ const MyNavbar = () => {
   );
 };
 
-export default MyNavbar;
+export default Header;

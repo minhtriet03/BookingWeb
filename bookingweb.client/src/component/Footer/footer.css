@@ -1,0 +1,8 @@
+.content {
+  display: flex; /* Hoặc sử dụng mixin flex-container */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  color: black;
+  background-color: #FFF7F5 !important;
+  margin-top: 15px !important;
+}

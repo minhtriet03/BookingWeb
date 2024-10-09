@@ -1,0 +1,22 @@
+.custom-tabs .nav-tabs {
+  justify-content: space-between !important; 
+  width: 100% !important; 
+}
+
+.custom-tabs .nav-link {
+  border: none !important; /* Xóa border mặc định */
+  color: black !important; /* Màu cho các tab không được chọn */
+  flex: 1 !important; /* Làm cho các tab chiếm hết chiều rộng */
+  text-align: center !important; /* Căn giữa văn bản trong tab */
+  transition: border-bottom 0.3s !important; /* Hiệu ứng chuyển đổi cho border */
+  width: 100% !important; 
+}
+
+.custom-tabs .nav-link.active {
+  border-bottom: 2px solid #EA4C0F !important; /* Border dưới tab được chọn */
+  color: #EA4C0F !important; /* Đổi màu chữ của tab được chọn */
+}
+
+.nav-item{
+  width: 50% !important;
+}
