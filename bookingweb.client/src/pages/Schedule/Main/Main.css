@@ -1,0 +1,28 @@
+
+
+.schedule-card {
+    border: 1px solid #dde2e8;
+    border-radius: 16px;
+    padding: 16px 12px 12px;
+    min-width: 810px;
+}
+.text-header {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+    .text-header .btn {
+        background-color: #fde5de;
+        border-radius:50px;
+    
+    }
+        .text-header .btn span {
+            color: #f9751b;
+        }
+        .text-header .btn:hover {
+            background-color: #f9751b;
+        }
+
+            .text-header .btn:hover span {
+                color: white;
+            }
+
+       

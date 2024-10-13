@@ -14,7 +14,7 @@ function Header () {
 
   return (
     <>
-      <div className="top-zero" style={{ backgroundImage: `url(${homeBanner})`, backgroundSize: 'cover', minHeight: '200px' }}>
+          <div className="top-zero" style={{ backgroundImage: `url(${homeBanner})`, minHeight: '200px' }}>
         {/* Navbar chính */}
         <Navbar expand="lg" className="pt-0">
           <Container className="top-0">
