@@ -1,0 +1,32 @@
+.input-group {
+    border-color:green;
+    height: 40px;
+  
+}
+.input-group input {
+        border-radius: 70px;
+        border-left: 0;
+        
+ }
+ .input-group span {
+        border-radius: 70px;
+        background-color:#fff;
+         padding-left:25px;
+         
+ }
+.switch-location {
+    position: absolute;
+    z-index: 10;
+    transition: ease-out 0.3s;
+    transform: rotate(0deg);
+}
+.switch-location:hover {
+    transition:ease-out 0.3s;
+    transform:rotate(-180deg);
+}
+.input-group-active  {
+    border-color: #f9751b !important;
+    border-radius:70px;
+    border:solid 0.2px;
+    z-index: 1;
+}

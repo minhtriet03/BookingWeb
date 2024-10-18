@@ -43,7 +43,9 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.MapControllers();
+app.MapControllers(
+       
+ );
 
 app.MapFallbackToFile("/index.html");
 
