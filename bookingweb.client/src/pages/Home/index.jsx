@@ -3,6 +3,8 @@ import Footer from '@/component/Footer';
 import SearchForm from './SearchForm/index.jsx';
 import { Container } from 'react-bootstrap';
 import PromoSection from './PromoSection/index.jsx';
+import PopularRoutes from './PopularRoutes/index.jsx';
+
 
 function Home() {
   return (
@@ -16,6 +18,7 @@ function Home() {
       }}>
         <SearchForm />
         <PromoSection />
+        <PopularRoutes />
       </Container>
       <Footer />
     </>
