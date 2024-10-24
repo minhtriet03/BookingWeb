@@ -5,7 +5,7 @@ import './PromoSection.css'; // Đảm bảo bạn đã tạo file CSS và impor
 function PromoSection() {
   return (
     <>
-      <Carousel>
+      <Carousel style={{ zIndex: '-999'}}>
         <Carousel.Item>
           <Row>
             <Col xs={6} md={4}>

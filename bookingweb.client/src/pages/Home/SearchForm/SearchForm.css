@@ -33,3 +33,81 @@
   padding: 20px;
   outline: 8px solid rgba(170,46,8,.1);
 }
+
+/* .control-custom:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: initial !important; /* Hoặc bạn có thể đặt màu viền theo ý muốn 
+} */
+
+.switch-location {
+  position: absolute;
+  z-index: 10;
+  transition: ease-out 0.3s;
+  transform: rotate(0deg);
+  bottom: 0px;
+  left: -15px;
+}
+.switch-location:hover {
+  transition:ease-out 0.3s;
+  transform:rotate(-180deg);
+}
+
+.select-form {
+  opacity: 0;
+  transition: opacity 0.3s ease; /* Hiệu ứng mờ dần */
+  position: absolute;
+  z-index: 20;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 100%;
+}
+
+.select-form.show {
+  opacity: 1;
+}
+
+
+
+.date-picker-container {
+  position: absolute;
+  z-index: 1000; 
+  background-color: #fff; 
+  border: 1px solid #ddd; 
+  border-radius: 8px; 
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+  padding: 10px; 
+}
+
+.react-datepicker {
+  font-family: 'Arial', sans-serif; 
+  width: 100%; 
+}
+
+.react-datepicker__header {
+  background-color: #EF5222; 
+  color: white !important; 
+  border: none; 
+}
+
+.react-datepicker__day {
+  border-radius: 20%; 
+}
+
+.react-datepicker__day:hover {
+  background-color: rgba(239, 82, 34, 0.2); 
+}
+
+.react-datepicker__day--selected {
+  background-color: #EF5222; 
+  color: white; 
+}
+
+.react-datepicker__current-month {
+  color: white; 
+}
+
+.react-datepicker__day-name {
+  color: white; 
+}
