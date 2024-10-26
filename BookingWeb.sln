@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingWeb.Server", "BookingWeb.Server\BookingWeb.Server.csproj", "{C5282333-7645-4753-9123-B98650717E8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookingWeb.Server", "BookingWeb.Server\BookingWeb.Server.csproj", "{C5282333-7645-4753-9123-B98650717E8A}"
 EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "bookingweb.client", "bookingweb.client\bookingweb.client.esproj", "{05528783-81E5-4A87-BDD2-6072549109EF}"
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "bookingweb.client", "bookingweb.client\bookingweb.client.esproj", "{9A8643A9-8173-49DA-BE74-A1E387A7A1A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,12 +17,12 @@ Global
 		{C5282333-7645-4753-9123-B98650717E8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5282333-7645-4753-9123-B98650717E8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5282333-7645-4753-9123-B98650717E8A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{05528783-81E5-4A87-BDD2-6072549109EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{05528783-81E5-4A87-BDD2-6072549109EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{05528783-81E5-4A87-BDD2-6072549109EF}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{05528783-81E5-4A87-BDD2-6072549109EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{05528783-81E5-4A87-BDD2-6072549109EF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{05528783-81E5-4A87-BDD2-6072549109EF}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{9A8643A9-8173-49DA-BE74-A1E387A7A1A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A8643A9-8173-49DA-BE74-A1E387A7A1A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A8643A9-8173-49DA-BE74-A1E387A7A1A0}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{9A8643A9-8173-49DA-BE74-A1E387A7A1A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A8643A9-8173-49DA-BE74-A1E387A7A1A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A8643A9-8173-49DA-BE74-A1E387A7A1A0}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

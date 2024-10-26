@@ -1,4 +1,4 @@
-import { Row, Col, Button, Form } from 'react-bootstrap';
+import { Row, Col, Form } from 'react-bootstrap';
 import './footer.css'; // Đảm bảo rằng bạn đã tạo file CSS và import vào đây
 
 function Footer() {

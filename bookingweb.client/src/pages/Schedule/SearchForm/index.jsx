@@ -2,7 +2,7 @@
 import { InputGroup, Form } from 'react-bootstrap';
 import searchIcon from '@/assets/image/search.svg';
 import switchIcon from '@/assets/image/switch_location.svg';
-import './SearchForm.css';
+import './SearchSite.css';
 import { useState } from 'react';
 function ScheduleInputForm() {
     const [inputClass1, setInputClass1] = useState('');
