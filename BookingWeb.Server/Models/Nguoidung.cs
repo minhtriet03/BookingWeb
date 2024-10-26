@@ -15,9 +15,11 @@ public partial class Nguoidung
 
     public string? Phone { get; set; }
 
-    public string? Role { get; set; }
+    public int? Role { get; set; }
 
-    public virtual Taikhoan? Taikhoan { get; set; }
+    public int? IdAccount { get; set; }
 
-    public virtual ICollection<Vexe> Vexes { get; set; } = new List<Vexe>();
+    public virtual Taikhoan? IdAccountNavigation { get; set; }
+
+    public virtual ICollection<Phieudat> Phieudats { get; set; } = new List<Phieudat>();
 }

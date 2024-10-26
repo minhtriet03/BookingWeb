@@ -12,4 +12,8 @@ public partial class Benxe
     public string? TenBenXe { get; set; }
 
     public virtual Tinhthanh? IdTinhThanhNavigation { get; set; }
+
+    public virtual ICollection<Tuyenduong> TuyenduongNoiDenNavigations { get; set; } = new List<Tuyenduong>();
+
+    public virtual ICollection<Tuyenduong> TuyenduongNoiKhoiHanhNavigations { get; set; } = new List<Tuyenduong>();
 }

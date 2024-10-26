@@ -7,7 +7,7 @@ public partial class Thanhtoan
 {
     public int IdThanhToan { get; set; }
 
-    public int? IdVe { get; set; }
+    public int? IdPhieuDat { get; set; }
 
     public decimal? SoTien { get; set; }
 
@@ -15,5 +15,5 @@ public partial class Thanhtoan
 
     public string? TrangThai { get; set; }
 
-    public virtual Vexe? IdVeNavigation { get; set; }
+    public virtual Phieudat? IdPhieuDatNavigation { get; set; }
 }

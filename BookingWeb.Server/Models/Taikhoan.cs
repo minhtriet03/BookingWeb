@@ -5,7 +5,7 @@ namespace BookingWeb.Server.Models;
 
 public partial class Taikhoan
 {
-    public int IdUser { get; set; }
+    public int IdAccount { get; set; }
 
     public string? UserName { get; set; }
 
@@ -15,5 +15,5 @@ public partial class Taikhoan
 
     public virtual Phanquyen? IdQuyenNavigation { get; set; }
 
-    public virtual Nguoidung IdUserNavigation { get; set; } = null!;
+    public virtual ICollection<Nguoidung> Nguoidungs { get; set; } = new List<Nguoidung>();
 }
