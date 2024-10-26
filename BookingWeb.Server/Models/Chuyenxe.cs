@@ -20,4 +20,6 @@ public partial class Chuyenxe
     public virtual Tuyenduong? IdTuyenDuongNavigation { get; set; }
 
     public virtual Xe? IdXeNavigation { get; set; }
+
+    public virtual ICollection<Vexe> Vexes { get; set; } = new List<Vexe>();
 }

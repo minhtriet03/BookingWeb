@@ -7,13 +7,15 @@ public partial class Xe
 {
     public int IdXe { get; set; }
 
+    public int? IdLoai { get; set; }
+
     public string? BienSo { get; set; }
 
-    public int? SoCho { get; set; }
-
-    public int? MaTuyenDuong { get; set; }
+    public string? TinhTrang { get; set; }
 
     public virtual ICollection<Chuyenxe> Chuyenxes { get; set; } = new List<Chuyenxe>();
 
-    public virtual Tuyenduong? MaTuyenDuongNavigation { get; set; }
+    public virtual Loaixe? IdLoaiNavigation { get; set; }
+
+    public virtual ICollection<Vitri> Vitris { get; set; } = new List<Vitri>();
 }
