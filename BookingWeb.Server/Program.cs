@@ -1,4 +1,7 @@
-﻿using BookingWeb.Server.Models;
+﻿using BookingWeb.Server.Interfaces;
+using BookingWeb.Server.Models;
+using BookingWeb.Server.Repositories;
+using BookingWeb.Server.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +27,11 @@ builder.Services.AddCors(options =>
 builder.Services.AddDbContext<BookingBusContext>(options => {
 	options.UseSqlServer(builder.Configuration.GetConnectionString("BookingBus"));
 });
+
+//Thêm các service vào
+builder.Services.AddScoped<IUser, UserRepository>();
+builder.Services.AddScoped<UserService>();
+
 
 var app = builder.Build();
 
