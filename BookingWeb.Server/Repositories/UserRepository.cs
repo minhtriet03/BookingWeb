@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace BookingWeb.Server.Repositories
 {
-    public class UserRepository : GenericRepository<Nguoidung>, IUser
+    public class UserRepository : GenericRepository<Nguoidung>, IUserRepository
     {
-        public UserRepository(DbContext dbContext) : base(dbContext)
+        public UserRepository(BookingBusContext dbContext) : base(dbContext)
         {
         }
 
