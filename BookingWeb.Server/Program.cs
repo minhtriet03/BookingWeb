@@ -29,7 +29,7 @@ builder.Services.AddDbContext<BookingBusContext>(options => {
 });
 
 //Thêm các service vào
-builder.Services.AddScoped<IUser, UserRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<UserService>();
 
 
