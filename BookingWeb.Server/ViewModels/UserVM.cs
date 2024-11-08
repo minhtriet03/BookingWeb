@@ -1,6 +1,6 @@
 ﻿namespace BookingWeb.Server.ViewModels;
 
-public class NguoiDungViewModel
+public class UserVM
 {
     public int IdUser { get; set; }
 
@@ -12,5 +12,4 @@ public class NguoiDungViewModel
 
     public string? Phone { get; set; }
 
-    public int? Role { get; set; }
 }

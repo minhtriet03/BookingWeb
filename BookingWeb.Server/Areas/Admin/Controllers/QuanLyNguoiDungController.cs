@@ -22,7 +22,7 @@ namespace BookingWeb.Server.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             var data = await _context.Nguoidungs
-                .Select(u => new NguoiDungViewModel
+                .Select(u => new UserVM
                 {
                     IdUser = u.IdUser,
                     HoTen = u.HoTen,
@@ -43,14 +43,13 @@ namespace BookingWeb.Server.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var nguoiDungVM = new NguoiDungViewModel
+            var nguoiDungVM = new UserVM
             {
                 IdUser = nguoiDung.IdUser,
                 HoTen = nguoiDung.HoTen,
                 DiaChi = nguoiDung.DiaChi,
                 Email = nguoiDung.Email,
                 Phone = nguoiDung.Phone,
-                Role = nguoiDung.Role
             };
 
             return View(nguoiDungVM);
@@ -58,7 +57,7 @@ namespace BookingWeb.Server.Areas.Admin.Controllers
 
         [HttpPost]
         [Route("Edit")]
-        public async Task<IActionResult> Edit(NguoiDungViewModel model)
+        public async Task<IActionResult> Edit(UserVM model)
         {
             if (!ModelState.IsValid)
             {
