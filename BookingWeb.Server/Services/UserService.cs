@@ -32,4 +32,36 @@ public class UserService
         return data;
     }
 
+    public async Task<bool> UpdateUserAsync(Nguoidung user)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(user.HoTen))
+                throw new ArgumentException("Họ tên không được để trống!");
+
+            if (string.IsNullOrEmpty(user.Email))
+                throw new ArgumentException("Email không được để trống!");
+
+            //Kiem tra xem email co bi trung hay la khong
+            var existingUser = await _userRepository.GetByUsername(user.Email);
+            if (existingUser != null && existingUser.IdUser != user.IdUser)
+            {
+                throw new InvalidOperationException("Email đã tồn tại");
+            }
+
+            var result = await _userRepository.UpdateUserAsync(user);
+            if (result)
+            {
+                await _unitOfWork.SaveChangesAsync();
+                return true;
+            }
+
+            return false;
+        }
+        catch
+        {
+            throw;
+        }
+    }
+
 }
