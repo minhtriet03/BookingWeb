@@ -30,6 +30,12 @@ builder.Services.AddDbContext<BookingBusContext>(options => {
 
 //Thêm các service vào
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IGenericRepository<Nguoidung>, GenericRepository<Nguoidung>>();
+
+// Đăng ký UnitOfWork
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+//Đăng ký các service
 builder.Services.AddScoped<UserService>();
 
 
