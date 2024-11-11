@@ -8,6 +8,8 @@ namespace BookingWeb.Server.Repositories
 {
     public class UserRepository : GenericRepository<Nguoidung>, IUserRepository
     {
+        private IUserRepository _userRepositoryImplementation;
+
         public UserRepository(BookingBusContext dbContext) : base(dbContext)
         {
         }
@@ -15,6 +17,16 @@ namespace BookingWeb.Server.Repositories
         public async Task<Nguoidung> GetByUsername(string username)
         {
             return await _dbContext.Set<Nguoidung>().FirstOrDefaultAsync(u => u.HoTen == username);
+        }
+
+        public async Task<bool> IsEmailExist(string email)
+        {
+            return await _dbContext.Set<Nguoidung>().AnyAsync(u => u.Email == email);
+        }
+
+        public async Task<bool> IsPhoneExist(string phone)
+        {
+            return await _dbContext.Set<Nguoidung>().AnyAsync(u => u.Phone == phone);
         }
 
         //public async Task<bool> UpdateUserAsync(Nguoidung user)
