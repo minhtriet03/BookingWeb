@@ -20,23 +20,55 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         return await _dbSet.FindAsync(id);
     }
 
-    public async Task AddAsync(T entity)
+    public async Task<bool> AddAsync(T entity)
     {
-        await _dbSet.AddAsync(entity);
-    }
-
-    public async Task UpdateAsync(T entity)
-    {
-        _dbSet.Update(entity);
-        await Task.CompletedTask;
-    }
-
-    public async Task DeleteAsync(int id)
-    {
-        var entity = await GetByIdAsync(id);
-        if (entity != null)
+       try
         {
-            _dbSet.Remove(entity);
+            await _dbSet.AddAsync(entity);
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+        catch
+        {
+            return false;
         }
     }
+
+    public async Task<bool> UpdateAsync(T entity)
+    {
+        try
+        {
+            _dbSet.Update(entity);
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+
+    }
+
+    public async Task<bool> DeleteAsync(int id)
+    {
+        try
+        {
+            var entity = await GetByIdAsync(id);
+            if (entity == null)
+            {
+                return false;
+            }
+
+            _dbSet.Remove(entity);
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+
+    }
+
+
 }
