@@ -32,7 +32,6 @@ namespace BookingWeb.Server.Repositories
                 existingUser.DiaChi = user.DiaChi;
                 existingUser.Email = user.Email;
                 existingUser.Phone = user.Phone;
-                existingUser.Role = user.Role;
 
                 await _dbContext.SaveChangesAsync();
 
@@ -43,8 +42,8 @@ namespace BookingWeb.Server.Repositories
                 return false;
             }
         }
-        
-        
+
+
 
     }
 }
