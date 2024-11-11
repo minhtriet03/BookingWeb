@@ -17,32 +17,32 @@ namespace BookingWeb.Server.Repositories
             return await _dbContext.Set<Nguoidung>().FirstOrDefaultAsync(u => u.HoTen == username);
         }
 
-        public async Task<bool> UpdateUserAsync(Nguoidung user)
-        {
-            try
-            {
-                var existingUser = await _dbContext.Nguoidungs.FirstOrDefaultAsync(u => u.IdUser == user.IdUser);
+        //public async Task<bool> UpdateUserAsync(Nguoidung user)
+        //{
+        //    try
+        //    {
+        //        var existingUser = await _dbContext.Nguoidungs.FirstOrDefaultAsync(u => u.IdUser == user.IdUser);
 
-                if (existingUser == null)
-                {
-                    return false;
-                }
+        //        if (existingUser == null)
+        //        {
+        //            return false;
+        //        }
 
-                existingUser.HoTen = user.HoTen;
-                existingUser.DiaChi = user.DiaChi;
-                existingUser.Email = user.Email;
-                existingUser.Phone = user.Phone;
-                existingUser.Role = user.Role;
+        //        existingUser.HoTen = user.HoTen;
+        //        existingUser.DiaChi = user.DiaChi;
+        //        existingUser.Email = user.Email;
+        //        existingUser.Phone = user.Phone;
+        //        existingUser.Role = user.Role;
 
-                await _dbContext.SaveChangesAsync();
+        //        await _dbContext.SaveChangesAsync();
 
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
+        //        return true;
+        //    }
+        //    catch
+        //    {
+        //        return false;
+        //    }
+        //}
         
         
 

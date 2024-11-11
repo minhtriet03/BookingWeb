@@ -49,7 +49,7 @@ public class UserService
                 throw new InvalidOperationException("Email đã tồn tại");
             }
 
-            var result = await _userRepository.UpdateUserAsync(user);
+            var result = await _userRepository.UpdateAsync(user);
             if (result)
             {
                 await _unitOfWork.SaveChangesAsync();
