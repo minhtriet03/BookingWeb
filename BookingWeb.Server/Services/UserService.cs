@@ -32,6 +32,40 @@ public class UserService
         return data;
     }
 
+    public async Task<bool> AddUserAsync(Nguoidung user)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(user.HoTen))
+                throw new ArgumentException("Họ tên không được để trống");
+
+            if (string.IsNullOrEmpty(user.Email))
+                throw new ArgumentException("Email không được để trống");
+
+            if (string.IsNullOrEmpty(user.Phone))
+                throw new ArgumentException("Số điện thoại không được để trống");
+
+            bool isExistEmail = await _userRepository.IsEmailExist(user.Email);
+            bool isExistPhone = await _userRepository.IsPhoneExist(user.Phone);
+
+            if (isExistEmail && isExistPhone)
+                throw new InvalidOperationException("Email và số điện thoại đã tồn tại");
+            else if (isExistEmail)
+                throw new InvalidOperationException("Email đã tồn tại");
+            else if (isExistPhone)
+                throw new InvalidOperationException("Số điện thoại đã tồn tại");
+
+            await _userRepository.AddAsync(user);
+            await _unitOfWork.SaveChangesAsync();
+
+            return true;
+        }
+        catch
+        {
+            throw;
+        }
+    }
+
     public async Task<bool> UpdateUserAsync(Nguoidung user)
     {
         try
@@ -64,4 +98,23 @@ public class UserService
         }
     }
 
+    public async Task<bool> DeleteUserAsync(int userId)
+    {
+        try
+        {
+            var user = await _userRepository.GetByIdAsync(userId);
+            if (user == null)
+            {
+                throw new InvalidOperationException("Người dùng không tồn tại");
+            }
+
+            await _userRepository.DeleteAsync(userId);
+            await _unitOfWork.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Lỗi: " +  ex.Message);
+        }
+    }
 }
