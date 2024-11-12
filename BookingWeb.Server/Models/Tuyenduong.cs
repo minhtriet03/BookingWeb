@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookingWeb.Server.Models;
 
 public partial class Tuyenduong
 {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int IdTuyenDuong { get; set; }
 
     public int? NoiKhoiHanh { get; set; }

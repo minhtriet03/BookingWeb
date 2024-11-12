@@ -58,8 +58,10 @@ namespace BookingWeb.Server.Controllers
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.InnerException?.Message);
+                throw;
                 // Trả lại lỗi khi có lỗi ngoài ý muốn
-                return StatusCode(500, "Đã xảy ra lỗi: " + ex.Message);
+                /*return StatusCode(500, "Đã xảy ra lỗi: " + ex.Message);*/
             }
         }
         

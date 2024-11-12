@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookingWeb.Server.Models;
 
 public partial class Phieudat
 {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int IdPhieu { get; set; }
 
     public int IdUser { get; set; }

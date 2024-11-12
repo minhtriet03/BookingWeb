@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookingWeb.Server.Models;
 
 public partial class Nguoidung
 {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int IdUser { get; set; }
 
     public string? HoTen { get; set; }
