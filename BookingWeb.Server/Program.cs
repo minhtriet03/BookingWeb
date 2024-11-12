@@ -1,4 +1,6 @@
-﻿using BookingWeb.Server.Interfaces;
+﻿using AutoMapper;
+using BookingWeb.Server.Helpers;
+using BookingWeb.Server.Interfaces;
 using BookingWeb.Server.Models;
 using BookingWeb.Server.Repositories;
 using BookingWeb.Server.Services;
@@ -58,7 +60,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<AccountService>();
 
-
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 var app = builder.Build();
 
 app.UseDefaultFiles();
