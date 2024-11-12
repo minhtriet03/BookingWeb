@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace BookingWeb.Server.Models;
 
 public partial class Taikhoan
 {
+   
     public int IdAccount { get; set; }
 
     public string? UserName { get; set; }
