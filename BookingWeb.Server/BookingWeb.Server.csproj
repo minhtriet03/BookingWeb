@@ -48,6 +48,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Views\QuanLyChuyenDi\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
 
 </Project>
