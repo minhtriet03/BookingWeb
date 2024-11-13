@@ -1,5 +1,6 @@
 ﻿using BookingWeb.Server.Interfaces;
 using BookingWeb.Server.Models;
+using BookingWeb.Server.ViewModels;
 
 namespace BookingWeb.Server.Repositories;
 
