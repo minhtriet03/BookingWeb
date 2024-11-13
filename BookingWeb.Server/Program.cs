@@ -30,17 +30,24 @@ builder.Services.AddDbContext<BookingBusContext>(options => {
 	options.UseSqlServer(builder.Configuration.GetConnectionString("BookingBus"));
 });
 
-//Thêm các service vào
+
+//Đăng ký các service
+//User
+
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IGenericRepository<Nguoidung>, GenericRepository<Nguoidung>>();
+builder.Services.AddScoped<UserService>();
 
+//Order
+
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IGenericRepository<Phieudat>, GenericRepository<Phieudat>>();
+builder.Services.AddScoped<OrderService>();
 // Đăng ký UnitOfWork
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-//Đăng ký các service
-builder.Services.AddScoped<UserService>();
-
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+
 var app = builder.Build();
 
 app.UseDefaultFiles();

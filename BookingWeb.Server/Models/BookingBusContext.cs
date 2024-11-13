@@ -297,6 +297,10 @@ public partial class BookingBusContext : DbContext
             entity.Property(e => e.NoiKhoiHanh)
                 .HasDefaultValueSql("(NULL)")
                 .HasColumnName("Noi_KhoiHanh");
+            entity.Property(e => e.GiaVe)
+                .HasDefaultValueSql("(NULL)")
+                .HasColumnType("decimal(10, 2)")
+                .HasColumnName("Gia_Ve");
 
             entity.HasOne(d => d.NoiDenNavigation).WithMany(p => p.TuyenduongNoiDenNavigations)
                 .HasForeignKey(d => d.NoiDen)
@@ -316,10 +320,7 @@ public partial class BookingBusContext : DbContext
             entity.Property(e => e.IdVe)
                 .ValueGeneratedOnAdd()
                 .HasColumnName("ID_Ve");
-            entity.Property(e => e.GiaVe)
-                .HasDefaultValueSql("(NULL)")
-                .HasColumnType("decimal(10, 2)")
-                .HasColumnName("Gia_Ve");
+
             entity.Property(e => e.IdChuyenXe)
                 .HasDefaultValueSql("(NULL)")
                 .HasColumnName("ID_ChuyenXe");

@@ -8,5 +8,4 @@ public interface IUserRepository : IGenericRepository<Nguoidung>
     Task<bool> IsEmailExist(string email);
 
     Task<bool> IsPhoneExist(string phone);
-    //Task<bool> UpdateUserAsync(Nguoidung user);
 }

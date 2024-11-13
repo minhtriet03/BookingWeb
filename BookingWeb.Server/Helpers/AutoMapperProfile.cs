@@ -9,6 +9,6 @@ public class AutoMapperProfile : Profile
 {
     public AutoMapperProfile()
     {
-        CreateMap<PhieuDatVM, Phieudat>();
+        /*CreateMap<Phieudat, OrderVM>().ReverseMap();*/
     }
 }

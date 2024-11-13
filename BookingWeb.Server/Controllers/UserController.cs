@@ -60,14 +60,12 @@ namespace BookingWeb.Server.Controllers
             {
                 Console.WriteLine(ex.InnerException?.Message);
                 throw;
-                // Trả lại lỗi khi có lỗi ngoài ý muốn
-                /*return StatusCode(500, "Đã xảy ra lỗi: " + ex.Message);*/
             }
         }
         
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, [FromBody] Nguoidung user)
+        [HttpPut]
+        public async Task<IActionResult> UpdateUser([FromQuery] int id, [FromBody] Nguoidung user)
         {
             try
             {

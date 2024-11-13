@@ -19,8 +19,6 @@ public partial class Vexe
 
     public DateOnly? NgayVe { get; set; }
 
-    public decimal? GiaVe { get; set; }
-
     public string? TrangThai { get; set; }
 
     public virtual Chuyenxe? IdChuyenXeNavigation { get; set; }
