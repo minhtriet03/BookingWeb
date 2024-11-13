@@ -1,13 +1,12 @@
 ﻿
-import Header from '@/component/Header';
-import Footer from '@/component/Footer';
+
 import { Container } from 'react-bootstrap';
 import SearchForm from './SearchForm';
 import Main from './Main';
 function Schedule() {
     return (
             <>
-      <Header />
+  
       <Container  style={{
         maxWidth: '1100px',  // Hoặc kích thước bạn muốn
         width: '100%',        // Chiếm toàn bộ chiều rộng
@@ -21,7 +20,7 @@ function Schedule() {
                     </div>
                 </main>
       </Container>
-      <Footer />
+
     </>
        
        

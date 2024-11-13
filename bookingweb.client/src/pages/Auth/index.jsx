@@ -1,6 +1,4 @@
 import { useState } from 'react';
-import Header from '@/component/Header';
-import Footer from '@/component/Footer';
 import { Container, Form, Button, Row, Col, Image, Tabs, Tab } from 'react-bootstrap';
 import './Auth.css'; // Nhớ import file CSS ở đây
 
@@ -9,7 +7,7 @@ function Auth() {
 
     return (
         <>
-            <Header />
+        
             <Container
                 style={{
                     maxWidth: '1100px',
@@ -76,7 +74,7 @@ function Auth() {
                     </Col>
                 </Row>
             </Container>
-            <Footer />
+         
         </>
     );
 }
