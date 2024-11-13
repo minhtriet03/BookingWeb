@@ -14,13 +14,13 @@
          padding-left:25px;
          
  }
-.switch-location {
+.switch-location1 {
     position: absolute;
     z-index: 10;
     transition: ease-out 0.3s;
     transform: rotate(0deg);
 }
-.switch-location:hover {
+.switch-location1:hover {
     transition:ease-out 0.3s;
     transform:rotate(-180deg);
 }
