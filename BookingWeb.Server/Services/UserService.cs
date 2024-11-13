@@ -55,6 +55,8 @@ public class UserService
             else if (isExistPhone)
                 throw new InvalidOperationException("Số điện thoại đã tồn tại");
 
+            user.Role = 1; //ở đây Toàn chưa biết cái nào là cái nào : D
+            
             await _userRepository.AddAsync(user);
             await _unitOfWork.SaveChangesAsync();
 

@@ -14,6 +14,8 @@ public partial class Tuyenduong
     public int? NoiDen { get; set; }
 
     public decimal? KhoangCach { get; set; }
+    
+    public decimal? GiaVe { get; set; }
 
     public virtual ICollection<Chuyenxe> Chuyenxes { get; set; } = new List<Chuyenxe>();
 

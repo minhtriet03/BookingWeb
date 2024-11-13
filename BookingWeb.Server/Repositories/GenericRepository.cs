@@ -15,6 +15,11 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         _dbSet = dbContext.Set<T>();
     }
 
+    public async Task<List<T>> GetAllAsync()
+    {
+         return await _dbSet.ToListAsync();
+    }
+
     public async Task<T> GetByIdAsync(int id)
     {
         return await _dbSet.FindAsync(id);
@@ -25,7 +30,6 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
        try
         {
             await _dbSet.AddAsync(entity);
-            await _dbContext.SaveChangesAsync();
             return true;
         }
         catch
@@ -39,7 +43,6 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         try
         {
             _dbSet.Update(entity);
-            await _dbContext.SaveChangesAsync();
             return true;
         }
         catch
@@ -60,7 +63,6 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
             }
 
             _dbSet.Remove(entity);
-            await _dbContext.SaveChangesAsync();
             return true;
         }
         catch
@@ -69,6 +71,4 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         }
 
     }
-
-
 }
