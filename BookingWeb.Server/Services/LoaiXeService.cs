@@ -25,5 +25,18 @@ namespace BookingWeb.Server.Services
         {
             return await _loaiXeRepository.GetByIdAsync(id);
         }
+        public async Task<bool> AddLoaixe(Loaixe loaixe)
+        {
+            return await _loaiXeRepository.AddAsync(loaixe);
+        }
+        public async Task<bool> UpdateLoaixe(Loaixe loaixe)
+        {
+            return await _loaiXeRepository.UpdateAsync(loaixe);
+        }
+
+        public async Task<bool> DeleteLoaixe(int id)
+        {
+            return await _loaiXeRepository.DeleteAsync(id);
+        }
     }
 }

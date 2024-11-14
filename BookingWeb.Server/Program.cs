@@ -4,6 +4,7 @@ using BookingWeb.Server.Interfaces;
 using BookingWeb.Server.Models;
 using BookingWeb.Server.Repositories;
 using BookingWeb.Server.Services;
+using BookingWeb.Server.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -45,6 +46,10 @@ builder.Services.AddDbContext<BookingBusContext>(options => {
 	options.UseSqlServer(builder.Configuration.GetConnectionString("BookingBus"));
 });
 
+// Đăng ký dịch vụ XeService
+builder.Services.AddScoped<XeService>();
+builder.Services.AddScoped<IXeRepository, XeRepository>();
+builder.Services.AddScoped<IGenericRepository<Xe>, XeRepository>();
 // Đăng ký dịch vụ LoaiXeService
 builder.Services.AddScoped<LoaiXeService>();
 builder.Services.AddScoped<ILoaiXeRepository, LoaiXeRepository>();
