@@ -1,0 +1,25 @@
+/* Custom CSS for the dotted line */
+.dotted-line {
+    border-bottom: 2px dotted #C8CCD3; /* Change color as needed */
+    flex-grow: 1;
+    margin-left: 8px; /* Adjust the margin for spacing */
+    margin-right: 8px; /* Adjust the margin for spacing */
+    height: 0; /* Ensures the line has no height */
+}
+
+/* Add this to your custom CSS */
+.middle-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+    .middle-content span {
+        margin: 0 8px; /* Adjust horizontal space between the spans */
+    }
+
+    .middle-content img {
+        margin-left: 8px;
+        margin-right: 8px;
+    }

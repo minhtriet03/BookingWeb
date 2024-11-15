@@ -97,6 +97,5 @@ namespace BookingWeb.Server.Controllers
                 throw new Exception(ex.Message);
             }
         }
-        
     }
 }

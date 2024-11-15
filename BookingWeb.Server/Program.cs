@@ -4,15 +4,31 @@ using BookingWeb.Server.Interfaces;
 using BookingWeb.Server.Models;
 using BookingWeb.Server.Repositories;
 using BookingWeb.Server.Services;
+using BookingWeb.Server.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllers();
 
-// Thêm các dịch vụ vào container
-builder.Services.AddControllersWithViews();  // Để hỗ trợ API và MVC Views
-builder.Services.AddRazorPages();            // Thêm Razor Pages
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("this is my custom Secret key for authnetication")),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+    });
 
-// Đăng ký Swagger và CORS
+
+builder.Services.AddControllersWithViews();  
+builder.Services.AddRazorPages();            
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -39,12 +55,17 @@ builder.Services.AddScoped<IGenericRepository<Nguoidung>, GenericRepository<Nguo
 builder.Services.AddScoped<UserService>();
 
 //Order
-
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IGenericRepository<Taikhoan>, GenericRepository<Taikhoan>>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-builder.Services.AddScoped<IGenericRepository<Phieudat>, GenericRepository<Phieudat>>();
 builder.Services.AddScoped<OrderService>();
+
+
 // Đăng ký UnitOfWork
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+
+builder.Services.AddScoped<AccountService>();
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
@@ -67,6 +88,7 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 // Ánh xạ Razor Pages
