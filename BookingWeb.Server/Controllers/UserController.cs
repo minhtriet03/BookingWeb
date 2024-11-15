@@ -1,4 +1,5 @@
-﻿using BookingWeb.Server.Models;
+﻿using BookingWeb.Server.Interfaces;
+using BookingWeb.Server.Models;
 using Microsoft.AspNetCore.Mvc;
 using BookingWeb.Server.Services;
 using BookingWeb.Server.ViewModels;
@@ -10,8 +11,7 @@ namespace BookingWeb.Server.Controllers
     public class UserController : ControllerBase
     {
         private readonly UserService _userService;
-
-        public UserController(UserService userService)
+        public UserController(UserService userService, IUnitOfWork unitOfWork)
         {
             _userService = userService;
         }
@@ -22,6 +22,7 @@ namespace BookingWeb.Server.Controllers
             try
             {
                 var data = await _userService.GetAllUsers();
+                /*var data = await _unitOfWork.userRepository.GetAllAsync();*/
                 return Ok(data);
             }
             catch (Exception ex)
@@ -92,7 +93,7 @@ namespace BookingWeb.Server.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Deleteuser(int userId)
+        public async Task<ActionResult> DeleteUser(int userId)
         {
             try
             {

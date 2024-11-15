@@ -7,29 +7,26 @@ namespace BookingWeb.Server.Services;
 
 public class UserService
 {
-    private readonly BookingBusContext _context;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IUserRepository _userRepository;
 
-    public UserService(BookingBusContext context, IUnitOfWork unitOfWork, IUserRepository userRepository)
+    public UserService(IUnitOfWork unitOfWork)
     {
-        _context = context;
-        _userRepository = userRepository;
         _unitOfWork = unitOfWork;
     }
 
     public async Task<List<UserVM>> GetAllUsers()
     {
-        var data = await _context.Nguoidungs.Select(u => new UserVM
+        var data = await _unitOfWork.userRepository.GetAllAsync();
+        var userVM = await Task.FromResult(data.Select(u => new UserVM
         {
             IdUser = u.IdUser,
             DiaChi = u.DiaChi,
             Email = u.Email,
             HoTen = u.HoTen,
             Phone = u.Phone
-        }).ToListAsync();
+        }).ToList());
 
-        return data;
+        return userVM;
     }
 
     public async Task<bool> AddUserAsync(Nguoidung user)
@@ -45,8 +42,8 @@ public class UserService
             if (string.IsNullOrEmpty(user.Phone))
                 throw new ArgumentException("Số điện thoại không được để trống");
 
-            bool isExistEmail = await _userRepository.IsEmailExist(user.Email);
-            bool isExistPhone = await _userRepository.IsPhoneExist(user.Phone);
+            bool isExistEmail = await _unitOfWork.userRepository.IsEmailExist(user.Email);
+            bool isExistPhone = await _unitOfWork.userRepository.IsPhoneExist(user.Phone);
 
             if (isExistEmail && isExistPhone)
                 throw new InvalidOperationException("Email và số điện thoại đã tồn tại");
@@ -57,7 +54,7 @@ public class UserService
 
             user.Role = 1; //ở đây Toàn chưa biết cái nào là cái nào : D
             
-            await _userRepository.AddAsync(user);
+            await _unitOfWork.userRepository.AddAsync(user);
             await _unitOfWork.SaveChangesAsync();
 
             return true;
@@ -79,13 +76,13 @@ public class UserService
                 throw new ArgumentException("Email không được để trống!");
 
             //Kiem tra xem email co bi trung hay la khong
-            var existingUser = await _userRepository.GetByUsername(user.Email);
+            var existingUser = await _unitOfWork.userRepository.GetByUsername(user.Email);
             if (existingUser != null && existingUser.IdUser != user.IdUser)
             {
                 throw new InvalidOperationException("Email đã tồn tại");
             }
 
-            var result = await _userRepository.UpdateAsync(user);
+            var result = await _unitOfWork.userRepository.UpdateAsync(user);
             if (result)
             {
                 await _unitOfWork.SaveChangesAsync();
@@ -102,15 +99,16 @@ public class UserService
 
     public async Task<bool> DeleteUserAsync(int userId)
     {
+        
         try
         {
-            var user = await _userRepository.GetByIdAsync(userId);
+            var user = await _unitOfWork.userRepository.GetByIdAsync(userId);
             if (user == null)
             {
                 throw new InvalidOperationException("Người dùng không tồn tại");
             }
 
-            await _userRepository.DeleteAsync(userId);
+            await _unitOfWork.userRepository.DeleteAsync(userId);
             await _unitOfWork.SaveChangesAsync();
             return true;
         }

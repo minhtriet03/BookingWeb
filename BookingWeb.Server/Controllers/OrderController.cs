@@ -31,28 +31,70 @@ namespace BookingWeb.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddOrder(int userId, [FromForm] decimal soLuong, [FromForm] decimal giaTien, [FromForm] Phieudat order)
+        public async Task<IActionResult> AddOrder(int userId
+            , [FromForm] decimal giaTien
+            , [FromForm] decimal soLuong
+            , [FromForm] Phieudat order
+        )
         {
-            if (userId == null)
+            if (order == null)
             {
-                return BadRequest("Dũ liệu người dùng không hợp lệ");
+                BadRequest("Dữ liệu không hợp lệ");
             }
 
             try
             {
-                bool result = await _orderService.AddOrderAsync(userId, soLuong, giaTien, order);
+                bool result = await _orderService.AddOrderAsync(userId, giaTien, soLuong, order);
                 if (result)
                 {
-                    return Ok("Đã đặt vé thành công");
+                    return Ok("Đặt vé thành công");
                 }
                 else
                 {
-                    return StatusCode(500, "Lỗi đỏ lòm đỏ chét luôn");
+                    return StatusCode(500, "Đỏ lè đỏ loét luôn");
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return BadRequest(e.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateOrder([FromBody] Phieudat order)
+        {
+            try
+            {
+                bool result = await _orderService.UpdateOrderAsync(order);
+
+                if (result)
+                    return Ok("Chỉnh sửa phiếu đặt thành công");
+
+                return NotFound("Không tìm thấy thông tin phiếu đặt");
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Có lỗi xảy ra khi cập nhật");
+            }
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteOrder([FromBody] int id)
+        {
+            try
+            {
+                bool result = await _orderService.DeleleOrderAsync(id);
+                if (result)
+                    return Ok("Xóa thành công");
+                return NotFound("Không tìm thấy phiếu đặt");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
     }
