@@ -14,13 +14,19 @@ public class UnitOfWork : IUnitOfWork
 
     public IXeRepository xeRepository {get; private set; }
 
-    public UnitOfWork(BookingBusContext context, IUserRepository userRepository, IOrderRepository orderRepository, ILoaiXeRepository loaiXeRepository,IXeRepository xeRepository)
+    public IAccountRepository accountRepository { get; private set; }
+    
+    public ITuyenDuongRepository tuyenDuongRepository { get; private set; }
+
+    public UnitOfWork(BookingBusContext context, IUserRepository userRepository, IOrderRepository orderRepository, ILoaiXeRepository loaiXeRepository,IXeRepository xeRepository,IAccountRepository accountRepository,ITuyenDuongRepository tuyenDuongRepository)
     {
         _context = context;
         this.userRepository = userRepository;
         this.orderRepository = orderRepository;
         this.loaiXeRepository = loaiXeRepository;
         this.xeRepository = xeRepository;
+        this.accountRepository = accountRepository;
+        this.tuyenDuongRepository = tuyenDuongRepository;
     }
     
     public void Dispose()

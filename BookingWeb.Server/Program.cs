@@ -26,24 +26,25 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 
-builder.Services.AddControllersWithViews();  
-builder.Services.AddRazorPages();            
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>
 {
-	options.AddPolicy("AllowAllOrigins", policy =>
-	{
-		policy.AllowAnyOrigin()
-			  .AllowAnyMethod()
-			  .AllowAnyHeader();
-	});
+    options.AddPolicy("AllowAllOrigins", policy =>
+    {
+        policy.WithOrigins("https://localhost:5173", "http://localhost:5173", "http://localhost:5108", "https://localhost:7241")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
 });
 
 builder.Services.AddDbContext<BookingBusContext>(options => {
-	options.UseSqlServer(builder.Configuration.GetConnectionString("BookingBus"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("BookingBus"));
 });
 
 // Đăng ký dịch vụ XeService
@@ -61,6 +62,11 @@ builder.Services.AddScoped<IGenericRepository<Loaixe>, LoaiXeRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IGenericRepository<Nguoidung>, GenericRepository<Nguoidung>>();
 builder.Services.AddScoped<UserService>();
+
+//TuyenDuong
+builder.Services.AddScoped<ITuyenDuongRepository, TuyenDuongRepository>();
+builder.Services.AddScoped<IGenericRepository<Tuyenduong>, TuyenDuongRepository>();
+builder.Services.AddScoped<TuyenDuongService>();
 
 //Order
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
@@ -85,14 +91,13 @@ app.UseStaticFiles();
 // Cấu hình pipeline xử lý yêu cầu HTTP
 if (app.Environment.IsDevelopment())
 {
-	app.UseSwagger();
-	app.UseSwaggerUI();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
-// Sử dụng CORS
-app.UseCors("AllowAllOrigins");
+//app.UseHttpsRedirection();
 
-app.UseHttpsRedirection();
+app.UseCors("AllowAllOrigins");
 
 app.UseRouting();
 
@@ -104,11 +109,11 @@ app.MapRazorPages();
 
 // Ánh xạ Controllers
 app.MapControllerRoute(
-	name: "MyArea",
-	pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+    name: "MyArea",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
-	name: "default",
-	pattern: "{controller=Home}/{action=Index}/{id?}");
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
