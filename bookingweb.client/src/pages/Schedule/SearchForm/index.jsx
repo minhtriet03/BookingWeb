@@ -38,7 +38,7 @@ function ScheduleInputForm() {
                 </InputGroup>
 
                 {/* Icon chuyển vị trí */}
-                <img className="switch-location" src={switchIcon} alt="switch location icon" />
+                <img className="switch-location1" src={switchIcon} alt="switch location icon" />
 
                 {/* Điểm đến */}
                 <InputGroup

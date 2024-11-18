@@ -57,7 +57,7 @@
   opacity: 0;
   transition: opacity 0.3s ease; /* Hiệu ứng mờ dần */
   position: absolute;
-  z-index: 20;
+  z-index: 20 !important;
   background: white;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -111,3 +111,4 @@
 .react-datepicker__day-name {
   color: white; 
 }
+

@@ -11,11 +11,13 @@ public class OrderService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
 
     public OrderService(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<List<OrderVM>> GetAllOrders()
@@ -101,6 +103,4 @@ public class OrderService
 
         }
     }
-    
-    
 }
