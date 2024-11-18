@@ -12,6 +12,12 @@ public class UserVM
 
     public string Phone { get; set; }
     
-    public int Role { get; set; }
+    public bool TrangThai { get; set; }
+}
 
+public class PagedUserVM
+{
+    public List<UserVM> Users { get; set; } = new List<UserVM>(); // Danh sách người dùng
+    public int CurrentPage { get; set; } // Trang hiện tại
+    public int TotalPages { get; set; } // Tổng số trang
 }

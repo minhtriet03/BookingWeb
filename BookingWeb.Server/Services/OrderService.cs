@@ -15,7 +15,7 @@ public class OrderService
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
-        _unitOfWork = unitOfWork;
+        //_unitOfWork = unitOfWork;
     }
 
     public async Task<List<OrderVM>> GetAllOrders()
@@ -44,7 +44,7 @@ public class OrderService
         {
             order.IdUser = userId;
             order.TongTien = giaTien * soLuong;
-            order.TrangThai = "Chưa thanh toán";
+            order.TrangThai = false;
             
             await _unitOfWork.orderRepository.AddAsync(order);
             await _unitOfWork.SaveChangesAsync();

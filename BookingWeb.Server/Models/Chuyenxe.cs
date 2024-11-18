@@ -17,7 +17,7 @@ public partial class Chuyenxe
 
     public DateTime? ThoiGianDen { get; set; }
 
-    public string? TrangThai { get; set; }
+    public bool? TrangThai { get; set; }
 
     public virtual Tuyenduong? IdTuyenDuongNavigation { get; set; }
 

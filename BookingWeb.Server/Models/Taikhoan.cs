@@ -18,6 +18,9 @@ public partial class Taikhoan
     public string? Password { get; set; }
 
     public int? IdQuyen { get; set; }
+    
+    public bool? TrangThai { get; set; }
+
 
     public virtual Phanquyen? IdQuyenNavigation { get; set; }
 
