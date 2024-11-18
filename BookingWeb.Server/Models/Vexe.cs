@@ -19,7 +19,7 @@ public partial class Vexe
 
     public DateOnly? NgayVe { get; set; }
 
-    public string? TrangThai { get; set; }
+    public bool? TrangThai { get; set; }
 
     public virtual Chuyenxe? IdChuyenXeNavigation { get; set; }
 

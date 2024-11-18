@@ -15,7 +15,7 @@ public partial class Thanhtoan
 
     public string? PhuongThucTt { get; set; }
 
-    public string? TrangThai { get; set; }
+    public bool? TrangThai { get; set; }
 
     public virtual Phieudat? IdPhieuDatNavigation { get; set; }
 }

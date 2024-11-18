@@ -46,7 +46,7 @@ public class OrderService
         {
             order.IdUser = userId;
             order.TongTien = giaTien * soLuong;
-            order.TrangThai = "Chưa thanh toán";
+            order.TrangThai = false;
             
             await _unitOfWork.orderRepository.AddAsync(order);
             await _unitOfWork.SaveChangesAsync();

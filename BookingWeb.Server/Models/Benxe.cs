@@ -12,6 +12,8 @@ public partial class Benxe
     public int? IdTinhThanh { get; set; }
 
     public string? TenBenXe { get; set; }
+    
+    public bool? TrangThai { get; set; }
 
     public virtual Tinhthanh? IdTinhThanhNavigation { get; set; }
 

@@ -11,5 +11,8 @@ public partial class Phanquyen
 
     public string? TenQuyen { get; set; }
 
+    public bool? TrangThai { get; set; }
+
+
     public virtual ICollection<Taikhoan> Taikhoans { get; set; } = new List<Taikhoan>();
 }

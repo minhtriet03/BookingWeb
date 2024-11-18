@@ -13,7 +13,7 @@ public partial class Xe
 
     public string? BienSo { get; set; }
 
-    public string? TinhTrang { get; set; }
+    public bool? TinhTrang { get; set; }
 
     public virtual ICollection<Chuyenxe> Chuyenxes { get; set; } = new List<Chuyenxe>();
 
