@@ -14,6 +14,8 @@ public partial class Tinhthanh
     [StringLength(255)] 
     [Unicode(true)] 
     public string? TenTinhThanh { get; set; }
+    public bool? TrangThai { get; set; }
+
 
     public virtual ICollection<Benxe> Benxes { get; set; } = new List<Benxe>();
 }

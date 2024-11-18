@@ -21,6 +21,8 @@ public partial class Nguoidung
 
     public string? Phone { get; set; }
 
+    public bool? TrangThai { get; set; }
+    
     public int? IdAccount { get; set; }
 
     public virtual Taikhoan? IdAccountNavigation { get; set; }

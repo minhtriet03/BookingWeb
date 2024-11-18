@@ -16,6 +16,8 @@ public partial class Benxe
     [StringLength(255)]
     [Unicode(true)]
     public string? TenBenXe { get; set; }
+    
+    public bool? TrangThai { get; set; }
 
 
     public virtual Tinhthanh? IdTinhThanhNavigation { get; set; }

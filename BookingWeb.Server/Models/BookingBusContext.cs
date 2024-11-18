@@ -155,7 +155,6 @@ public partial class BookingBusContext : DbContext
                 .HasMaxLength(15)
                 .IsUnicode(false)
                 .HasDefaultValueSql("(NULL)");
-            entity.Property(e => e.Role).HasDefaultValueSql("(NULL)");
 
             entity.HasOne(d => d.IdAccountNavigation).WithMany(p => p.Nguoidungs)
                 .HasForeignKey(d => d.IdAccount)

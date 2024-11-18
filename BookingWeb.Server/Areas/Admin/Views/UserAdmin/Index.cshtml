@@ -1,0 +1,68 @@
+﻿@model BookingWeb.Server.ViewModels.PagedUserVM
+
+<!-- Areas/Admin/Views/QuanLyNguoiDung/Index.cshtml -->
+@{
+    ViewData["Title"] = "Quản lý người dùng";
+}  
+
+<h1 class="h3 mb-2 text-gray-800">Quản lý người dùng</h1>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Họ Tên</th>
+                    <th>Địa Chỉ</th>
+                    <th>Email</th>
+                    <th>Số điện thoại</th>
+                    <th>Chức Năng</th>
+                </tr>
+                </thead>
+                <tbody id="userTable">
+                    @foreach (var user in Model.Users)
+                    {
+                    <tr>
+                        <td>@user.IdUser</td>
+                        <td>@user.HoTen</td>
+                        <td>@user.DiaChi</td>
+                        <td>@user.Email</td>
+                        <td>@user.Phone</td>
+                        <td>
+                            <button class="btn btn-primary">
+                                <a asp-controller="UserAdmin" asp-action="Edit" class="text-white" asp-route-id="@user.IdUser">Edit</a>
+                            </button>
+                            <button class="btn btn-danger">
+                                <a asp-controller="UserAdmin" asp-action="Delete" class="text-white" asp-route-id="@user.IdUser"a>Delete</a>
+                            </button>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+                <a asp-action="Edit" asp-controller="UserAdmin" asp-route-id="1">Like</a>
+            </table>
+            <nav>
+                <ul class="pagination">
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("Index", new { pageNumber = i })">@i</a>
+                    </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+@*<script src="~/js/admin/pagination.js"></script>
+<script>
+    const userData = @Html.Raw(Json.Serialize(Model));
+    createPagination(userData, "userTable", "userPagination", 5, "Edit", "QuanLyNguoiDung");
+</script>*@

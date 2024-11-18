@@ -12,12 +12,18 @@ public class UnitOfWork : IUnitOfWork
 
     public IAccountRepository accountRepository { get; private set; }
 
-    public UnitOfWork(BookingBusContext context, IUserRepository userRepository, IOrderRepository orderRepositor, IAccountRepository accountRepository)
+    public ILoaiXeRepository loaiXeRepository {get; private set; }
+
+    public IXeRepository xeRepository {get; private set; }
+
+    public UnitOfWork(BookingBusContext context, IUserRepository userRepository, IOrderRepository orderRepository, ILoaiXeRepository loaiXeRepository,IXeRepository xeRepository, IAccountRepository accountRepository)
     {
         _context = context;
         this.userRepository = userRepository;
         this.orderRepository = orderRepository;
         this.accountRepository = accountRepository;
+        this.loaiXeRepository = loaiXeRepository;
+        this.xeRepository = xeRepository;
     }
     
     public void Dispose()
