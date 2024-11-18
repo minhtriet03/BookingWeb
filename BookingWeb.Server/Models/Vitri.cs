@@ -11,8 +11,6 @@ public partial class Vitri
 
     public int? IdXe { get; set; }
 
-    public string? ViTri1 { get; set; }
-
     public bool? TrangThai { get; set; }
 
     public virtual Xe? IdXeNavigation { get; set; }

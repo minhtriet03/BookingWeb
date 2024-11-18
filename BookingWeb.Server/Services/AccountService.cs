@@ -8,12 +8,10 @@ namespace BookingWeb.Server.Services
 
         private readonly BookingBusContext _context;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IAccountRepository _accountRepository;
 
-        public AccountService(BookingBusContext context, IUnitOfWork unitOfWork, IAccountRepository accountRepository)
+        public AccountService(BookingBusContext context, IUnitOfWork unitOfWork)
         {
             _context = context;
-            _accountRepository = accountRepository;
             _unitOfWork = unitOfWork;
         }
 
@@ -27,12 +25,12 @@ namespace BookingWeb.Server.Services
                 if (string.IsNullOrEmpty(account.Password))
                     throw new ArgumentException("Password không được để trống");
 
-                bool isExistUsername = await _accountRepository.IsUsernameExist(account.UserName);
+                bool isExistUsername = await _unitOfWork.accountRepository.IsUsernameExist(account.UserName);
 
                 if (isExistUsername)
                     throw new InvalidOperationException("Username đã tồn tại");
 
-                await _accountRepository.AddAsync(account);
+                await _unitOfWork.accountRepository.AddAsync(account);
                 await _unitOfWork.SaveChangesAsync();
 
                 return true;
@@ -47,12 +45,12 @@ namespace BookingWeb.Server.Services
         {
             try
             {
-                bool isExist = await _accountRepository.IsAccountExist(id);
+                bool isExist = await _unitOfWork.accountRepository.IsAccountExist(id);
 
                 if (!isExist)
                     throw new InvalidOperationException("Tài khoản không tồn tại");
 
-                await _accountRepository.DeleteAsync(id);
+                await _unitOfWork.accountRepository.DeleteAsync(id);
                 await _unitOfWork.SaveChangesAsync();
 
                 return true;
@@ -67,12 +65,12 @@ namespace BookingWeb.Server.Services
         {
             try
             {
-                bool isExist = await _accountRepository.IsAccountExist(account.IdAccount);
+                bool isExist = await _unitOfWork.accountRepository.IsAccountExist(account.IdAccount);
 
                 if (!isExist)
                     throw new InvalidOperationException("Tài khoản không tồn tại");
 
-                await _accountRepository.UpdateAsync(account);
+                await _unitOfWork.accountRepository.UpdateAsync(account);
                 await _unitOfWork.SaveChangesAsync();
 
                 return true;
@@ -88,7 +86,7 @@ namespace BookingWeb.Server.Services
         {
             try
             {
-                return await _accountRepository.GetByUsername(username);
+                return await _unitOfWork.accountRepository.GetByUsername(username);
             }
             catch (Exception ex)
             {
@@ -100,7 +98,7 @@ namespace BookingWeb.Server.Services
         {
             try
             {
-                return await _accountRepository.IsUsernameExist(username);
+                return await _unitOfWork.accountRepository.IsUsernameExist(username);
             }
             catch (Exception ex)
             {
@@ -112,7 +110,7 @@ namespace BookingWeb.Server.Services
         {
             try
             {
-                return await _accountRepository.IsAccountExist(id);
+                return await _unitOfWork.accountRepository.IsAccountExist(id);
             }
             catch (Exception ex)
             {
@@ -124,7 +122,7 @@ namespace BookingWeb.Server.Services
         {
             try
             {
-                return await _accountRepository.Register(user);
+                return await _unitOfWork.accountRepository.Register(user);
             }
             catch (Exception ex)
             {
@@ -136,7 +134,7 @@ namespace BookingWeb.Server.Services
         {
             try
             {
-                return await _accountRepository.Login(userName, password);
+                return await _unitOfWork.accountRepository.Login(userName, password);
             }
             catch (Exception ex)
             {
@@ -148,7 +146,7 @@ namespace BookingWeb.Server.Services
         {
             try
             {
-                return await _accountRepository.UpdatePassword(id, oldPassword, newPassword);
+                return await _unitOfWork.accountRepository.UpdatePassword(id, oldPassword, newPassword);
             }
             catch (Exception ex)
             {

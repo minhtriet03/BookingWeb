@@ -34,12 +34,13 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>
 {
-	options.AddPolicy("AllowAllOrigins", policy =>
-	{
-		policy.AllowAnyOrigin()
-			  .AllowAnyMethod()
-			  .AllowAnyHeader();
-	});
+    options.AddPolicy("AllowAllOrigins", policy =>
+    {
+        policy.WithOrigins("https://localhost:5173", "http://localhost:5173", "http://localhost:5108", "https://localhost:7241")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials(); 
+    });
 });
 
 builder.Services.AddDbContext<BookingBusContext>(options => {
@@ -96,10 +97,9 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI();
 }
 
-// Sử dụng CORS
-app.UseCors("AllowAllOrigins");
+//app.UseHttpsRedirection();
 
-app.UseHttpsRedirection();
+app.UseCors("AllowAllOrigins"); 
 
 app.UseRouting();
 

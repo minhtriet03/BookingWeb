@@ -365,11 +365,7 @@ public partial class BookingBusContext : DbContext
             entity.Property(e => e.IdXe)
                 .HasDefaultValueSql("(NULL)")
                 .HasColumnName("ID_Xe");
-            entity.Property(e => e.ViTri1)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasDefaultValueSql("(NULL)")
-                .HasColumnName("ViTri");
+
 
             entity.HasOne(d => d.IdXeNavigation).WithMany(p => p.Vitris)
                 .HasForeignKey(d => d.IdXe)
