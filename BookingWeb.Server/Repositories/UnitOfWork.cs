@@ -10,11 +10,17 @@ public class UnitOfWork : IUnitOfWork
     public IUserRepository userRepository {get; private set; }
     public IOrderRepository orderRepository {get; private set; }
 
-    public UnitOfWork(BookingBusContext context, IUserRepository userRepository, IOrderRepository orderRepository)
+    public ILoaiXeRepository loaiXeRepository {get; private set; }
+
+    public IXeRepository xeRepository {get; private set; }
+
+    public UnitOfWork(BookingBusContext context, IUserRepository userRepository, IOrderRepository orderRepository, ILoaiXeRepository loaiXeRepository,IXeRepository xeRepository)
     {
         _context = context;
         this.userRepository = userRepository;
         this.orderRepository = orderRepository;
+        this.loaiXeRepository = loaiXeRepository;
+        this.xeRepository = xeRepository;
     }
     
     public void Dispose()
