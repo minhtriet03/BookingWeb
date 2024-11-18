@@ -25,20 +25,27 @@ namespace BookingWeb.Server.Migrations
             modelBuilder.Entity("BookingWeb.Server.Models.Benxe", b =>
                 {
                     b.Property<int>("IdBenXe")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("ID_BenXe");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdBenXe"));
+
                     b.Property<int?>("IdTinhThanh")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ID_TinhThanh");
+                        .HasColumnName("ID_TinhThanh")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.Property<string>("TenBenXe")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(100)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(100)")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.HasKey("IdBenXe")
-                        .HasName("PK__benxe__5D85FA845457C57C");
+                        .HasName("PK__benxe__5D85FA84A6235780");
 
                     b.HasIndex("IdTinhThanh");
 
@@ -48,32 +55,45 @@ namespace BookingWeb.Server.Migrations
             modelBuilder.Entity("BookingWeb.Server.Models.Chuyenxe", b =>
                 {
                     b.Property<int>("IdChuyenXe")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("ID_ChuyenXe");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdChuyenXe"));
+
                     b.Property<int?>("IdTuyenDuong")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ID_TuyenDuong");
+                        .HasColumnName("ID_TuyenDuong")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.Property<int?>("IdXe")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ID_Xe");
+                        .HasColumnName("ID_Xe")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.Property<DateTime?>("ThoiGianDen")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
-                        .HasColumnName("Thoi_GianDen");
+                        .HasColumnName("Thoi_GianDen")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.Property<DateTime?>("ThoiGianKh")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
-                        .HasColumnName("Thoi_GianKH");
+                        .HasColumnName("Thoi_GianKH")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.Property<string>("TrangThai")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(50)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(50)")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.HasKey("IdChuyenXe")
-                        .HasName("PK__chuyenxe__108DC34AC2F09492");
+                        .HasName("PK__chuyenxe__108DC34A04704F45");
 
                     b.HasIndex("IdTuyenDuong");
 
@@ -85,21 +105,28 @@ namespace BookingWeb.Server.Migrations
             modelBuilder.Entity("BookingWeb.Server.Models.Loaixe", b =>
                 {
                     b.Property<int>("IdLoai")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("ID_Loai");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdLoai"));
+
                     b.Property<int?>("SoGhe")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("So_Ghe");
+                        .HasColumnName("So_Ghe")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.Property<string>("TenLoai")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(100)
                         .IsUnicode(false)
                         .HasColumnType("varchar(100)")
-                        .HasColumnName("Ten_Loai");
+                        .HasColumnName("Ten_Loai")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.HasKey("IdLoai")
-                        .HasName("PK__loaixe__914C2314CF7F9441");
+                        .HasName("PK__loaixe__914C23141C318AD3");
 
                     b.ToTable("loaixe", (string)null);
                 });
@@ -107,40 +134,55 @@ namespace BookingWeb.Server.Migrations
             modelBuilder.Entity("BookingWeb.Server.Models.Nguoidung", b =>
                 {
                     b.Property<int>("IdUser")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("ID_User");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdUser"));
+
                     b.Property<string>("DiaChi")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(255)
                         .IsUnicode(false)
                         .HasColumnType("varchar(255)")
-                        .HasColumnName("Dia_Chi");
+                        .HasColumnName("Dia_Chi")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.Property<string>("Email")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("HoTen")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(255)
                         .IsUnicode(false)
                         .HasColumnType("varchar(255)")
-                        .HasColumnName("Ho_Ten");
+                        .HasDefaultValueSql("(NULL)");
+
+                    b.Property<string>("HoTen")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(255)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("Ho_Ten")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.Property<int?>("IdAccount")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ID_Account");
+                        .HasColumnName("ID_Account")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.Property<string>("Phone")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(15)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(15)");
+                        .HasColumnType("varchar(15)")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.Property<int?>("Role")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.HasKey("IdUser")
-                        .HasName("PK__nguoidun__ED4DE4426067B775");
+                        .HasName("PK__nguoidun__ED4DE44201ABFF36");
 
                     b.HasIndex("IdAccount");
 
@@ -150,16 +192,21 @@ namespace BookingWeb.Server.Migrations
             modelBuilder.Entity("BookingWeb.Server.Models.Phanquyen", b =>
                 {
                     b.Property<int>("IdQuyen")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("ID_Quyen");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdQuyen"));
+
                     b.Property<string>("TenQuyen")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.HasKey("IdQuyen")
-                        .HasName("PK__phanquye__D219AE52A6951B83");
+                        .HasName("PK__phanquye__D219AE5225D17883");
 
                     b.ToTable("phanquyen", (string)null);
                 });
@@ -167,28 +214,37 @@ namespace BookingWeb.Server.Migrations
             modelBuilder.Entity("BookingWeb.Server.Models.Phieudat", b =>
                 {
                     b.Property<int>("IdPhieu")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("ID_Phieu");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdPhieu"));
 
                     b.Property<int>("IdUser")
                         .HasColumnType("int")
                         .HasColumnName("ID_User");
 
                     b.Property<DateOnly?>("NgayLap")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("date")
-                        .HasColumnName("Ngay_Lap");
+                        .HasColumnName("Ngay_Lap")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.Property<decimal?>("TongTien")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("decimal(10, 2)")
-                        .HasColumnName("Tong_Tien");
+                        .HasColumnName("Tong_Tien")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.Property<string>("TrangThai")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(50)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(50)")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.HasKey("IdPhieu")
-                        .HasName("PK__phieudat__E61CE97E43D3D4D5");
+                        .HasName("PK__phieudat__E61CE97E924175EE");
 
                     b.HasIndex("IdUser");
 
@@ -198,25 +254,34 @@ namespace BookingWeb.Server.Migrations
             modelBuilder.Entity("BookingWeb.Server.Models.Taikhoan", b =>
                 {
                     b.Property<int>("IdAccount")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("ID_Account");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdAccount"));
+
                     b.Property<int?>("IdQuyen")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ID_Quyen");
+                        .HasColumnName("ID_Quyen")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.Property<string>("Password")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.Property<string>("UserName")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.HasKey("IdAccount")
-                        .HasName("PK__taikhoan__213379EBC673E920");
+                        .HasName("PK__taikhoan__213379EB7E7880B7");
 
                     b.HasIndex("IdQuyen");
 
@@ -226,30 +291,41 @@ namespace BookingWeb.Server.Migrations
             modelBuilder.Entity("BookingWeb.Server.Models.Thanhtoan", b =>
                 {
                     b.Property<int>("IdThanhToan")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("ID_ThanhToan");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdThanhToan"));
+
                     b.Property<int?>("IdPhieuDat")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ID_PhieuDat");
+                        .HasColumnName("ID_PhieuDat")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.Property<string>("PhuongThucTt")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(50)
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)")
-                        .HasColumnName("PhuongThuc_TT");
+                        .HasColumnName("PhuongThuc_TT")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.Property<decimal?>("SoTien")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("decimal(10, 2)")
-                        .HasColumnName("So_Tien");
+                        .HasColumnName("So_Tien")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.Property<string>("TrangThai")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(50)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(50)")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.HasKey("IdThanhToan")
-                        .HasName("PK__thanhtoa__AB2E563157EAFBD3");
+                        .HasName("PK__thanhtoa__AB2E563188254449");
 
                     b.HasIndex("IdPhieuDat");
 
@@ -259,17 +335,22 @@ namespace BookingWeb.Server.Migrations
             modelBuilder.Entity("BookingWeb.Server.Models.Tinhthanh", b =>
                 {
                     b.Property<int>("IdTinhThanh")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("ID_TinhThanh");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdTinhThanh"));
+
                     b.Property<string>("TenTinhThanh")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(100)
                         .IsUnicode(false)
                         .HasColumnType("varchar(100)")
-                        .HasColumnName("Ten_TinhThanh");
+                        .HasColumnName("Ten_TinhThanh")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.HasKey("IdTinhThanh")
-                        .HasName("PK__tinhthan__BC0EB70B259D3B97");
+                        .HasName("PK__tinhthan__BC0EB70B84090C12");
 
                     b.ToTable("tinhthanh", (string)null);
                 });
@@ -277,23 +358,38 @@ namespace BookingWeb.Server.Migrations
             modelBuilder.Entity("BookingWeb.Server.Models.Tuyenduong", b =>
                 {
                     b.Property<int>("IdTuyenDuong")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("ID_TuyenDuong");
 
-                    b.Property<decimal?>("KhoangCach")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdTuyenDuong"));
+
+                    b.Property<decimal?>("GiaVe")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("decimal(10, 2)")
-                        .HasColumnName("Khoang_Cach");
+                        .HasColumnName("Gia_Ve")
+                        .HasDefaultValueSql("(NULL)");
+
+                    b.Property<decimal?>("KhoangCach")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(10, 2)")
+                        .HasColumnName("Khoang_Cach")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.Property<int?>("NoiDen")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("Noi_Den");
+                        .HasColumnName("Noi_Den")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.Property<int?>("NoiKhoiHanh")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("Noi_KhoiHanh");
+                        .HasColumnName("Noi_KhoiHanh")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.HasKey("IdTuyenDuong")
-                        .HasName("PK__tuyenduo__8D9665CDC1A77655");
+                        .HasName("PK__tuyenduo__8D9665CD7174435A");
 
                     b.HasIndex("NoiDen");
 
@@ -305,40 +401,51 @@ namespace BookingWeb.Server.Migrations
             modelBuilder.Entity("BookingWeb.Server.Models.Vexe", b =>
                 {
                     b.Property<int>("IdVe")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("ID_Ve");
 
-                    b.Property<decimal?>("GiaVe")
-                        .HasColumnType("decimal(10, 2)")
-                        .HasColumnName("Gia_Ve");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdVe"));
 
                     b.Property<int?>("IdChuyenXe")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ID_ChuyenXe");
+                        .HasColumnName("ID_ChuyenXe")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.Property<int?>("IdPhieu")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ID_Phieu");
+                        .HasColumnName("ID_Phieu")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.Property<int?>("IdViTriGhe")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ID_ViTriGhe");
+                        .HasColumnName("ID_ViTriGhe")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.Property<DateOnly?>("NgayKhoiHanh")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("date")
-                        .HasColumnName("Ngay_KhoiHanh");
+                        .HasColumnName("Ngay_KhoiHanh")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.Property<DateOnly?>("NgayVe")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("date")
-                        .HasColumnName("Ngay_Ve");
+                        .HasColumnName("Ngay_Ve")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.Property<string>("TrangThai")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(50)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(50)")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.HasKey("IdVe")
-                        .HasName("PK__vexe__8B63A19C63B2D04E");
+                        .HasName("PK__vexe__8B63A19C210D5D44");
 
                     b.HasIndex("IdChuyenXe");
 
@@ -352,21 +459,28 @@ namespace BookingWeb.Server.Migrations
             modelBuilder.Entity("BookingWeb.Server.Models.Vitri", b =>
                 {
                     b.Property<int>("IdViTriGhe")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("ID_ViTriGhe");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdViTriGhe"));
+
                     b.Property<int?>("IdXe")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ID_Xe");
+                        .HasColumnName("ID_Xe")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.Property<string>("ViTri1")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(50)
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)")
-                        .HasColumnName("ViTri");
+                        .HasColumnName("ViTri")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.HasKey("IdViTriGhe")
-                        .HasName("PK__vitri__F0FA263A8F933914");
+                        .HasName("PK__vitri__F0FA263A0546993C");
 
                     b.HasIndex("IdXe");
 
@@ -376,27 +490,36 @@ namespace BookingWeb.Server.Migrations
             modelBuilder.Entity("BookingWeb.Server.Models.Xe", b =>
                 {
                     b.Property<int>("IdXe")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("ID_Xe");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdXe"));
+
                     b.Property<string>("BienSo")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(50)
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)")
-                        .HasColumnName("Bien_So");
+                        .HasColumnName("Bien_So")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.Property<int?>("IdLoai")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ID_Loai");
+                        .HasColumnName("ID_Loai")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.Property<string>("TinhTrang")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(50)
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)")
-                        .HasColumnName("Tinh_Trang");
+                        .HasColumnName("Tinh_Trang")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.HasKey("IdXe")
-                        .HasName("PK__xe__8B62515E4D0DB79D");
+                        .HasName("PK__xe__8B62515E2A4BD620");
 
                     b.HasIndex("IdLoai");
 

@@ -6,7 +6,25 @@ import '@/assets/root.css';
 import Booking from './pages/Booking';
 import Footer from "./component/Footer/index";
 import Header from "./component/Header/index";
+// import Authentication from "./component/Authentication";
+// import { useEffect } from "react";
+// import { useDispatch } from "react-redux";
+// // import { SetUser } from "./redux/actions/authAction";
+// import { useNavigate } from "react-router-dom";
+
 function App() {
+    // const dispatch = useDispatch();
+    // const navigate = useNavigate();
+
+    // useEffect(() => {
+    //     const getuser = async () => {
+    //         const response = await dispatch(SetUser());
+    //         if (SetUser.fulfilled.match(response)) {
+    //             navigate("/");
+    //         }
+    //     };
+    //     getuser();
+    // }, []);
 return (
     <Router>
         <Header />

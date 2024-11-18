@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -16,51 +15,55 @@ namespace BookingWeb.Server.Migrations
                 name: "loaixe",
                 columns: table => new
                 {
-                    ID_Loai = table.Column<int>(type: "int", nullable: false).Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Ten_Loai = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
-                    So_Ghe = table.Column<int>(type: "int", nullable: true)
+                    ID_Loai = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Ten_Loai = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true, defaultValueSql: "(NULL)"),
+                    So_Ghe = table.Column<int>(type: "int", nullable: true, defaultValueSql: "(NULL)")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__loaixe__914C2314CF7F9441", x => x.ID_Loai);
+                    table.PrimaryKey("PK__loaixe__914C23141C318AD3", x => x.ID_Loai);
                 });
 
             migrationBuilder.CreateTable(
                 name: "phanquyen",
                 columns: table => new
                 {
-                    ID_Quyen = table.Column<int>(type: "int", nullable: false).Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    TenQuyen = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true)
+                    ID_Quyen = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TenQuyen = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true, defaultValueSql: "(NULL)")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__phanquye__D219AE52A6951B83", x => x.ID_Quyen);
+                    table.PrimaryKey("PK__phanquye__D219AE5225D17883", x => x.ID_Quyen);
                 });
 
             migrationBuilder.CreateTable(
                 name: "tinhthanh",
                 columns: table => new
                 {
-                    ID_TinhThanh = table.Column<int>(type: "int", nullable: false).Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Ten_TinhThanh = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true)
+                    ID_TinhThanh = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Ten_TinhThanh = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true, defaultValueSql: "(NULL)")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__tinhthan__BC0EB70B259D3B97", x => x.ID_TinhThanh);
+                    table.PrimaryKey("PK__tinhthan__BC0EB70B84090C12", x => x.ID_TinhThanh);
                 });
 
             migrationBuilder.CreateTable(
                 name: "xe",
                 columns: table => new
                 {
-                    ID_Xe = table.Column<int>(type: "int", nullable: false).Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ID_Loai = table.Column<int>(type: "int", nullable: true),
-                    Bien_So = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    Tinh_Trang = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true)
+                    ID_Xe = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ID_Loai = table.Column<int>(type: "int", nullable: true, defaultValueSql: "(NULL)"),
+                    Bien_So = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true, defaultValueSql: "(NULL)"),
+                    Tinh_Trang = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true, defaultValueSql: "(NULL)")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__xe__8B62515E4D0DB79D", x => x.ID_Xe);
+                    table.PrimaryKey("PK__xe__8B62515E2A4BD620", x => x.ID_Xe);
                     table.ForeignKey(
                         name: "fk_xe_loaixe",
                         column: x => x.ID_Loai,
@@ -72,14 +75,15 @@ namespace BookingWeb.Server.Migrations
                 name: "taikhoan",
                 columns: table => new
                 {
-                    ID_Account = table.Column<int>(type: "int", nullable: false).Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserName = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    Password = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    ID_Quyen = table.Column<int>(type: "int", nullable: true)
+                    ID_Account = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserName = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true, defaultValueSql: "(NULL)"),
+                    Password = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true, defaultValueSql: "(NULL)"),
+                    ID_Quyen = table.Column<int>(type: "int", nullable: true, defaultValueSql: "(NULL)")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__taikhoan__213379EBC673E920", x => x.ID_Account);
+                    table.PrimaryKey("PK__taikhoan__213379EB7E7880B7", x => x.ID_Account);
                     table.ForeignKey(
                         name: "fk_taikhoan_phanquyen",
                         column: x => x.ID_Quyen,
@@ -91,13 +95,14 @@ namespace BookingWeb.Server.Migrations
                 name: "benxe",
                 columns: table => new
                 {
-                    ID_BenXe = table.Column<int>(type: "int", nullable: false).Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ID_TinhThanh = table.Column<int>(type: "int", nullable: true),
-                    TenBenXe = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true)
+                    ID_BenXe = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ID_TinhThanh = table.Column<int>(type: "int", nullable: true, defaultValueSql: "(NULL)"),
+                    TenBenXe = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true, defaultValueSql: "(NULL)")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__benxe__5D85FA845457C57C", x => x.ID_BenXe);
+                    table.PrimaryKey("PK__benxe__5D85FA84A6235780", x => x.ID_BenXe);
                     table.ForeignKey(
                         name: "fk_benxe_tinhthanh",
                         column: x => x.ID_TinhThanh,
@@ -109,13 +114,14 @@ namespace BookingWeb.Server.Migrations
                 name: "vitri",
                 columns: table => new
                 {
-                    ID_ViTriGhe = table.Column<int>(type: "int", nullable: false).Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ID_Xe = table.Column<int>(type: "int", nullable: true),
-                    ViTri = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true)
+                    ID_ViTriGhe = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ID_Xe = table.Column<int>(type: "int", nullable: true, defaultValueSql: "(NULL)"),
+                    ViTri = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true, defaultValueSql: "(NULL)")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__vitri__F0FA263A8F933914", x => x.ID_ViTriGhe);
+                    table.PrimaryKey("PK__vitri__F0FA263A0546993C", x => x.ID_ViTriGhe);
                     table.ForeignKey(
                         name: "fk_vitri_xe",
                         column: x => x.ID_Xe,
@@ -127,17 +133,18 @@ namespace BookingWeb.Server.Migrations
                 name: "nguoidung",
                 columns: table => new
                 {
-                    ID_User = table.Column<int>(type: "int", nullable: false).Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Ho_Ten = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    Dia_Chi = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    Email = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    Phone = table.Column<string>(type: "varchar(15)", unicode: false, maxLength: 15, nullable: true),
-                    Role = table.Column<int>(type: "int", nullable: true),
-                    ID_Account = table.Column<int>(type: "int", nullable: true)
+                    ID_User = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Ho_Ten = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true, defaultValueSql: "(NULL)"),
+                    Dia_Chi = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true, defaultValueSql: "(NULL)"),
+                    Email = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true, defaultValueSql: "(NULL)"),
+                    Phone = table.Column<string>(type: "varchar(15)", unicode: false, maxLength: 15, nullable: true, defaultValueSql: "(NULL)"),
+                    Role = table.Column<int>(type: "int", nullable: true, defaultValueSql: "(NULL)"),
+                    ID_Account = table.Column<int>(type: "int", nullable: true, defaultValueSql: "(NULL)")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__nguoidun__ED4DE4426067B775", x => x.ID_User);
+                    table.PrimaryKey("PK__nguoidun__ED4DE44201ABFF36", x => x.ID_User);
                     table.ForeignKey(
                         name: "fk_nguoidung_taikhoan",
                         column: x => x.ID_Account,
@@ -149,14 +156,16 @@ namespace BookingWeb.Server.Migrations
                 name: "tuyenduong",
                 columns: table => new
                 {
-                    ID_TuyenDuong = table.Column<int>(type: "int", nullable: false).Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Noi_KhoiHanh = table.Column<int>(type: "int", nullable: true),
-                    Noi_Den = table.Column<int>(type: "int", nullable: true),
-                    Khoang_Cach = table.Column<decimal>(type: "decimal(10,2)", nullable: true)
+                    ID_TuyenDuong = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Noi_KhoiHanh = table.Column<int>(type: "int", nullable: true, defaultValueSql: "(NULL)"),
+                    Noi_Den = table.Column<int>(type: "int", nullable: true, defaultValueSql: "(NULL)"),
+                    Khoang_Cach = table.Column<decimal>(type: "decimal(10,2)", nullable: true, defaultValueSql: "(NULL)"),
+                    Gia_Ve = table.Column<decimal>(type: "decimal(10,2)", nullable: true, defaultValueSql: "(NULL)")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__tuyenduo__8D9665CDC1A77655", x => x.ID_TuyenDuong);
+                    table.PrimaryKey("PK__tuyenduo__8D9665CD7174435A", x => x.ID_TuyenDuong);
                     table.ForeignKey(
                         name: "fk_tuyenduong_noiden",
                         column: x => x.Noi_Den,
@@ -173,15 +182,16 @@ namespace BookingWeb.Server.Migrations
                 name: "phieudat",
                 columns: table => new
                 {
-                    ID_Phieu = table.Column<int>(type: "int", nullable: false).Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ID_Phieu = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ID_User = table.Column<int>(type: "int", nullable: false),
-                    Ngay_Lap = table.Column<DateOnly>(type: "date", nullable: true),
-                    Tong_Tien = table.Column<decimal>(type: "decimal(10,2)", nullable: true),
-                    TrangThai = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true)
+                    Ngay_Lap = table.Column<DateOnly>(type: "date", nullable: true, defaultValueSql: "(NULL)"),
+                    Tong_Tien = table.Column<decimal>(type: "decimal(10,2)", nullable: true, defaultValueSql: "(NULL)"),
+                    TrangThai = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true, defaultValueSql: "(NULL)")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__phieudat__E61CE97E43D3D4D5", x => x.ID_Phieu);
+                    table.PrimaryKey("PK__phieudat__E61CE97E924175EE", x => x.ID_Phieu);
                     table.ForeignKey(
                         name: "fk_phieudat_nguoidung",
                         column: x => x.ID_User,
@@ -193,16 +203,17 @@ namespace BookingWeb.Server.Migrations
                 name: "chuyenxe",
                 columns: table => new
                 {
-                    ID_ChuyenXe = table.Column<int>(type: "int", nullable: false).Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ID_Xe = table.Column<int>(type: "int", nullable: true),
-                    ID_TuyenDuong = table.Column<int>(type: "int", nullable: true),
-                    Thoi_GianKH = table.Column<DateTime>(type: "datetime", nullable: true),
-                    Thoi_GianDen = table.Column<DateTime>(type: "datetime", nullable: true),
-                    TrangThai = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true)
+                    ID_ChuyenXe = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ID_Xe = table.Column<int>(type: "int", nullable: true, defaultValueSql: "(NULL)"),
+                    ID_TuyenDuong = table.Column<int>(type: "int", nullable: true, defaultValueSql: "(NULL)"),
+                    Thoi_GianKH = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(NULL)"),
+                    Thoi_GianDen = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(NULL)"),
+                    TrangThai = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true, defaultValueSql: "(NULL)")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__chuyenxe__108DC34AC2F09492", x => x.ID_ChuyenXe);
+                    table.PrimaryKey("PK__chuyenxe__108DC34A04704F45", x => x.ID_ChuyenXe);
                     table.ForeignKey(
                         name: "fk_chuyenxe_tuyenduong",
                         column: x => x.ID_TuyenDuong,
@@ -219,15 +230,16 @@ namespace BookingWeb.Server.Migrations
                 name: "thanhtoan",
                 columns: table => new
                 {
-                    ID_ThanhToan = table.Column<int>(type: "int", nullable: false).Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ID_PhieuDat = table.Column<int>(type: "int", nullable: true),
-                    So_Tien = table.Column<decimal>(type: "decimal(10,2)", nullable: true),
-                    PhuongThuc_TT = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    TrangThai = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true)
+                    ID_ThanhToan = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ID_PhieuDat = table.Column<int>(type: "int", nullable: true, defaultValueSql: "(NULL)"),
+                    So_Tien = table.Column<decimal>(type: "decimal(10,2)", nullable: true, defaultValueSql: "(NULL)"),
+                    PhuongThuc_TT = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true, defaultValueSql: "(NULL)"),
+                    TrangThai = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true, defaultValueSql: "(NULL)")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__thanhtoa__AB2E563157EAFBD3", x => x.ID_ThanhToan);
+                    table.PrimaryKey("PK__thanhtoa__AB2E563188254449", x => x.ID_ThanhToan);
                     table.ForeignKey(
                         name: "fk_thanhtoan_phieudat",
                         column: x => x.ID_PhieuDat,
@@ -239,18 +251,18 @@ namespace BookingWeb.Server.Migrations
                 name: "vexe",
                 columns: table => new
                 {
-                    ID_Ve = table.Column<int>(type: "int", nullable: false).Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ID_Phieu = table.Column<int>(type: "int", nullable: true),
-                    ID_ViTriGhe = table.Column<int>(type: "int", nullable: true),
-                    ID_ChuyenXe = table.Column<int>(type: "int", nullable: true),
-                    Ngay_KhoiHanh = table.Column<DateOnly>(type: "date", nullable: true),
-                    Ngay_Ve = table.Column<DateOnly>(type: "date", nullable: true),
-                    Gia_Ve = table.Column<decimal>(type: "decimal(10,2)", nullable: true),
-                    TrangThai = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true)
+                    ID_Ve = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ID_Phieu = table.Column<int>(type: "int", nullable: true, defaultValueSql: "(NULL)"),
+                    ID_ViTriGhe = table.Column<int>(type: "int", nullable: true, defaultValueSql: "(NULL)"),
+                    ID_ChuyenXe = table.Column<int>(type: "int", nullable: true, defaultValueSql: "(NULL)"),
+                    Ngay_KhoiHanh = table.Column<DateOnly>(type: "date", nullable: true, defaultValueSql: "(NULL)"),
+                    Ngay_Ve = table.Column<DateOnly>(type: "date", nullable: true, defaultValueSql: "(NULL)"),
+                    TrangThai = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true, defaultValueSql: "(NULL)")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__vexe__8B63A19C63B2D04E", x => x.ID_Ve);
+                    table.PrimaryKey("PK__vexe__8B63A19C210D5D44", x => x.ID_Ve);
                     table.ForeignKey(
                         name: "fk_vexe_chuyenxe",
                         column: x => x.ID_ChuyenXe,
