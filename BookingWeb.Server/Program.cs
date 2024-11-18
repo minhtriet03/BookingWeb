@@ -43,6 +43,14 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IGenericRepository<Phieudat>, GenericRepository<Phieudat>>();
 builder.Services.AddScoped<OrderService>();
+
+
+//Role
+
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IGenericRepository<Phanquyen>, GenericRepository<Phanquyen>>();
+builder.Services.AddScoped<RoleService>();
+
 // Đăng ký UnitOfWork
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 

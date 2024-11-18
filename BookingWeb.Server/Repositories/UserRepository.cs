@@ -18,6 +18,19 @@ namespace BookingWeb.Server.Repositories
         {
             return await _dbContext.Set<Nguoidung>().FirstOrDefaultAsync(u => u.HoTen == username);
         }
+        
+        public async Task<List<Nguoidung>> GetPagedAsync(int skip, int take)
+        {
+            return await _dbContext.Nguoidungs
+                .Skip(skip)
+                .Take(take)
+                .ToListAsync();
+        }
+        
+        public async Task<int> CountAsync()
+        {
+            return await _dbContext.Nguoidungs.CountAsync();
+        }
 
         public async Task<bool> IsEmailExist(string email)
         {

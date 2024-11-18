@@ -13,7 +13,8 @@ public class UserService
     {
         _unitOfWork = unitOfWork;
     }
-
+    
+    //Lấy tất cả
     public async Task<List<UserVM>> GetAllUsers()
     {
         var data = await _unitOfWork.userRepository.GetAllAsync();
@@ -28,6 +29,53 @@ public class UserService
 
         return userVM;
     }
+
+    //Lấy bằng ID
+    public async Task<UserVM> GetUserById(int id)
+    {
+        var user = await _unitOfWork.userRepository.GetByIdAsync(id);
+        if (user == null) return null;
+
+        return new UserVM
+        {
+            IdUser = user.IdUser,
+            HoTen = user.HoTen,
+            DiaChi = user.DiaChi,
+            Email = user.Email,
+            Phone = user.Phone
+        };
+    }
+    
+    //Lấy danh sách phân trang
+    public async Task<PagedUserVM> GetUsersByPageAsync(int pageNumber, int pageSize)
+    {
+        var skip = (pageNumber - 1) * pageSize;
+
+        // Tổng số bản ghi
+        var totalRecords = await _unitOfWork.userRepository.CountAsync();
+
+        // Lấy danh sách người dùng với phân trang
+        var users = await _unitOfWork.userRepository.GetPagedAsync(skip, pageSize);
+
+        // Chuyển đổi sang ViewModel
+        var data = users.Select(u => new UserVM
+        {
+            IdUser = u.IdUser,
+            HoTen = u.HoTen,
+            DiaChi = u.DiaChi,
+            Email = u.Email,
+            Phone = u.Phone,
+        }).ToList();
+
+        // Trả về ViewModel với dữ liệu
+        return new PagedUserVM
+        {
+            Users = data,
+            CurrentPage = pageNumber,
+            TotalPages = (int)Math.Ceiling((double)totalRecords / pageSize)
+        };
+    }
+
 
     public async Task<bool> AddUserAsync(Nguoidung user)
     {
@@ -52,8 +100,6 @@ public class UserService
             else if (isExistPhone)
                 throw new InvalidOperationException("Số điện thoại đã tồn tại");
 
-            user.Role = 1; //ở đây Toàn chưa biết cái nào là cái nào : D
-            
             await _unitOfWork.userRepository.AddAsync(user);
             await _unitOfWork.SaveChangesAsync();
 
@@ -65,6 +111,7 @@ public class UserService
         }
     }
 
+    
     public async Task<bool> UpdateUserAsync(Nguoidung user)
     {
         try
