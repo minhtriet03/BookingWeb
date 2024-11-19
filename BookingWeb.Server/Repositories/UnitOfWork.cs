@@ -7,27 +7,41 @@ public class UnitOfWork : IUnitOfWork
 {
 
     private readonly BookingBusContext _context;
-  
+ 
+    public UnitOfWork(BookingBusContext context, IBenXeRepository benxe, ITinhRepository tinh, IVitriRepository vitri, IVexeRepository vexe, IUserRepository userRepository, IOrderRepository orderRepository, ILoaiXeRepository loaiXeRepository, IXeRepository xeRepository, IAccountRepository accountRepository)
+    {
+        _context = context;
+        this.benXes = benxe;
+        this.vitris = vitri;
+        this.tinhs = tinh;
+        this.vexes = vexe;
+        this.userRepository = userRepository;
+        this.orderRepository = orderRepository;
+        this.accountRepository = accountRepository;
+        this.loaiXeRepository = loaiXeRepository;
+        this.xeRepository = xeRepository;
+    }
     public IBenXeRepository benXes { get; set; }
     public ITinhRepository tinhs { get; set; }
     public IVitriRepository vitris { get; set; }
     public IVexeRepository vexes { get; set; }
 
-    public UnitOfWork(BookingBusContext context,IBenXeRepository benxe, ITinhRepository tinh, IVitriRepository vitri, IVexeRepository vexe)
-    {
-        _context = context;
-        benXes = benxe;
-        vitris = vitri;
-        tinhs = tinh;
-        vexes = vexe;
-    }
+    public IUserRepository userRepository {get; private set; }
+    public IOrderRepository orderRepository {get; private set; }
+
+    public IAccountRepository accountRepository { get; private set; }
+
+    public ILoaiXeRepository loaiXeRepository {get; private set; }
+
+    public IXeRepository xeRepository {get; private set; }
+
     
     public void Dispose()
     {
         _context.Dispose();
     }
 
-    public async Task<int> Complete()
+    public async Task<int> SaveChangesAsync()
     {
         return await _context.SaveChangesAsync();
     }

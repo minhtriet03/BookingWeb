@@ -54,5 +54,31 @@ namespace BookingWeb.Server.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+        [HttpPost]
+        public async Task<ActionResult<Tinhthanh>> updateTinhThanh(Tinhthanh tinhthanh)
+        {
+            try
+            {
+                var data = await _service.updateTinh(tinhthanh);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpPost("{id}")]
+        public async Task<ActionResult<Tinhthanh>> deleteTinhThanh(int id)
+        {
+            try
+            {
+                var data = await _service.deleteTinh(id);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 }

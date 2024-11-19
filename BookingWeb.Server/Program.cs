@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using BookingWeb.Server.Helpers;
 using BookingWeb.Server.Interfaces;
 using BookingWeb.Server.Models;
 using BookingWeb.Server.Repositories;
 using BookingWeb.Server.Services;
+using BookingWeb.Server.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -33,18 +33,27 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>
 {
-	options.AddPolicy("AllowAllOrigins", policy =>
-	{
-		policy.AllowAnyOrigin()
-			  .AllowAnyMethod()
-			  .AllowAnyHeader();
-	});
+    options.AddPolicy("AllowAllOrigins", policy =>
+    {
+        policy.WithOrigins("https://localhost:5173", "http://localhost:5173", "http://localhost:5108", "https://localhost:7241")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials(); 
+    });
 });
 
 builder.Services.AddDbContext<BookingBusContext>(options => {
 	options.UseSqlServer(builder.Configuration.GetConnectionString("BookingBus"));
 });
 
+// Đăng ký dịch vụ XeService
+builder.Services.AddScoped<XeService>();
+builder.Services.AddScoped<IXeRepository, XeRepository>();
+builder.Services.AddScoped<IGenericRepository<Xe>, XeRepository>();
+// Đăng ký dịch vụ LoaiXeService
+builder.Services.AddScoped<LoaiXeService>();
+builder.Services.AddScoped<ILoaiXeRepository, LoaiXeRepository>();
+builder.Services.AddScoped<IGenericRepository<Loaixe>, LoaiXeRepository>();
 
 //Đăng ký các service
 //User
@@ -69,10 +78,25 @@ builder.Services.AddScoped<ITinhRepository, TinhRepository>();
 builder.Services.AddScoped<IGenericRepository<Tinhthanh>, GenericRepository<Tinhthanh>>();
 builder.Services.AddScoped<TinhService>();
 
+//Vexe
+builder.Services.AddScoped<IVexeRepository, VexeRepository>();
+builder.Services.AddScoped<IGenericRepository<Vexe>, GenericRepository<Vexe>>();
+builder.Services.AddScoped<VexeService>();
+
+//Benxe
+builder.Services.AddScoped<IBenXeRepository, BenXeRepository>();
+builder.Services.AddScoped<IGenericRepository<Benxe>, GenericRepository<Benxe>>();
+builder.Services.AddScoped<BenxeService>();
+
+//Role
+
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IGenericRepository<Phanquyen>, GenericRepository<Phanquyen>>();
+builder.Services.AddScoped<RoleService>();
 
 // Đăng ký UnitOfWork
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
+builder.Services.AddScoped<UnitOfWork>();
 builder.Services.AddScoped<AccountService>();
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
@@ -89,10 +113,9 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI();
 }
 
-// Sử dụng CORS
-app.UseCors("AllowAllOrigins");
+//app.UseHttpsRedirection();
 
-app.UseHttpsRedirection();
+app.UseCors("AllowAllOrigins"); 
 
 app.UseRouting();
 

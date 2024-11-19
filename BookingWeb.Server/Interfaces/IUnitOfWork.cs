@@ -5,5 +5,14 @@ public interface IUnitOfWork : IDisposable
     IBenXeRepository benXes { get; set; }
     ITinhRepository tinhs { get; set; }
     IVitriRepository vitris { get; set; }
-    Task<int> Complete();
+    IVexeRepository vexes { get; set; }
+
+    IUserRepository userRepository { get; }
+    IOrderRepository orderRepository { get; }
+
+    IAccountRepository accountRepository { get; }
+    ILoaiXeRepository loaiXeRepository { get; }
+    IXeRepository xeRepository { get; }
+    Task<int> SaveChangesAsync();
+    
 }

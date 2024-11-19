@@ -43,11 +43,11 @@ namespace BookingWeb.Server.Services
                 throw ex;
             }
         }
-        public async Task<bool> delAsync(int id)
+        public async Task<bool> delete(int id)
         {
             try
             {
-                return await _unitOfWork.vitris.DeleteAsync(id);
+                return await _unitOfWork.vitris.deleteVitri(id);
             }
             catch (Exception ex)
             {

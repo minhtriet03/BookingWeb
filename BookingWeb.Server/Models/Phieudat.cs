@@ -15,9 +15,9 @@ public partial class Phieudat
 
     public decimal? TongTien { get; set; }
 
-    public string? TrangThai { get; set; }
+    public bool? TrangThai { get; set; }
 
-    public virtual Nguoidung IdUserNavigation { get; set; } = null!;
+    public virtual Nguoidung? IdUserNavigation { get; set; } = null!;
 
     public virtual ICollection<Thanhtoan> Thanhtoans { get; set; } = new List<Thanhtoan>();
 

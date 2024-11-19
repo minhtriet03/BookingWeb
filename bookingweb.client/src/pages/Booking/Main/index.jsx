@@ -1,5 +1,5 @@
 ﻿
-import { Card, Form, Container, Row, Col, Button,Navbar, Nav } from 'react-bootstrap';
+import { Card, Form, Container, Row, Col, Button } from 'react-bootstrap';
 import './Main.css';
 
 

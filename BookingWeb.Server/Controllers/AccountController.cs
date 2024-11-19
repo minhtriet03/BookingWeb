@@ -70,7 +70,8 @@ namespace BookingWeb.Server.Controllers
             {
                 UserName = acc.UserName,
                 Password = acc.Password,
-                IdQuyen = 0,
+                IdQuyen = 1,
+                TrangThai = true,
             };
 
             Console.WriteLine(taikhoan.IdAccount + taikhoan.IdQuyen +taikhoan.UserName + taikhoan.Password);

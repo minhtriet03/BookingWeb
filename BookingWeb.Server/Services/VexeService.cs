@@ -21,5 +21,9 @@ namespace BookingWeb.Server.Services
         {
             return await _unitOfWork.vexes.AddAsync(vexe);
         }
+        public async Task<bool> deleteVexe(int id)
+        {
+            return await _unitOfWork.vexes.deleteVexe(id);
+        }
     }
 }

@@ -44,7 +44,27 @@ namespace BookingWeb.Server.Services
                 throw ex;
             }
         }
-
-
+        public async Task<bool> updateBenxe(Benxe benxe)
+        {
+            try
+            {
+                return await _unitOfWork.benXes.UpdateAsync(benxe);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public async Task<bool> deleteBenXe(int id)
+        {
+            try
+            {
+                return await _unitOfWork.benXes.deleteBenxe(id);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

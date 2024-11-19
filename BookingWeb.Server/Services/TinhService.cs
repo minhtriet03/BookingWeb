@@ -25,7 +25,28 @@ namespace BookingWeb.Server.Services
         {
             return await _unitOfWork.tinhs.AddAsync(tinhthanh);
         }
+        public async Task<bool> updateTinh(Tinhthanh tinhthanh)
+        {
+            try
+            {
+                return await _unitOfWork.tinhs.UpdateAsync(tinhthanh);
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public async Task<bool> deleteTinh(int id)
+        {
+            try
+            {
+                return await _unitOfWork.tinhs.deleteTinh(id);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
-        
     }
 }

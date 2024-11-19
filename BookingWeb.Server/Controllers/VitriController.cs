@@ -73,7 +73,7 @@ namespace BookingWeb.Server.Controllers
             try
             {
                 // Gọi service để thêm Vitri
-                var delVitri = await _vitriService.delAsync(idVitri);
+                var delVitri = await _vitriService.delete(idVitri);
                 if (delVitri == null)
                 {
                     return BadRequest("Failed to del Vitri.");

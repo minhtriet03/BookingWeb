@@ -5,5 +5,6 @@ namespace BookingWeb.Server.Interfaces
     public interface ITinhRepository : IGenericRepository<Tinhthanh>
     {
         Task<Tinhthanh> GetbyNameAsync(string name);
+        Task<bool> deleteTinh(int id);
     }
 }
