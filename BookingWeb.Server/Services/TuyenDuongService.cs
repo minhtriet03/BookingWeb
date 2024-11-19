@@ -52,9 +52,19 @@ namespace BookingWeb.Server.Services
             }
         }
 
-        public async Task<bool> UpdateTuyenDuong(Tuyenduong tuyenduong)
+        public async Task<int> UpdateTuyenDuong(Tuyenduong tuyenduong)
         {
-            return await _unitOfWork.tuyenDuongRepository.UpdateAsync(tuyenduong);
+            try
+            {
+                await _unitOfWork.tuyenDuongRepository.UpdateAsync(tuyenduong);
+                
+                return await _unitOfWork.SaveChangesAsync();
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task<bool> DeleteTuyenDuong(int id)

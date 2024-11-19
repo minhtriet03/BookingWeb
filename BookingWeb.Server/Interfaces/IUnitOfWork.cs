@@ -8,9 +8,7 @@ public interface IUnitOfWork : IDisposable
     IAccountRepository accountRepository { get; }
     ILoaiXeRepository loaiXeRepository { get; }
     IXeRepository xeRepository { get; }
-
-    IAccountRepository accountRepository { get; }
-
+    IChuyenXeRepository chuyenXeRepository { get; }
     ITuyenDuongRepository tuyenDuongRepository { get; }
     Task<int> SaveChangesAsync();
     

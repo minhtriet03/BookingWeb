@@ -16,11 +16,11 @@ public class UnitOfWork : IUnitOfWork
 
     public IXeRepository xeRepository {get; private set; }
 
-    public IAccountRepository accountRepository { get; private set; }
-    
+    public IChuyenXeRepository chuyenXeRepository { get; private set; }
+
     public ITuyenDuongRepository tuyenDuongRepository { get; private set; }
 
-    public UnitOfWork(BookingBusContext context, IUserRepository userRepository, IOrderRepository orderRepository, ILoaiXeRepository loaiXeRepository,IXeRepository xeRepository,IAccountRepository accountRepository,ITuyenDuongRepository tuyenDuongRepository)
+    public UnitOfWork(BookingBusContext context, IUserRepository userRepository, IOrderRepository orderRepository, ILoaiXeRepository loaiXeRepository,IXeRepository xeRepository,IAccountRepository accountRepository,ITuyenDuongRepository tuyenDuongRepository,IChuyenXeRepository chuyenXeRepository)
     {
         _context = context;
         this.userRepository = userRepository;
@@ -30,6 +30,7 @@ public class UnitOfWork : IUnitOfWork
         this.xeRepository = xeRepository;
         this.accountRepository = accountRepository;
         this.tuyenDuongRepository = tuyenDuongRepository;
+        this.chuyenXeRepository = chuyenXeRepository;
     }
     
     public void Dispose()

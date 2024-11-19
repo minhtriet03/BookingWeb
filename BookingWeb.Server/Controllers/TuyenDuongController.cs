@@ -6,13 +6,15 @@ using BookingWeb.Server.Interfaces;
 
 namespace BookingWeb.Server.Controllers
 {
+
     [ApiController]
     [Route("api/[controller]")]
     public class TuyenDuongController : ControllerBase
     {
+
         private readonly TuyenDuongService _tuyenDuongService;
 
-        public TuyenDuongController( TuyenDuongService tuyenDuongService)
+        public TuyenDuongController(TuyenDuongService tuyenDuongService)
         {
             _tuyenDuongService = tuyenDuongService;
         }
@@ -23,8 +25,8 @@ namespace BookingWeb.Server.Controllers
             try
             {
 
-                var tuyenDuongs = await _tuyenDuongService.GetAllTuyenDuong();
-                return Ok(tuyenDuongs);
+                var data = await _tuyenDuongService.GetAllTuyenDuong();
+                return Ok(data);
             }
             catch (Exception ex)
             {
@@ -37,12 +39,12 @@ namespace BookingWeb.Server.Controllers
         {
             try
             {
-                var tuyenDuong = await _tuyenDuongService.GetTuyenDuongById(id);
-                if (tuyenDuong == null)
+                var data = await _tuyenDuongService.GetTuyenDuongById(id);
+                if (data == null)
                 {
-                    return NotFound();
+                    return NotFound("Không tìm thấy tuyến đường.");
                 }
-                return Ok(tuyenDuong);
+                return Ok(data);
             }
             catch (Exception ex)
             {
@@ -55,8 +57,8 @@ namespace BookingWeb.Server.Controllers
         {
             try
             {
-                var tuyenDuong = await _tuyenDuongService.AddTuyenDuong(newTuyenDuong);
-                if (tuyenDuong == null)
+                var data = await _tuyenDuongService.AddTuyenDuong(newTuyenDuong);
+                if (data == false)
                 {
                     return BadRequest("Không thể thêm tuyến đường.");
                 }
@@ -68,22 +70,24 @@ namespace BookingWeb.Server.Controllers
             }
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTuyenDuong(int id, Tuyenduong updatedTuyenDuong)
+        [HttpPut]
+        public async Task<IActionResult> UpdateTuyenDuong(Tuyenduong updateTuyenDuong)
         {
-            if (id != updatedTuyenDuong.IdTuyenDuong)
+            try
             {
-                return BadRequest("ID tuyến đường không khớp.");
-            }
+                //var check = await _tuyenDuongService.GetTuyenDuongById(updateTuyenDuong.IdTuyenDuong);
+                //if (check == null)
+                //{
+                //    return BadRequest("Không thể chỉnh sửa thông tin.");
+                //}
 
-            var result = await _tuyenDuongService.UpdateTuyenDuong(updatedTuyenDuong);
-            if (result)
-            {
-                return Ok("Cập nhật tuyến đường thành công");
+                var result = await _tuyenDuongService.UpdateTuyenDuong(updateTuyenDuong);
+                return Ok(result);
             }
-            else
+            catch (Exception ex)
             {
-                return NotFound();
+                return StatusCode(500, ex.Message);
+
             }
         }
     }

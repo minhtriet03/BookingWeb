@@ -39,7 +39,7 @@ builder.Services.AddCors(options =>
         policy.WithOrigins("https://localhost:5173", "http://localhost:5173", "http://localhost:5108", "https://localhost:7241")
               .AllowAnyHeader()
               .AllowAnyMethod()
-              .AllowCredentials(); 
+              .AllowCredentials();
     });
 });
 
@@ -63,24 +63,19 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IGenericRepository<Nguoidung>, GenericRepository<Nguoidung>>();
 builder.Services.AddScoped<UserService>();
 
-//TuyenDuong
-builder.Services.AddScoped<ITuyenDuongRepository, TuyenDuongRepository>();
-builder.Services.AddScoped<IGenericRepository<Tuyenduong>, TuyenDuongRepository>();
-builder.Services.AddScoped<TuyenDuongService>();
-
 //Order
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IGenericRepository<Taikhoan>, GenericRepository<Taikhoan>>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<OrderService>();
-
-
-
-//Role
-
-builder.Services.AddScoped<IRoleRepository, RoleRepository>();
-builder.Services.AddScoped<IGenericRepository<Phanquyen>, GenericRepository<Phanquyen>>();
-builder.Services.AddScoped<RoleService>();
+//TuyenDuong
+builder.Services.AddScoped<ITuyenDuongRepository, TuyenDuongRepository>();
+builder.Services.AddScoped<IGenericRepository<Tuyenduong>, GenericRepository<Tuyenduong>>();
+builder.Services.AddScoped<TuyenDuongService>();
+//ChuyenXe
+builder.Services.AddScoped<IChuyenXeRepository, ChuyenXeRepository>();
+builder.Services.AddScoped<IGenericRepository<Chuyenxe>, GenericRepository<Chuyenxe>>();
+builder.Services.AddScoped<ChuyenXeService>();
 
 // Đăng ký UnitOfWork
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -102,10 +97,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Sử dụng CORS
-app.UseCors("AllowAllOrigins");
+//app.UseHttpsRedirection();
 
-app.UseHttpsRedirection();
+app.UseCors("AllowAllOrigins");
 
 app.UseRouting();
 
