@@ -24,7 +24,8 @@ public class UserService
             DiaChi = u.DiaChi,
             Email = u.Email,
             HoTen = u.HoTen,
-            Phone = u.Phone
+            Phone = u.Phone,
+            TrangThai = u.TrangThai
         }).ToList());
 
         return userVM;
@@ -35,6 +36,7 @@ public class UserService
     {
         var user = await _unitOfWork.userRepository.GetByIdAsync(id);
         if (user == null) return null;
+        
 
         return new UserVM
         {
@@ -42,7 +44,8 @@ public class UserService
             HoTen = user.HoTen,
             DiaChi = user.DiaChi,
             Email = user.Email,
-            Phone = user.Phone
+            Phone = user.Phone,
+            TrangThai = user.TrangThai
         };
     }
     
@@ -65,6 +68,7 @@ public class UserService
             DiaChi = u.DiaChi,
             Email = u.Email,
             Phone = u.Phone,
+            TrangThai = u.TrangThai
         }).ToList();
 
         // Trả về ViewModel với dữ liệu
@@ -144,7 +148,7 @@ public class UserService
         }
     }
 
-    public async Task<bool> DeleteUserAsync(int userId)
+    public async Task<bool> DeactivateUserAsync(int userId)
     {
         
         try
@@ -155,7 +159,8 @@ public class UserService
                 throw new InvalidOperationException("Người dùng không tồn tại");
             }
 
-            await _unitOfWork.userRepository.DeleteAsync(userId);
+            user.TrangThai = false;
+            await _unitOfWork.userRepository.UpdateAsync(user);
             await _unitOfWork.SaveChangesAsync();
             return true;
         }

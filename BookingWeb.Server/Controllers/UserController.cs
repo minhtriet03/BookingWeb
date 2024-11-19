@@ -91,23 +91,5 @@ namespace BookingWeb.Server.Controllers
                 return StatusCode(500, "Có lỗi xảy ra khi cập nhật người dùng");
             }
         }
-
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteUser(int userId)
-        {
-            try
-            {
-                bool result = await _userService.DeleteUserAsync(userId);
-
-                if (result)
-                    return Ok("Xóa người dùng thành công");
-
-                return NotFound("Không tìm thấy người dùng");
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Lỗi: " + ex.Message);
-            }
-        }
     }
 }
