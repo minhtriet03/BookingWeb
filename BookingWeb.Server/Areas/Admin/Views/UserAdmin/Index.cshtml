@@ -27,21 +27,22 @@
                 <tbody id="userTable">
                     @foreach (var user in Model.Users)
                     {
-                    <tr>
-                        <td>@user.IdUser</td>
-                        <td>@user.HoTen</td>
-                        <td>@user.DiaChi</td>
-                        <td>@user.Email</td>
-                        <td>@user.Phone</td>
-                        <td>
-                            <button class="btn btn-primary">
-                                <a asp-controller="UserAdmin" asp-action="Edit" class="text-white" asp-route-id="@user.IdUser">Edit</a>
-                            </button>
-                            <button class="btn btn-danger">
-                                <a asp-controller="UserAdmin" asp-action="Delete" class="text-white" asp-route-id="@user.IdUser"a>Delete</a>
-                            </button>
-                        </td>
-                    </tr>
+                            <tr>
+                                <td>@user.IdUser</td>
+                                <td>@user.HoTen</td>
+                                <td>@user.DiaChi</td>
+                                <td>@user.Email</td>
+                                <td>@user.Phone</td>
+                                <td>@user.TrangThai</td>
+                                <td>
+                                    <button class="btn btn-primary">
+                                        <a asp-controller="UserAdmin" asp-action="Edit" class="text-white" asp-route-id="@user.IdUser">Edit</a>
+                                    </button>
+                                    <button class="btn btn-danger">
+                                        <a asp-controller="UserAdmin" asp-action="DeactivateUserAsync" class="text-white" asp-route-id="@user.IdUser">Delete</a>
+                                    </button>
+                                </td>
+                            </tr>
                     }
                 </tbody>
                 <a asp-action="Edit" asp-controller="UserAdmin" asp-route-id="1">Like</a>

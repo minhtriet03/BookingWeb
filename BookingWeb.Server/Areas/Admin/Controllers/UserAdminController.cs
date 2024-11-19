@@ -87,5 +87,34 @@ namespace BookingWeb.Server.Areas.Admin.Controllers
                 return View(model);
             }
         }
+        
+        [HttpPost]
+        public async Task<IActionResult> DeactivateUserAsync(int id)
+        {
+            try
+            {
+                bool result = await _userService.DeactivateUserAsync(id);
+        
+                if (result)
+                {
+                    // Nếu cập nhật thành công, chuyển hướng về trang Index
+                    TempData["SuccessMessage"] = "Người dùng đã được vô hiệu hóa thành công.";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    // Nếu không thành công, bạn có thể thêm thông báo lỗi ở đây
+                    TempData["ErrorMessage"] = "Có lỗi xảy ra khi vô hiệu hóa người dùng.";
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi và thông báo cho người dùng
+                TempData["ErrorMessage"] = "Lỗi: " + ex.Message;
+                return RedirectToAction("Index");
+            }
+            
+        }
     }
 }

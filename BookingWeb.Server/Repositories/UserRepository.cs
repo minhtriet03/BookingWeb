@@ -22,6 +22,7 @@ namespace BookingWeb.Server.Repositories
         public async Task<List<Nguoidung>> GetPagedAsync(int skip, int take)
         {
             return await _dbContext.Nguoidungs
+                .Where(u => u.TrangThai == true)
                 .Skip(skip)
                 .Take(take)
                 .ToListAsync();
@@ -29,7 +30,9 @@ namespace BookingWeb.Server.Repositories
         
         public async Task<int> CountAsync()
         {
-            return await _dbContext.Nguoidungs.CountAsync();
+            return await _dbContext.Nguoidungs
+                .Where(u => u.TrangThai == true)  // Thêm điều kiện lọc TrangThai = true
+                .CountAsync();
         }
 
         public async Task<bool> IsEmailExist(string email)
