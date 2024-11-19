@@ -88,12 +88,10 @@ namespace BookingWeb.Server.Migrations
                         .HasColumnName("Thoi_GianKH")
                         .HasDefaultValueSql("(NULL)");
 
-                    b.Property<bool?>("TrangThai")
-                        .ValueGeneratedOnAdd()
+                    b.Property<string>("TrangThai")
                         .HasMaxLength(50)
                         .IsUnicode(false)
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("(NULL)");
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("IdChuyenXe")
                         .HasName("PK__chuyenxe__108DC34A04704F45");
@@ -125,11 +123,7 @@ namespace BookingWeb.Server.Migrations
                         .HasMaxLength(100)
                         .IsUnicode(false)
                         .HasColumnType("varchar(100)")
-                        .HasColumnName("Ten_Loai")
-                        .HasDefaultValueSql("(NULL)");
-
-                    b.Property<bool?>("TrangThai")
-                        .HasColumnType("bit");
+                        .HasColumnName("Ten_Loai");
 
                     b.HasKey("IdLoai")
                         .HasName("PK__loaixe__914C23141C318AD3");
@@ -182,8 +176,8 @@ namespace BookingWeb.Server.Migrations
                         .HasColumnType("varchar(15)")
                         .HasDefaultValueSql("(NULL)");
 
-                    b.Property<bool?>("TrangThai")
-                        .HasColumnType("bit");
+                    b.Property<int?>("Role")
+                        .HasColumnType("int");
 
                     b.HasKey("IdUser")
                         .HasName("PK__nguoidun__ED4DE44201ABFF36");
@@ -206,11 +200,7 @@ namespace BookingWeb.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
-                        .HasDefaultValueSql("(NULL)");
-
-                    b.Property<bool?>("TrangThai")
-                        .HasColumnType("bit");
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("IdQuyen")
                         .HasName("PK__phanquye__D219AE5225D17883");
@@ -243,12 +233,10 @@ namespace BookingWeb.Server.Migrations
                         .HasColumnName("Tong_Tien")
                         .HasDefaultValueSql("(NULL)");
 
-                    b.Property<bool?>("TrangThai")
-                        .ValueGeneratedOnAdd()
+                    b.Property<string>("TrangThai")
                         .HasMaxLength(50)
                         .IsUnicode(false)
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("(NULL)");
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("IdPhieu")
                         .HasName("PK__phieudat__E61CE97E924175EE");
@@ -277,11 +265,7 @@ namespace BookingWeb.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
-                        .HasDefaultValueSql("(NULL)");
-
-                    b.Property<bool?>("TrangThai")
-                        .HasColumnType("bit");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("UserName")
                         .ValueGeneratedOnAdd()
@@ -327,12 +311,10 @@ namespace BookingWeb.Server.Migrations
                         .HasColumnName("So_Tien")
                         .HasDefaultValueSql("(NULL)");
 
-                    b.Property<bool?>("TrangThai")
-                        .ValueGeneratedOnAdd()
+                    b.Property<string>("TrangThai")
                         .HasMaxLength(50)
                         .IsUnicode(false)
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("(NULL)");
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("IdThanhToan")
                         .HasName("PK__thanhtoa__AB2E563188254449");
@@ -356,11 +338,7 @@ namespace BookingWeb.Server.Migrations
                         .HasMaxLength(100)
                         .IsUnicode(false)
                         .HasColumnType("varchar(100)")
-                        .HasColumnName("Ten_TinhThanh")
-                        .HasDefaultValueSql("(NULL)");
-
-                    b.Property<bool?>("TrangThai")
-                        .HasColumnType("bit");
+                        .HasColumnName("Ten_TinhThanh");
 
                     b.HasKey("IdTinhThanh")
                         .HasName("PK__tinhthan__BC0EB70B84090C12");
@@ -398,11 +376,7 @@ namespace BookingWeb.Server.Migrations
                     b.Property<int?>("NoiKhoiHanh")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("Noi_KhoiHanh")
-                        .HasDefaultValueSql("(NULL)");
-
-                    b.Property<bool?>("TrangThai")
-                        .HasColumnType("bit");
+                        .HasColumnName("Noi_KhoiHanh");
 
                     b.HasKey("IdTuyenDuong")
                         .HasName("PK__tuyenduo__8D9665CD7174435A");
@@ -453,12 +427,10 @@ namespace BookingWeb.Server.Migrations
                         .HasColumnName("Ngay_Ve")
                         .HasDefaultValueSql("(NULL)");
 
-                    b.Property<bool?>("TrangThai")
-                        .ValueGeneratedOnAdd()
+                    b.Property<string>("TrangThai")
                         .HasMaxLength(50)
                         .IsUnicode(false)
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("(NULL)");
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("IdVe")
                         .HasName("PK__vexe__8B63A19C210D5D44");
@@ -484,11 +456,13 @@ namespace BookingWeb.Server.Migrations
                     b.Property<int?>("IdXe")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ID_Xe")
-                        .HasDefaultValueSql("(NULL)");
+                        .HasColumnName("ID_Xe");
 
-                    b.Property<bool?>("TrangThai")
-                        .HasColumnType("bit");
+                    b.Property<string>("ViTri1")
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("ViTri");
 
                     b.HasKey("IdViTriGhe")
                         .HasName("PK__vitri__F0FA263A0546993C");
@@ -521,13 +495,11 @@ namespace BookingWeb.Server.Migrations
                         .HasColumnName("ID_Loai")
                         .HasDefaultValueSql("(NULL)");
 
-                    b.Property<bool?>("TinhTrang")
-                        .ValueGeneratedOnAdd()
+                    b.Property<string>("TinhTrang")
                         .HasMaxLength(50)
                         .IsUnicode(false)
-                        .HasColumnType("bit")
-                        .HasColumnName("Tinh_Trang")
-                        .HasDefaultValueSql("(NULL)");
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("Tinh_Trang");
 
                     b.HasKey("IdXe")
                         .HasName("PK__xe__8B62515E2A4BD620");
