@@ -59,10 +59,19 @@ builder.Services.AddScoped<IGenericRepository<Taikhoan>, GenericRepository<Taikh
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<OrderService>();
 
+//Vitri
+builder.Services.AddScoped<IVitriRepository, VitriRepository>();
+builder.Services.AddScoped<IGenericRepository<Vitri>, GenericRepository<Vitri>>();
+builder.Services.AddScoped<VitriService>();
+
+//Tinh
+builder.Services.AddScoped<ITinhRepository, TinhRepository>();
+builder.Services.AddScoped<IGenericRepository<Tinhthanh>, GenericRepository<Tinhthanh>>();
+builder.Services.AddScoped<TinhService>();
+
 
 // Đăng ký UnitOfWork
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
 
 builder.Services.AddScoped<AccountService>();
 
