@@ -2,6 +2,7 @@
 using BookingWeb.Server.Models;
 using BookingWeb.Server.Repositories;
 using System.Security.AccessControl;
+using BookingWeb.Server.ViewModels;
 
 namespace BookingWeb.Server.Services
 {
@@ -18,6 +19,11 @@ namespace BookingWeb.Server.Services
         public async Task<List<Xe>> GetAllXes()
         {
             return await _unitOfWork.xeRepository.GetAllAsync();
+        }
+
+        public async Task<List<XeVM>> GetXeVMsAsync()
+        {
+            return await _unitOfWork.xeRepository.GetAllXeVMsAsync();
         }
 
         // Sử dụng async để gọi phương thức bất đồng bộ trong repository
