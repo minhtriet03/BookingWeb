@@ -1,0 +1,41 @@
+﻿@* Views/Shared/Alert.cshtml *@
+@if (TempData["AlertMessage"] != null)
+{
+    var alertType = TempData["AlertType"]?.ToString() ?? "secondary";
+    <div id="customAlert" class="alert alert-@alertType alert-toast" role="alert"
+         style="
+            position: fixed;
+            top: 70px;
+            right: 230px;
+            z-index: 1050; /* Đảm bảo nó ở trên các phần tử khác */
+            min-width: 300px;
+            opacity: 1;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+         "
+         >
+        @TempData["AlertMessage"]
+    </div>
+}
+
+<style>
+    .alert-toast.hide {
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const alertBox = document.getElementById("customAlert");
+        if (alertBox) {
+            setTimeout(() => { 
+                alertBox.classList.add(hide);
+            }, 3000);
+
+            setTimeout(() => {
+                alertBox.remove(); // Loại bỏ hoàn toàn khỏi DOM
+            }, 3000);
+        }
+    })
+</script>

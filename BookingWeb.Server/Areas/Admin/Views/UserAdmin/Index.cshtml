@@ -3,13 +3,16 @@
 <!-- Areas/Admin/Views/QuanLyNguoiDung/Index.cshtml -->
 @{
     ViewData["Title"] = "Quản lý người dùng";
-}  
+}
+
 
 <h1 class="h3 mb-2 text-gray-800">Quản lý người dùng</h1>
+@Html.Partial("./../Shared/Alert.cshtml")
 
 <div class="card shadow mb-4">
+    
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Table Data Users</h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -25,35 +28,31 @@
                 </tr>
                 </thead>
                 <tbody id="userTable">
-                    @foreach (var user in Model.Users)
-                    {
-                            <tr>
-                                <td>@user.IdUser</td>
-                                <td>@user.HoTen</td>
-                                <td>@user.DiaChi</td>
-                                <td>@user.Email</td>
-                                <td>@user.Phone</td>
-                                <td>@user.TrangThai</td>
-                                <td>
-                                    <button class="btn btn-primary">
-                                        <a asp-controller="UserAdmin" asp-action="Edit" class="text-white" asp-route-id="@user.IdUser">Edit</a>
-                                    </button>
-                                    <button class="btn btn-danger">
-                                        <a asp-controller="UserAdmin" asp-action="DeactivateUserAsync" class="text-white" asp-route-id="@user.IdUser">Delete</a>
-                                    </button>
-                                </td>
-                            </tr>
-                    }
+                @foreach (var user in Model.Users)
+                {
+                    <tr>
+                        <td>@user.IdUser</td>
+                        <td>@user.HoTen</td>
+                        <td>@user.DiaChi</td>
+                        <td>@user.Email</td>
+                        <td>@user.Phone</td>
+                        <td>
+                            <button class="btn btn-primary">
+                                <a asp-controller="UserAdmin" asp-action="Edit" class="text-white" asp-route-id="@user.IdUser">Edit</a>
+                            </button>
+                            <button type="submit" class="btn btn-danger" onclick="confirmDeactivate(@user.IdUser)">Delete</button>
+                        </td>
+                    </tr>
+                }
                 </tbody>
-                <a asp-action="Edit" asp-controller="UserAdmin" asp-route-id="1">Like</a>
             </table>
             <nav>
                 <ul class="pagination">
                     @for (int i = 1; i <= Model.TotalPages; i++)
                     {
-                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                        <a class="page-link" href="@Url.Action("Index", new { pageNumber = i })">@i</a>
-                    </li>
+                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("Index", new { pageNumber = i })">@i</a>
+                        </li>
                     }
                 </ul>
             </nav>
@@ -62,8 +61,4 @@
 </div>
 
 
-@*<script src="~/js/admin/pagination.js"></script>
-<script>
-    const userData = @Html.Raw(Json.Serialize(Model));
-    createPagination(userData, "userTable", "userPagination", 5, "Edit", "QuanLyNguoiDung");
-</script>*@
+<script src="~/js/admin/user.js"></script>

@@ -2,6 +2,7 @@
 using BookingWeb.Server.Models;
 using BookingWeb.Server.Repositories;
 using System.Security.AccessControl;
+using BookingWeb.Server.ViewModels;
 
 namespace BookingWeb.Server.Services
 {
@@ -18,6 +19,37 @@ namespace BookingWeb.Server.Services
         public async Task<List<Xe>> GetAllXes()
         {
             return await _unitOfWork.xeRepository.GetAllAsync();
+        }
+
+        public async Task<PagedXeVM> GetXesByPageAsync(int pageNumber, int pageSize)
+        {
+            var skip = (pageNumber - 1) * pageSize;
+
+            var totalRecords = await _unitOfWork.xeRepository.CountAsync();
+
+            var xes = await _unitOfWork.xeRepository.GetPageAsync(skip, pageSize);
+
+            var data = xes.Select(x => new XeVM
+            {
+                BienSo = x.BienSo,
+                TinhTrang = x.TinhTrang,
+                LoaiXeVM = x.IdLoaiNavigation == null
+                    ? null
+                    : new LoaiXeVM
+                    {
+                        IdLoai = x.IdLoaiNavigation.IdLoai,
+                        TenLoai = x.IdLoaiNavigation.TenLoai,
+                        SoGhe = x.IdLoaiNavigation.SoGhe,
+                        TrangThai = x.IdLoaiNavigation.TrangThai,
+                    }
+            }).ToList();
+
+            return new PagedXeVM
+            {
+                Xes = data,
+                CurrentPage = pageNumber,
+                TotalPages = (int)Math.Ceiling((double)totalRecords / pageSize)
+            };
         }
 
         // Sử dụng async để gọi phương thức bất đồng bộ trong repository
