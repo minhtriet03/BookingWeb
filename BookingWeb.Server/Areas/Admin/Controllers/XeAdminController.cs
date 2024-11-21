@@ -21,4 +21,32 @@ public class XeAdminController : Controller
 
         return View(viewModel);
     }
+
+    [HttpPost]
+    [Route("DeactivateXeAsync")]
+    public async Task<IActionResult> DeactivateXeAsync([FromQuery] int id)
+    {
+        try
+        {
+            bool result = await _xeService.DeactivateXeAsync(id);
+
+            if (result)
+            {
+                TempData["AleartMessage"] = "Đã khóa xe thành công";
+                TempData["AlertType"] = "success";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Có lỗi xảy ra";
+                TempData["AlertType"] = "error";
+                return RedirectToAction("Index");
+            }
+        }
+        catch (Exception ex)
+        {
+            TempData["ErrorMessage"] = ex.Message;
+            return RedirectToAction("Index");
+        }
+    }
 }

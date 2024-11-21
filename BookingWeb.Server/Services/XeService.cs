@@ -31,6 +31,7 @@ namespace BookingWeb.Server.Services
 
             var data = xes.Select(x => new XeVM
             {
+                IdXe = x.IdXe,
                 BienSo = x.BienSo,
                 TinhTrang = x.TinhTrang,
                 LoaiXeVM = x.IdLoaiNavigation == null
@@ -69,6 +70,35 @@ namespace BookingWeb.Server.Services
         public async Task<bool> Deletexe(int id)
         {
             return await _unitOfWork.xeRepository.DeleteAsync(id);
+        }
+
+        public async Task<bool> DeactivateXeAsync(int id)
+        {
+            try
+            {
+                var xe = await _unitOfWork.xeRepository.GetByIdAsync(id);
+                if (xe == null)
+                {
+                    throw new InvalidOperationException("Id không tồn tại");
+                }
+
+                if (xe.TinhTrang == true)
+                {
+                    xe.TinhTrang = false;
+                }
+                else if (xe.TinhTrang == false)
+                {
+                    xe.TinhTrang = true;
+                }
+                await _unitOfWork.xeRepository.UpdateAsync(xe);
+                await _unitOfWork.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi: " + ex.Message);
+            }
         }
     }
 }

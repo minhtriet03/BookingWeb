@@ -1,5 +1,6 @@
 ﻿using BookingWeb.Server.Interfaces;
 using BookingWeb.Server.Models;
+using BookingWeb.Server.ViewModels;
 
 namespace BookingWeb.Server.Services
 {
@@ -25,6 +26,34 @@ namespace BookingWeb.Server.Services
             }
         }
 
+        public async Task<PagedTuyenDuongVM> GetTuyenDuongByPageAsync(int pageNumber, int pageSize)
+        {
+            var skip = (pageNumber - 1) * pageSize;
+
+            var totalRecords = await _unitOfWork.tuyenDuongRepository.CountAsync();
+
+            var tuyenDuongs = await _unitOfWork.tuyenDuongRepository.GetPagedAsync(skip, pageSize);
+            
+            var data = tuyenDuongs.Select(td => new TuyenDuongVM
+            {
+                IdTuyenDuong = td.IdTuyenDuong,
+                TenBenXe = td.NoiKhoiHanhNavigation?.TenBenXe,
+                NoiDen = td.NoiDenNavigation?.IdTinhThanhNavigation?.TenTinhThanh,
+                NoiKhoiHanh = td.NoiKhoiHanhNavigation?.IdTinhThanhNavigation?.TenTinhThanh,
+                KhoangCach = td.KhoangCach,
+                GiaVe = td.GiaVe,
+                TrangThai = td.TrangThai
+            }).ToList();
+
+            return new PagedTuyenDuongVM
+            {
+                TuyenDuongs = data,
+                CurrentPage = pageNumber,
+                TotalPages = (int)Math.Ceiling((double)totalRecords / pageSize)
+            };
+        }
+            
+        
         public async Task<Tuyenduong> GetTuyenDuongById(int id)
         {
             try
@@ -67,6 +96,29 @@ namespace BookingWeb.Server.Services
             }
         }
 
+        public async Task<bool> DeactivateAsync(int id)
+        {
+            try
+            {
+                var td = await _unitOfWork.tuyenDuongRepository.GetByIdAsync(id);
+                if (td == null)
+                {
+                    throw new InvalidOperationException("Id không tồn tại");
+                }
+
+                td.TrangThai = !td.TrangThai;
+                
+                await _unitOfWork.tuyenDuongRepository.UpdateAsync(td);
+                await _unitOfWork.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi: " + ex.Message);
+            }
+        }
+        
         public async Task<bool> DeleteTuyenDuong(int id)
         {
             return await _unitOfWork.tuyenDuongRepository.DeleteAsync(id);

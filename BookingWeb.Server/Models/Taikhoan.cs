@@ -1,16 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-
 
 namespace BookingWeb.Server.Models;
 
 public partial class Taikhoan
 {
-
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-
     public int IdAccount { get; set; }
 
     public string? UserName { get; set; }
@@ -18,9 +12,8 @@ public partial class Taikhoan
     public string? Password { get; set; }
 
     public int? IdQuyen { get; set; }
-    
-    public bool? TrangThai { get; set; }
 
+    public bool? TrangThai { get; set; }
 
     public virtual Phanquyen? IdQuyenNavigation { get; set; }
 

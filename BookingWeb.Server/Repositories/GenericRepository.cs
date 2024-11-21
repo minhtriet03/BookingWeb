@@ -71,4 +71,9 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         }
 
     }
+    
+    public async Task<int> CountAsync()
+    {
+        return await _dbSet.CountAsync();
+    }
 }

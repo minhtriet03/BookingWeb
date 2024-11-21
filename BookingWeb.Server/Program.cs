@@ -76,7 +76,10 @@ builder.Services.AddScoped<TuyenDuongService>();
 builder.Services.AddScoped<IChuyenXeRepository, ChuyenXeRepository>();
 builder.Services.AddScoped<IGenericRepository<Chuyenxe>, GenericRepository<Chuyenxe>>();
 builder.Services.AddScoped<ChuyenXeService>();
-
+//Role
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IGenericRepository<Phanquyen>, GenericRepository<Phanquyen>>();
+builder.Services.AddScoped<RoleService>(); 
 // Đăng ký UnitOfWork
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
