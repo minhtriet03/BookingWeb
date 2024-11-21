@@ -9,5 +9,12 @@ public class XeVM
     public bool? TinhTrang { get; set; }
 
     // Thông tin loại xe
-    public LoaiXeVM? LoaiXe { get; set; }
+    public LoaiXeVM? LoaiXeVM { get; set; }
+}
+
+public class PagedXeVM
+{
+    public List<XeVM> Xes { get; set; } = new List<XeVM>(); // Danh sách người dùng
+    public int CurrentPage { get; set; } // Trang hiện tại
+    public int TotalPages { get; set; } // Tổng số trang
 }

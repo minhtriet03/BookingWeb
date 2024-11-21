@@ -31,7 +31,7 @@ namespace BookingWeb.Server.Repositories
                     IdXe = x.IdXe,
                     BienSo = x.BienSo,
                     TinhTrang = x.TinhTrang,
-                    LoaiXe = x.IdLoaiNavigation != null ? new LoaiXeVM
+                    LoaiXeVM = x.IdLoaiNavigation != null ? new LoaiXeVM
                     {
                         IdLoai = x.IdLoaiNavigation.IdLoai,
                         TenLoai = x.IdLoaiNavigation.TenLoai,
@@ -41,6 +41,21 @@ namespace BookingWeb.Server.Repositories
                 })
                 .ToListAsync();
             return xeVMs;
+        }
+
+        public async Task<int> CountAsync()
+        {
+            return await _context.Xes
+                .CountAsync();
+        }
+
+        public async Task<List<Xe>> GetPageAsync(int skip, int take)
+        {
+            return await _context.Xes
+                .Include(x => x.IdLoaiNavigation)
+                .Skip(skip)
+                .Take(take)
+                .ToListAsync();
         }
 
         // Triển khai phương thức GetByIdAsync

@@ -15,9 +15,10 @@ public class XeAdminController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllXe()
+    public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 10)
     {
-        var xeVMs = await _xeService.GetXeVMsAsync();
-        return View();
+        var viewModel = await _xeService.GetXesByPageAsync(pageNumber, pageSize);
+
+        return View(viewModel);
     }
 }
