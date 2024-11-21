@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookingWeb.Server.Models;
 
 public partial class Vitri
 {
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int IdViTriGhe { get; set; }
 
     public int? IdXe { get; set; }
+
+    public string? ViTri1 { get; set; }
 
     public bool? TrangThai { get; set; }
 

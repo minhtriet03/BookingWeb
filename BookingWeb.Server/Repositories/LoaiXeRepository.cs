@@ -63,6 +63,11 @@ namespace BookingWeb.Server.Repositories
             }
         }
 
+        public Task<int> CountAsync()
+        {
+            throw new NotImplementedException();
+        }
+
 
         public async Task<List<Loaixe>> GetAllAsync()
         {

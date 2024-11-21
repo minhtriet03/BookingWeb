@@ -52,6 +52,7 @@ namespace BookingWeb.Server.Repositories
         public async Task<List<Xe>> GetPageAsync(int skip, int take)
         {
             return await _context.Xes
+                .OrderBy(x => x.IdXe)
                 .Include(x => x.IdLoaiNavigation)
                 .Skip(skip)
                 .Take(take)
