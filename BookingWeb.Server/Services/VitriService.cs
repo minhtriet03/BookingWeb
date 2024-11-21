@@ -32,27 +32,23 @@ namespace BookingWeb.Server.Services
             }
         }
 
-        public async Task<bool> addAsync(Vitri vitri)
-        {
-            try
-            {
-                return await _unitOfWork.vitris.AddAsync(vitri);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-        public async Task<bool> delete(int id)
-        {
-            try
-            {
-                return await _unitOfWork.vitris.deleteVitri(id);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        //public List<Vitri> listvitri(int idxe)
+        //{
+        //    List<Vitri> vitris = new List<Vitri>();
+        //    for (int i = 0; i < 17; i++)
+        //    {
+        //        Vitri vt = new Vitri();
+                
+        //    }
+        //}
+
+        //public async Task<bool> addVitriGhe(int idxe)
+        //{
+        //    try
+        //    {
+                
+        //    }
+
+        //}
     }
 }

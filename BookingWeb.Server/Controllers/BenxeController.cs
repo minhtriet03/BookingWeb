@@ -27,8 +27,23 @@ namespace BookingWeb.Server.Controllers
          
             }
         }
-        
-        [HttpGet]
+
+        [HttpGet("page={i}")]
+        public async Task<ActionResult<List<Benxe>>> getByPage(int i)
+        {
+            try
+            {
+                var benxes = await _benxeService.getbyPage(i);
+                return Ok(benxes);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+
+            }
+        }
+
+        [HttpGet("{name}")]
         public async Task<ActionResult<Benxe>> getByName(string name)
         {
             try

@@ -6,5 +6,6 @@ namespace BookingWeb.Server.Interfaces
     {
         Task<Benxe> GetByName(string name);
         Task<bool> deleteBenxe(int id);
+        Task<List<Benxe>> GetByPageAsync(int skip, int take);
     }
 }

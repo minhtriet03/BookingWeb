@@ -29,23 +29,6 @@ namespace BookingWeb.Server.Repositories
                 throw new Exception("Error adding Vitri to database", ex);
             }
         }
-        public async Task<bool> deleteVitri(int id)
-        {
-            try
-            {
-                var vitri = await _dbContext.Vitris.FirstOrDefaultAsync(u => u.IdViTriGhe == id);
-                if (vitri != null)
-                {
-                    vitri.TrangThai = false;
-                    await _unitOfWork.vitris.UpdateAsync(vitri);
-                    return true;
-                }
-                return false;
-            }
-            catch
-            {
-                return false;
-            }
-        }
+      
     }
 }

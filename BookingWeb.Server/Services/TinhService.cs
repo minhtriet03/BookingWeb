@@ -21,6 +21,11 @@ namespace BookingWeb.Server.Services
             return await _unitOfWork.tinhs.GetAllAsync();
         }
 
+        public async Task<Tinhthanh> getbyId(int id)
+        {
+            return await _unitOfWork.tinhs.GetByIdAsync(id);
+        }
+
         public async Task<bool> addTinhThanh(Tinhthanh tinhthanh)
         {
             return await _unitOfWork.tinhs.AddAsync(tinhthanh);
@@ -29,11 +34,16 @@ namespace BookingWeb.Server.Services
         {
             try
             {
-                return await _unitOfWork.tinhs.UpdateAsync(tinhthanh);
+                await _unitOfWork.tinhs.UpdateAsync(tinhthanh);
+                if(await _unitOfWork.SaveChangesAsync() == 1)
+                {
+                    return true;
+                }
+                return false;
             }
             catch (Exception ex)
             {
-                return false;
+                throw ex;
             }
         }
         public async Task<bool> deleteTinh(int id)

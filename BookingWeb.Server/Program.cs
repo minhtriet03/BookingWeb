@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using BookingWeb.Server.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();

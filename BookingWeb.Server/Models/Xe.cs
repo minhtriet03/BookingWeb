@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookingWeb.Server.Models;
 
 public partial class Xe
 {
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int IdXe { get; set; }
 
     public int? IdLoai { get; set; }
@@ -20,4 +18,6 @@ public partial class Xe
     public virtual Loaixe? IdLoaiNavigation { get; set; }
 
     public virtual ICollection<Vitri> Vitris { get; set; } = new List<Vitri>();
+
+    public virtual ICollection<XeVeX> XeVeXes { get; set; } = new List<XeVeX>();
 }

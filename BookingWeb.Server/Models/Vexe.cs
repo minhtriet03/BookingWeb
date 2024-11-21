@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookingWeb.Server.Models;
 
 public partial class Vexe
 {
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int IdVe { get; set; }
 
     public int? IdPhieu { get; set; }
@@ -26,4 +24,6 @@ public partial class Vexe
     public virtual Phieudat? IdPhieuNavigation { get; set; }
 
     public virtual Vitri? IdViTriGheNavigation { get; set; }
+
+    public virtual ICollection<XeVeX> XeVeXes { get; set; } = new List<XeVeX>();
 }

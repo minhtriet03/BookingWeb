@@ -21,6 +21,10 @@ namespace BookingWeb.Server.Services
                 .GetAllAsync();
         }
 
+        public async Task<List<Benxe>> getbyPage(int page)
+        {
+            return await _unitOfWork.benXes.GetByPageAsync(page, 10);
+        }
         public async Task<Benxe> getByName(string name)
         {
             try
@@ -44,11 +48,12 @@ namespace BookingWeb.Server.Services
                 throw ex;
             }
         }
-        public async Task<bool> updateBenxe(Benxe benxe)
+        public async Task<int> updateBenxe(Benxe benxe)
         {
             try
             {
-                return await _unitOfWork.benXes.UpdateAsync(benxe);
+                _unitOfWork.benXes.UpdateAsync(benxe);
+                return await _unitOfWork.SaveChangesAsync();
             }
             catch (Exception ex)
             {

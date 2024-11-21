@@ -9,9 +9,9 @@ namespace BookingWeb.Server.Controllers
     public class TinhController : ControllerBase
     {
         private readonly TinhService _service;
-       public TinhController(TinhService tinhService) {
+        public TinhController(TinhService tinhService) {
             _service = tinhService;
-       }
+        }
 
         [HttpGet]
         public async Task<ActionResult<List<Tinhthanh>>> GetAllTinh()
@@ -27,7 +27,21 @@ namespace BookingWeb.Server.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
-        [HttpGet("{name}")]
+        [HttpGet("id/{id}")]
+        public async Task<ActionResult<Tinhthanh>> GetById(int id)
+        {
+            try
+            {
+                var data = await _service.getbyId(id);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet("name/{name}")]
         public async Task<ActionResult<Tinhthanh>> GetByName(string name)
         {
             try
@@ -40,6 +54,8 @@ namespace BookingWeb.Server.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+
 
         [HttpPost]
         public async Task<ActionResult<Tinhthanh>> addTinhThanh(Tinhthanh tinhthanh)
@@ -54,7 +70,7 @@ namespace BookingWeb.Server.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
-        [HttpPost]
+        [HttpPut]
         public async Task<ActionResult<Tinhthanh>> updateTinhThanh(Tinhthanh tinhthanh)
         {
             try
