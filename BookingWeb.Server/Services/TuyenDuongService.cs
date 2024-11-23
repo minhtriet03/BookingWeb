@@ -6,7 +6,7 @@ namespace BookingWeb.Server.Services
 {
     public class TuyenDuongService
     {
-        IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
         public TuyenDuongService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;

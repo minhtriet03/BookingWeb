@@ -7,7 +7,7 @@ namespace BookingWeb.Server.Areas.Admin.Controllers;
 
 [Area("Admin")]
 [Route("Admin/[controller]")]
-public class LoaiXeAdminController
+public class LoaiXeAdminController : Controller
 {
     private readonly LoaiXeService _loaiXeService;
 
@@ -16,8 +16,11 @@ public class LoaiXeAdminController
         _loaiXeService = loaiXeService;
     }
 
-    /*[HttpGet]
-    public async Task<IActionResult> Index()
+    [HttpGet]
+    public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 5)
     {
-    }*/
+        var viewModel = await _loaiXeService.GetByPageAsync(pageNumber, pageSize);
+
+        return View(viewModel);
+    }
 }

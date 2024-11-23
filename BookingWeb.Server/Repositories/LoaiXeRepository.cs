@@ -6,16 +6,13 @@ using System.Threading.Tasks;
 
 namespace BookingWeb.Server.Repositories
 {
-    public class LoaiXeRepository : ILoaiXeRepository
+    public class LoaiXeRepository : GenericRepository<Loaixe>, ILoaiXeRepository
     {
-        private readonly BookingBusContext _context;
-
-        public LoaiXeRepository(BookingBusContext context)
+        public LoaiXeRepository(BookingBusContext dbContext) : base(dbContext)
         {
-            _context = context;
         }
 
-        public async Task<bool> AddAsync(Loaixe entity)
+        /*public async Task<bool> AddAsync(Loaixe entity)
         {
             try
             {
@@ -41,9 +38,9 @@ namespace BookingWeb.Server.Repositories
             {
                 return false;  // Trả về false nếu có lỗi
             }
-        }
+        }*/
 
-        public async Task<bool> DeleteAsync(int id)
+        /*public async Task<bool> DeleteAsync(int id)
         {
             try
             {
@@ -61,15 +58,18 @@ namespace BookingWeb.Server.Repositories
             {
                 return false;  // Trả về false nếu có lỗi
             }
-        }
+        }*/
 
-        public Task<int> CountAsync()
+        public async Task<List<Loaixe>> GetPagedAsync(int skip, int take)
         {
-            throw new NotImplementedException();
+            return await  _dbContext.Loaixes
+                .Skip(skip)
+                .Take(take)
+                .ToListAsync();
         }
 
 
-        public async Task<List<Loaixe>> GetAllAsync()
+        /*public async Task<List<Loaixe>> GetAllAsync()
         {
             return await _context.Loaixes.Include(l => l.Xes).ToListAsync();  // Lấy tất cả loại xe
         }
@@ -77,6 +77,6 @@ namespace BookingWeb.Server.Repositories
         public async Task<Loaixe> GetByIdAsync(int id)
         {
             return await _context.Loaixes.Include(l => l.Xes).FirstOrDefaultAsync(l => l.IdLoai == id);  // Lấy loại xe theo id
-        }
+        }*/
     }
 }

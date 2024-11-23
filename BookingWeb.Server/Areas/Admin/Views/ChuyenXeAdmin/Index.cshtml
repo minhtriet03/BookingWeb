@@ -1,0 +1,72 @@
+﻿@model IEnumerable<BookingWeb.Server.ViewModels.ChuyenXeVM>
+
+@{
+ViewData["Title"] = "Tuyến đường";
+}
+<h1 class="h3 mb-2 text-gray-800">Quản lý lịch trình</h1>
+@Html.Partial("./../Shared/Alert.cshtml")
+
+<div class="card shadow mb-4">
+
+    <div class="card-header py-3 d-flex justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Bảng dữ liệu</h6>
+
+        <!-- Topbar Search -->
+        <div class="input-group w-25">
+            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                   aria-label="Search" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="button">
+                    <i class="fas fa-search fa-sm"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive" style="max-height: 400px; overflow-y: auto;"> 
+            <table class="table table-bordered table-fixed" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tên xe - Biển số</th>
+                    <th>Bến xe</th>
+                    <th>Điểm đi - Thời gian</th>
+                    <th>Điểm đến - Thời gian</th>
+                    <th>Giá vé</th>
+                    <th>Trạng thái</th>
+                    <th>Chức Năng</th>
+                </tr>
+                </thead>
+                <tbody id="idTable" >
+                @foreach (var cx in Model)
+                {
+                <tr>
+                    <td >@cx.IdChuyenXe</td>
+                    <td>@cx.XeVM?.LoaiXeVM?.TenLoai<br>@cx.XeVM?.BienSo</td>
+                    <td>@cx.TuyenDuongVM?.TenBenXe</td>
+                    <td>@cx.TuyenDuongVM?.NoiKhoiHanh - @cx.ThoiGianKh</td>
+                    <td>@cx.TuyenDuongVM?.NoiDen - @cx.ThoiGianDen</td>
+                    <td>@cx.TuyenDuongVM?.GiaVe</td>
+                    <td>@(cx.TrangThai == true ? "Hoạt động" : "Không hoạt động")</td>
+                    <td>
+                        <a href="@Url.Action("Details", "Xe", new { id = cx.IdChuyenXe })" class="btn btn-info">Chi tiết</a>
+                        @if (@cx.TrangThai == true)
+                        {
+                        <button type="submit" class="btn btn-danger" onclick="confirmDeactivate(@cx.IdChuyenXe)">Khóa</button>
+                        }
+                        else if (@cx.TrangThai == false)
+                        {
+                        <button type="submit" class="btn btn-success" onclick="confirmDeactivate(@cx.IdChuyenXe)">Mở khóa</button>
+                        }
+                    </td>
+                </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/js/admin/search.js"></script>
