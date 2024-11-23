@@ -71,9 +71,5 @@ namespace BookingWeb.Server.Repositories
                 return false;
             }
         }
-
-
-
-
     }
 }
