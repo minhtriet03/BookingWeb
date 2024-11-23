@@ -25,5 +25,5 @@ public partial class Vexe
 
     public virtual Vitri? IdViTriGheNavigation { get; set; }
 
-    public virtual ICollection<XeVeXe> XeVeXes { get; set; } = new List<XeVeXe>();
+    //public virtual ICollection<XeVeXe> XeVeXes { get; set; } = new List<XeVeXe>();
 }

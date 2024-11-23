@@ -19,5 +19,5 @@ public partial class Xe
 
     public virtual ICollection<Vitri> Vitris { get; set; } = new List<Vitri>();
 
-    public virtual ICollection<XeVeXe> XeVeXes { get; set; } = new List<XeVeXe>();
+    //public virtual ICollection<XeVeXe> XeVeXes { get; set; } = new List<XeVeXe>();
 }
