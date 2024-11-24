@@ -68,6 +68,55 @@ namespace BookingWeb.Server.Services
                 throw ex;
             }
         }
+        
+        public async Task<IEnumerable<ChuyenXeVM>> GetBySearch(string search)
+        {
+            var data = await _unitOfWork.chuyenXeRepository.GetAllChuyenXeVM();
+
+            var result = data.Select(cx => new ChuyenXeVM
+            {
+                IdChuyenXe = cx.IdChuyenXe,
+                ThoiGianKh = cx.ThoiGianKh,
+                ThoiGianDen = cx.ThoiGianDen,
+                TrangThai = cx.TrangThai,
+                
+                XeVM = cx.IdXeNavigation == null ? null : new XeVM
+                {
+                    BienSo = cx.IdXeNavigation?.BienSo,
+                    TinhTrang = cx.IdXeNavigation?.TinhTrang,
+                    
+                    LoaiXeVM = cx.IdXeNavigation?.IdLoaiNavigation == null ? null : new LoaiXeVM
+                    {
+                        TenLoai = cx.IdXeNavigation?.IdLoaiNavigation?.TenLoai,
+                        SoGhe = cx.IdXeNavigation?.IdLoaiNavigation?.SoGhe
+                    } 
+                },
+                
+                TuyenDuongVM = cx.IdXeNavigation == null ? null : new TuyenDuongVM
+                {
+                    TenBenXe = cx.IdTuyenDuongNavigation?.NoiKhoiHanhNavigation?.TenBenXe,
+                    NoiDen = cx.IdTuyenDuongNavigation?.NoiDenNavigation?.IdTinhThanhNavigation?.TenTinhThanh,
+                    NoiKhoiHanh = cx.IdTuyenDuongNavigation?.NoiKhoiHanhNavigation?.IdTinhThanhNavigation?.TenTinhThanh,
+                    KhoangCach = cx.IdTuyenDuongNavigation?.KhoangCach,
+                    GiaVe = cx.IdTuyenDuongNavigation?.GiaVe
+                } 
+            });
+            
+            if (!String.IsNullOrEmpty(search))
+            {
+                result = result.Where(cx => cx.XeVM.BienSo.Contains(search) 
+                                            || cx.XeVM.LoaiXeVM.TenLoai.Contains(search)
+                                            || cx.TuyenDuongVM.NoiDen.Contains(search)
+                                            || cx.TuyenDuongVM.NoiKhoiHanh.Contains(search)
+                                            || cx.TuyenDuongVM.KhoangCach.ToString().Contains(search)
+                                            || cx.TuyenDuongVM.GiaVe.ToString().Contains(search)
+                                            );
+
+                return result;
+            }
+
+            return result;
+        }
 
         public async Task<Chuyenxe> GetChuyenXeByID(int id)
         {
