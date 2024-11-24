@@ -35,6 +35,8 @@ public partial class BookingBusContext : DbContext
 
     public virtual DbSet<Tuyenduong> Tuyenduongs { get; set; }
 
+    public virtual DbSet<VeXeChuyenXe> VeXeChuyenXes { get; set; }
+
     public virtual DbSet<Vexe> Vexes { get; set; }
 
     public virtual DbSet<Vitri> Vitris { get; set; }
@@ -89,11 +91,11 @@ public partial class BookingBusContext : DbContext
                 .HasDefaultValueSql("(NULL)")
                 .HasColumnName("ID_Xe");
             entity.Property(e => e.ThoiGianDen)
-                .HasDefaultValueSql("(NULL)")
-                .HasColumnType("datetime")
+                .HasMaxLength(50)
+                .HasDefaultValueSql("(getdate())")
                 .HasColumnName("Thoi_GianDen");
             entity.Property(e => e.ThoiGianKh)
-                .HasDefaultValueSql("(NULL)")
+                .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("Thoi_GianKH");
             entity.Property(e => e.TrangThai).HasDefaultValueSql("(NULL)");
@@ -301,6 +303,21 @@ public partial class BookingBusContext : DbContext
                 .HasConstraintName("fk_tuyenduong_noikh");
         });
 
+        modelBuilder.Entity<VeXeChuyenXe>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("VeXeChuyenXe");
+
+            entity.HasOne(d => d.IdChuyenXeNavigation).WithMany()
+                .HasForeignKey(d => d.IdChuyenXe)
+                .HasConstraintName("FK_VeXeChuyenXe_chuyenxe");
+
+            entity.HasOne(d => d.IdVeNavigation).WithMany()
+                .HasForeignKey(d => d.IdVe)
+                .HasConstraintName("FK_VeXeChuyenXe_vexe");
+        });
+
         modelBuilder.Entity<Vexe>(entity =>
         {
             entity.HasKey(e => e.IdVe).HasName("PK__vexe__8B63A19C210D5D44");
@@ -323,12 +340,6 @@ public partial class BookingBusContext : DbContext
             entity.Property(e => e.IdViTriGhe)
                 .HasDefaultValueSql("(NULL)")
                 .HasColumnName("ID_ViTriGhe");
-            entity.Property(e => e.NgayKhoiHanh)
-                .HasDefaultValueSql("(NULL)")
-                .HasColumnName("Ngay_KhoiHanh");
-            entity.Property(e => e.NgayVe)
-                .HasDefaultValueSql("(NULL)")
-                .HasColumnName("Ngay_Ve");
             entity.Property(e => e.TrangThai).HasDefaultValueSql("(NULL)");
 
             entity.HasOne(d => d.IdChuyenXeNavigation).WithMany(p => p.Vexes)

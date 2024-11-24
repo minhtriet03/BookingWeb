@@ -12,13 +12,21 @@ ViewData["Title"] = "Tuyến đường";
         <h6 class="m-0 font-weight-bold text-primary">Bảng dữ liệu</h6>
 
         <!-- Topbar Search -->
-        <div class="input-group w-25">
-            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                   aria-label="Search" aria-describedby="basic-addon2">
-            <div class="input-group-append">
-                <button class="btn btn-primary" type="button">
-                    <i class="fas fa-search fa-sm"></i>
-                </button>
+        <div class="input-group" style="width: 30%">
+            <div class="d-flex">
+                <form asp-action="Index"  asp-controller="ChuyenXeAdmin" method="get" class="d-flex">
+                    <input type="search" class="form-control bg-light border-0 small me-1" placeholder="Search for..." name="SearchString" aria-label="Search">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-search fa-sm"></i>
+                    </button>
+                    @*<p>
+                        <label>Title: <input type="text" name="SearchString" /></label>
+                        <input type="submit" value="Filter" />
+                    </p>*@
+                </form>
+            </div>
+            <div class="col-md-4">
+                <a asp-action="Index" asp-controller="ChuyenXeAdmin">Xem tất cả</a>
             </div>
         </div>
     </div>

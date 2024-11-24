@@ -13,7 +13,7 @@ public partial class Chuyenxe
 
     public DateTime? ThoiGianKh { get; set; }
 
-    public DateTime? ThoiGianDen { get; set; }
+    public string? ThoiGianDen { get; set; }
 
     public bool? TrangThai { get; set; }
 
