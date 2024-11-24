@@ -17,5 +17,5 @@ public partial class Xe
 
     public virtual Loaixe? IdLoaiNavigation { get; set; }
 
-    public virtual ICollection<XeViTri> XeViTris { get; set; } = new List<XeViTri>();
+    public virtual ICollection<Xevitri> Xevitris { get; set; } = new List<Xevitri>();
 }

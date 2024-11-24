@@ -4,7 +4,7 @@ public class ChuyenXeVM
 {
     public int IdChuyenXe { get; set; }
 
-    public String? ThoiGianKh { get; set; }
+    public DateTime? ThoiGianKh { get; set; }
 
     public string? ThoiGianDen { get; set; }
 
