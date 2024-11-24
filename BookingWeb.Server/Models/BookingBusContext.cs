@@ -35,7 +35,7 @@ public partial class BookingBusContext : DbContext
 
     public virtual DbSet<Tuyenduong> Tuyenduongs { get; set; }
 
-    public virtual DbSet<VeXeChuyenXe> VeXeChuyenXes { get; set; }
+    public virtual DbSet<Vexechuyenxe> VeXeChuyenXes { get; set; }
 
     public virtual DbSet<Vexe> Vexes { get; set; }
 
@@ -43,7 +43,7 @@ public partial class BookingBusContext : DbContext
 
     public virtual DbSet<Xe> Xes { get; set; }
 
-    public virtual DbSet<XeViTri> XeViTris { get; set; }
+    public virtual DbSet<Xevitri> XeViTris { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -303,37 +303,17 @@ public partial class BookingBusContext : DbContext
                 .HasConstraintName("fk_tuyenduong_noikh");
         });
 
-        modelBuilder.Entity<VeXeChuyenXe>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToTable("VeXeChuyenXe");
-
-            entity.HasOne(d => d.IdChuyenXeNavigation).WithMany()
-                .HasForeignKey(d => d.IdChuyenXe)
-                .HasConstraintName("FK_VeXeChuyenXe_chuyenxe");
-
-            entity.HasOne(d => d.IdVeNavigation).WithMany()
-                .HasForeignKey(d => d.IdVe)
-                .HasConstraintName("FK_VeXeChuyenXe_vexe");
-        });
-
         modelBuilder.Entity<Vexe>(entity =>
         {
             entity.HasKey(e => e.IdVe).HasName("PK__vexe__8B63A19C210D5D44");
 
             entity.ToTable("vexe");
 
-            entity.HasIndex(e => e.IdChuyenXe, "IX_vexe_ID_ChuyenXe");
-
             entity.HasIndex(e => e.IdPhieu, "IX_vexe_ID_Phieu");
 
             entity.HasIndex(e => e.IdViTriGhe, "IX_vexe_ID_ViTriGhe");
 
             entity.Property(e => e.IdVe).HasColumnName("ID_Ve");
-            entity.Property(e => e.IdChuyenXe)
-                .HasDefaultValueSql("(NULL)")
-                .HasColumnName("ID_ChuyenXe");
             entity.Property(e => e.IdPhieu)
                 .HasDefaultValueSql("(NULL)")
                 .HasColumnName("ID_Phieu");
@@ -342,10 +322,6 @@ public partial class BookingBusContext : DbContext
                 .HasColumnName("ID_ViTriGhe");
             entity.Property(e => e.TrangThai).HasDefaultValueSql("(NULL)");
 
-            entity.HasOne(d => d.IdChuyenXeNavigation).WithMany(p => p.Vexes)
-                .HasForeignKey(d => d.IdChuyenXe)
-                .HasConstraintName("fk_vexe_chuyenxe");
-
             entity.HasOne(d => d.IdPhieuNavigation).WithMany(p => p.Vexes)
                 .HasForeignKey(d => d.IdPhieu)
                 .HasConstraintName("fk_vexe_phieudat");
@@ -353,6 +329,26 @@ public partial class BookingBusContext : DbContext
             entity.HasOne(d => d.IdViTriGheNavigation).WithMany(p => p.Vexes)
                 .HasForeignKey(d => d.IdViTriGhe)
                 .HasConstraintName("fk_vexe_vitri");
+        });
+
+        modelBuilder.Entity<Vexechuyenxe>(entity =>
+        {
+            entity.HasKey(e => new { e.IdVeXe, e.IdChuyenXe });
+
+            entity.ToTable("vexechuyenxe");
+
+            entity.Property(e => e.IdVeXe).HasColumnName("ID_VeXe");
+            entity.Property(e => e.IdChuyenXe).HasColumnName("ID_ChuyenXe");
+
+            entity.HasOne(d => d.IdChuyenXeNavigation).WithMany(p => p.Vexechuyenxes)
+                .HasForeignKey(d => d.IdChuyenXe)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_vexechuyenxe_chuyenxe");
+
+            entity.HasOne(d => d.IdVeXeNavigation).WithMany(p => p.Vexechuyenxes)
+                .HasForeignKey(d => d.IdVeXe)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_vexechuyenxe_vexe");
         });
 
         modelBuilder.Entity<Vitri>(entity =>
@@ -395,23 +391,24 @@ public partial class BookingBusContext : DbContext
                 .HasConstraintName("fk_xe_loaixe");
         });
 
-        modelBuilder.Entity<XeViTri>(entity =>
+        modelBuilder.Entity<Xevitri>(entity =>
         {
-            entity.ToTable("XeViTri");
+            entity.HasKey(e => new { e.IdXe, e.IdViTri }).HasName("PK_Table_1");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("ID");
-            entity.Property(e => e.IdViTri).HasColumnName("ID_ViTri");
+            entity.ToTable("xevitri");
+
             entity.Property(e => e.IdXe).HasColumnName("ID_Xe");
+            entity.Property(e => e.IdViTri).HasColumnName("ID_ViTri");
 
-            entity.HasOne(d => d.IdViTriNavigation).WithMany(p => p.XeViTris)
-                .HasForeignKey(d => d.IdViTri)
-                .HasConstraintName("FK_XeViTri_vitri");
-
-            entity.HasOne(d => d.IdXeNavigation).WithMany(p => p.XeViTris)
+            entity.HasOne(d => d.IdXeNavigation).WithMany(p => p.Xevitris)
                 .HasForeignKey(d => d.IdXe)
-                .HasConstraintName("FK_XeViTri_xe");
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_xevitri_xe");
+
+            entity.HasOne(d => d.IdVitriNavigation).WithMany(p => p.Xevitris)
+                .HasForeignKey(d => d.IdViTri)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_xevitri_vitri");
         });
 
         OnModelCreatingPartial(modelBuilder);
