@@ -62,7 +62,7 @@ namespace BookingWeb.Server.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ID_Loai = table.Column<int>(type: "int", nullable: true, defaultValueSql: "(NULL)"),
                     Bien_So = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true, defaultValueSql: "(NULL)"),
-                    Tinh_Trang = table.Column<bool>(type: "bit", unicode: false, maxLength: 50, nullable: true, defaultValueSql: "(NULL)")
+                    Tinh_Trang = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "(NULL)")
                 },
                 constraints: table =>
                 {
@@ -121,16 +121,16 @@ namespace BookingWeb.Server.Migrations
                 {
                     ID_ViTriGhe = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ID_Xe = table.Column<int>(type: "int", nullable: true, defaultValueSql: "(NULL)"),
-                    ViTri1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TrangThai = table.Column<bool>(type: "bit", nullable: true)
+                    ViTri = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true, defaultValueSql: "(NULL)"),
+                    TrangThai = table.Column<bool>(type: "bit", nullable: true),
+                    XeIdXe = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK__vitri__F0FA263A0546993C", x => x.ID_ViTriGhe);
                     table.ForeignKey(
-                        name: "fk_vitri_xe",
-                        column: x => x.ID_Xe,
+                        name: "FK_vitri_xe_XeIdXe",
+                        column: x => x.XeIdXe,
                         principalTable: "xe",
                         principalColumn: "ID_Xe");
                 });
@@ -186,6 +186,29 @@ namespace BookingWeb.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "XeViTri",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false),
+                    ID_Xe = table.Column<int>(type: "int", nullable: true),
+                    ID_ViTri = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_XeViTri", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_XeViTri_vitri",
+                        column: x => x.ID_ViTri,
+                        principalTable: "vitri",
+                        principalColumn: "ID_ViTriGhe");
+                    table.ForeignKey(
+                        name: "FK_XeViTri_xe",
+                        column: x => x.ID_Xe,
+                        principalTable: "xe",
+                        principalColumn: "ID_Xe");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "phieudat",
                 columns: table => new
                 {
@@ -194,7 +217,7 @@ namespace BookingWeb.Server.Migrations
                     ID_User = table.Column<int>(type: "int", nullable: false),
                     Ngay_Lap = table.Column<DateOnly>(type: "date", nullable: true, defaultValueSql: "(NULL)"),
                     Tong_Tien = table.Column<decimal>(type: "decimal(10,2)", nullable: true, defaultValueSql: "(NULL)"),
-                    TrangThai = table.Column<bool>(type: "bit", unicode: false, maxLength: 50, nullable: true, defaultValueSql: "(NULL)")
+                    TrangThai = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "(NULL)")
                 },
                 constraints: table =>
                 {
@@ -216,7 +239,7 @@ namespace BookingWeb.Server.Migrations
                     ID_TuyenDuong = table.Column<int>(type: "int", nullable: true, defaultValueSql: "(NULL)"),
                     Thoi_GianKH = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(NULL)"),
                     Thoi_GianDen = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(NULL)"),
-                    TrangThai = table.Column<bool>(type: "bit", unicode: false, maxLength: 50, nullable: true, defaultValueSql: "(NULL)")
+                    TrangThai = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "(NULL)")
                 },
                 constraints: table =>
                 {
@@ -242,7 +265,7 @@ namespace BookingWeb.Server.Migrations
                     ID_PhieuDat = table.Column<int>(type: "int", nullable: true, defaultValueSql: "(NULL)"),
                     So_Tien = table.Column<decimal>(type: "decimal(10,2)", nullable: true, defaultValueSql: "(NULL)"),
                     PhuongThuc_TT = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true, defaultValueSql: "(NULL)"),
-                    TrangThai = table.Column<bool>(type: "bit", unicode: false, maxLength: 50, nullable: true, defaultValueSql: "(NULL)")
+                    TrangThai = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "(NULL)")
                 },
                 constraints: table =>
                 {
@@ -265,7 +288,7 @@ namespace BookingWeb.Server.Migrations
                     ID_ChuyenXe = table.Column<int>(type: "int", nullable: true, defaultValueSql: "(NULL)"),
                     Ngay_KhoiHanh = table.Column<DateOnly>(type: "date", nullable: true, defaultValueSql: "(NULL)"),
                     Ngay_Ve = table.Column<DateOnly>(type: "date", nullable: true, defaultValueSql: "(NULL)"),
-                    TrangThai = table.Column<bool>(type: "bit", unicode: false, maxLength: 50, nullable: true, defaultValueSql: "(NULL)")
+                    TrangThai = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "(NULL)")
                 },
                 constraints: table =>
                 {
@@ -348,14 +371,24 @@ namespace BookingWeb.Server.Migrations
                 column: "ID_ViTriGhe");
 
             migrationBuilder.CreateIndex(
-                name: "IX_vitri_ID_Xe",
+                name: "IX_vitri_XeIdXe",
                 table: "vitri",
-                column: "ID_Xe");
+                column: "XeIdXe");
 
             migrationBuilder.CreateIndex(
                 name: "IX_xe_ID_Loai",
                 table: "xe",
                 column: "ID_Loai");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_XeViTri_ID_ViTri",
+                table: "XeViTri",
+                column: "ID_ViTri");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_XeViTri_ID_Xe",
+                table: "XeViTri",
+                column: "ID_Xe");
         }
 
         /// <inheritdoc />
@@ -366,6 +399,9 @@ namespace BookingWeb.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "vexe");
+
+            migrationBuilder.DropTable(
+                name: "XeViTri");
 
             migrationBuilder.DropTable(
                 name: "chuyenxe");

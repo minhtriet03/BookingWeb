@@ -1,0 +1,81 @@
+﻿@model BookingWeb.Server.ViewModels.PagedTuyenDuongVM
+
+@{
+	ViewData["Title"] = "Tuyến đường";
+}
+<h1 class="h3 mb-2 text-gray-800">Quản lý tuyến đường</h1>
+@Html.Partial("./../Shared/Alert.cshtml")
+
+<div class="card shadow mb-4">
+
+    <div class="card-header py-3 d-flex justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Bảng dữ liệu</h6>
+        <!-- Topbar Search -->
+        <div class="input-group w-25">
+            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                   aria-label="Search" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="button">
+                    <i class="fas fa-search fa-sm"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên bến xe</th>
+                        <th>Nơi bắt đâu</th>
+                        <th>Nơi kết thúc</th>
+                        <th>Khoảng cách</th>
+                        <th>Giá vé</th>
+                        <th>Trạng thái</th>
+                        <th>Chức Năng</th>
+                    </tr>
+                </thead>
+                <tbody id="tuyenDuongTable">
+                    @foreach (var td in Model.TuyenDuongs)
+                    {
+                        <tr>
+                            <td>@td.IdTuyenDuong</td>
+                            <td>@td.TenBenXe</td>
+                            <td>@td.NoiKhoiHanh</td>
+                            <td>@td.NoiDen</td>
+                            <td>@td.KhoangCach</td>
+                            <td>@td.GiaVe</td>
+                            <td>@(td.TrangThai == true ? "Hoạt động" : "Không hoạt động")</td>
+                            <td>
+                                <a href="@Url.Action("Details", "Xe", new { id = td.IdTuyenDuong })" class="btn btn-info">Chi tiết</a>
+                                @if (@td.TrangThai == true)
+                                {
+                                <button type="submit" class="btn btn-danger" onclick="confirmDeactivate(@td.IdTuyenDuong)">Khóa</button>
+                                }
+                                else if (@td.TrangThai == false)
+                                {
+                                <button type="submit" class="btn btn-success" onclick="confirmDeactivate(@td.IdTuyenDuong)">Mở khóa</button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <nav>
+                <ul class="pagination">
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("Index", new { pageNumber = i })">@i</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/js/admin/tuyenduong.js"></script>

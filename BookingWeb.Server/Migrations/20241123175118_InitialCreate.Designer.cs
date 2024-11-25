@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookingWeb.Server.Migrations
 {
     [DbContext(typeof(BookingBusContext))]
-    [Migration("20241123071830_InitialCreate")]
+    [Migration("20241123175118_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -53,7 +53,7 @@ namespace BookingWeb.Server.Migrations
                     b.HasKey("IdBenXe")
                         .HasName("PK__benxe__5D85FA84A6235780");
 
-                    b.HasIndex("IdTinhThanh");
+                    b.HasIndex(new[] { "IdTinhThanh" }, "IX_benxe_ID_TinhThanh");
 
                     b.ToTable("benxe", (string)null);
                 });
@@ -93,17 +93,15 @@ namespace BookingWeb.Server.Migrations
 
                     b.Property<bool?>("TrangThai")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
                         .HasColumnType("bit")
                         .HasDefaultValueSql("(NULL)");
 
                     b.HasKey("IdChuyenXe")
                         .HasName("PK__chuyenxe__108DC34A04704F45");
 
-                    b.HasIndex("IdTuyenDuong");
+                    b.HasIndex(new[] { "IdTuyenDuong" }, "IX_chuyenxe_ID_TuyenDuong");
 
-                    b.HasIndex("IdXe");
+                    b.HasIndex(new[] { "IdXe" }, "IX_chuyenxe_ID_Xe");
 
                     b.ToTable("chuyenxe", (string)null);
                 });
@@ -191,7 +189,7 @@ namespace BookingWeb.Server.Migrations
                     b.HasKey("IdUser")
                         .HasName("PK__nguoidun__ED4DE44201ABFF36");
 
-                    b.HasIndex("IdAccount");
+                    b.HasIndex(new[] { "IdAccount" }, "IX_nguoidung_ID_Account");
 
                     b.ToTable("nguoidung", (string)null);
                 });
@@ -248,15 +246,13 @@ namespace BookingWeb.Server.Migrations
 
                     b.Property<bool?>("TrangThai")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
                         .HasColumnType("bit")
                         .HasDefaultValueSql("(NULL)");
 
                     b.HasKey("IdPhieu")
                         .HasName("PK__phieudat__E61CE97E924175EE");
 
-                    b.HasIndex("IdUser");
+                    b.HasIndex(new[] { "IdUser" }, "IX_phieudat_ID_User");
 
                     b.ToTable("phieudat", (string)null);
                 });
@@ -296,7 +292,7 @@ namespace BookingWeb.Server.Migrations
                     b.HasKey("IdAccount")
                         .HasName("PK__taikhoan__213379EB7E7880B7");
 
-                    b.HasIndex("IdQuyen");
+                    b.HasIndex(new[] { "IdQuyen" }, "IX_taikhoan_ID_Quyen");
 
                     b.ToTable("taikhoan", (string)null);
                 });
@@ -332,15 +328,13 @@ namespace BookingWeb.Server.Migrations
 
                     b.Property<bool?>("TrangThai")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
                         .HasColumnType("bit")
                         .HasDefaultValueSql("(NULL)");
 
                     b.HasKey("IdThanhToan")
                         .HasName("PK__thanhtoa__AB2E563188254449");
 
-                    b.HasIndex("IdPhieuDat");
+                    b.HasIndex(new[] { "IdPhieuDat" }, "IX_thanhtoan_ID_PhieuDat");
 
                     b.ToTable("thanhtoan", (string)null);
                 });
@@ -410,9 +404,9 @@ namespace BookingWeb.Server.Migrations
                     b.HasKey("IdTuyenDuong")
                         .HasName("PK__tuyenduo__8D9665CD7174435A");
 
-                    b.HasIndex("NoiDen");
+                    b.HasIndex(new[] { "NoiDen" }, "IX_tuyenduong_Noi_Den");
 
-                    b.HasIndex("NoiKhoiHanh");
+                    b.HasIndex(new[] { "NoiKhoiHanh" }, "IX_tuyenduong_Noi_KhoiHanh");
 
                     b.ToTable("tuyenduong", (string)null);
                 });
@@ -458,19 +452,17 @@ namespace BookingWeb.Server.Migrations
 
                     b.Property<bool?>("TrangThai")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
                         .HasColumnType("bit")
                         .HasDefaultValueSql("(NULL)");
 
                     b.HasKey("IdVe")
                         .HasName("PK__vexe__8B63A19C210D5D44");
 
-                    b.HasIndex("IdChuyenXe");
+                    b.HasIndex(new[] { "IdChuyenXe" }, "IX_vexe_ID_ChuyenXe");
 
-                    b.HasIndex("IdPhieu");
+                    b.HasIndex(new[] { "IdPhieu" }, "IX_vexe_ID_Phieu");
 
-                    b.HasIndex("IdViTriGhe");
+                    b.HasIndex(new[] { "IdViTriGhe" }, "IX_vexe_ID_ViTriGhe");
 
                     b.ToTable("vexe", (string)null);
                 });
@@ -484,22 +476,24 @@ namespace BookingWeb.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdViTriGhe"));
 
-                    b.Property<int?>("IdXe")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("ID_Xe")
-                        .HasDefaultValueSql("(NULL)");
-
                     b.Property<bool?>("TrangThai")
                         .HasColumnType("bit");
 
                     b.Property<string>("ViTri1")
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("ViTri")
+                        .HasDefaultValueSql("(NULL)");
+
+                    b.Property<int?>("XeIdXe")
+                        .HasColumnType("int");
 
                     b.HasKey("IdViTriGhe")
                         .HasName("PK__vitri__F0FA263A0546993C");
 
-                    b.HasIndex("IdXe");
+                    b.HasIndex("XeIdXe");
 
                     b.ToTable("vitri", (string)null);
                 });
@@ -529,8 +523,6 @@ namespace BookingWeb.Server.Migrations
 
                     b.Property<bool?>("TinhTrang")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
                         .HasColumnType("bit")
                         .HasColumnName("Tinh_Trang")
                         .HasDefaultValueSql("(NULL)");
@@ -538,9 +530,32 @@ namespace BookingWeb.Server.Migrations
                     b.HasKey("IdXe")
                         .HasName("PK__xe__8B62515E2A4BD620");
 
-                    b.HasIndex("IdLoai");
+                    b.HasIndex(new[] { "IdLoai" }, "IX_xe_ID_Loai");
 
                     b.ToTable("xe", (string)null);
+                });
+
+            modelBuilder.Entity("BookingWeb.Server.Models.XeViTri", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int")
+                        .HasColumnName("ID");
+
+                    b.Property<int?>("IdViTri")
+                        .HasColumnType("int")
+                        .HasColumnName("ID_ViTri");
+
+                    b.Property<int?>("IdXe")
+                        .HasColumnType("int")
+                        .HasColumnName("ID_Xe");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdViTri");
+
+                    b.HasIndex("IdXe");
+
+                    b.ToTable("XeViTri", (string)null);
                 });
 
             modelBuilder.Entity("BookingWeb.Server.Models.Benxe", b =>
@@ -654,12 +669,9 @@ namespace BookingWeb.Server.Migrations
 
             modelBuilder.Entity("BookingWeb.Server.Models.Vitri", b =>
                 {
-                    b.HasOne("BookingWeb.Server.Models.Xe", "IdXeNavigation")
+                    b.HasOne("BookingWeb.Server.Models.Xe", null)
                         .WithMany("Vitris")
-                        .HasForeignKey("IdXe")
-                        .HasConstraintName("fk_vitri_xe");
-
-                    b.Navigation("IdXeNavigation");
+                        .HasForeignKey("XeIdXe");
                 });
 
             modelBuilder.Entity("BookingWeb.Server.Models.Xe", b =>
@@ -670,6 +682,23 @@ namespace BookingWeb.Server.Migrations
                         .HasConstraintName("fk_xe_loaixe");
 
                     b.Navigation("IdLoaiNavigation");
+                });
+
+            modelBuilder.Entity("BookingWeb.Server.Models.XeViTri", b =>
+                {
+                    b.HasOne("BookingWeb.Server.Models.Vitri", "IdViTriNavigation")
+                        .WithMany("XeViTris")
+                        .HasForeignKey("IdViTri")
+                        .HasConstraintName("FK_XeViTri_vitri");
+
+                    b.HasOne("BookingWeb.Server.Models.Xe", "IdXeNavigation")
+                        .WithMany("XeViTris")
+                        .HasForeignKey("IdXe")
+                        .HasConstraintName("FK_XeViTri_xe");
+
+                    b.Navigation("IdViTriNavigation");
+
+                    b.Navigation("IdXeNavigation");
                 });
 
             modelBuilder.Entity("BookingWeb.Server.Models.Benxe", b =>
@@ -724,6 +753,8 @@ namespace BookingWeb.Server.Migrations
             modelBuilder.Entity("BookingWeb.Server.Models.Vitri", b =>
                 {
                     b.Navigation("Vexes");
+
+                    b.Navigation("XeViTris");
                 });
 
             modelBuilder.Entity("BookingWeb.Server.Models.Xe", b =>
@@ -731,6 +762,8 @@ namespace BookingWeb.Server.Migrations
                     b.Navigation("Chuyenxes");
 
                     b.Navigation("Vitris");
+
+                    b.Navigation("XeViTris");
                 });
 #pragma warning restore 612, 618
         }
