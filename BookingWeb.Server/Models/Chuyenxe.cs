@@ -11,7 +11,7 @@ public partial class Chuyenxe
 
     public int? IdTuyenDuong { get; set; }
 
-    public DateTime? ThoiGianKh { get; set; }
+    public string? ThoiGianKh { get; set; }
 
     public string? ThoiGianDen { get; set; }
 

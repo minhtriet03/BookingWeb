@@ -35,15 +35,13 @@ public partial class BookingBusContext : DbContext
 
     public virtual DbSet<Tuyenduong> Tuyenduongs { get; set; }
 
-    public virtual DbSet<Vexechuyenxe> VeXeChuyenXes { get; set; }
-
     public virtual DbSet<Vexe> Vexes { get; set; }
+
+    public virtual DbSet<Vexechuyenxe> Vexechuyenxes { get; set; }
 
     public virtual DbSet<Vitri> Vitris { get; set; }
 
     public virtual DbSet<Xe> Xes { get; set; }
-
-    public virtual DbSet<Xevitri> XeViTris { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -95,8 +93,8 @@ public partial class BookingBusContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnName("Thoi_GianDen");
             entity.Property(e => e.ThoiGianKh)
+                .HasMaxLength(50)
                 .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime")
                 .HasColumnName("Thoi_GianKH");
             entity.Property(e => e.TrangThai).HasDefaultValueSql("(NULL)");
 
@@ -337,6 +335,8 @@ public partial class BookingBusContext : DbContext
 
             entity.ToTable("vexechuyenxe");
 
+            entity.HasIndex(e => e.IdChuyenXe, "IX_vexechuyenxe_ID_ChuyenXe");
+
             entity.Property(e => e.IdVeXe).HasColumnName("ID_VeXe");
             entity.Property(e => e.IdChuyenXe).HasColumnName("ID_ChuyenXe");
 
@@ -389,26 +389,25 @@ public partial class BookingBusContext : DbContext
             entity.HasOne(d => d.IdLoaiNavigation).WithMany(p => p.Xes)
                 .HasForeignKey(d => d.IdLoai)
                 .HasConstraintName("fk_xe_loaixe");
-        });
 
-        modelBuilder.Entity<Xevitri>(entity =>
-        {
-            entity.HasKey(e => new { e.IdXe, e.IdViTri }).HasName("PK_Table_1");
-
-            entity.ToTable("xevitri");
-
-            entity.Property(e => e.IdXe).HasColumnName("ID_Xe");
-            entity.Property(e => e.IdViTri).HasColumnName("ID_ViTri");
-
-            entity.HasOne(d => d.IdXeNavigation).WithMany(p => p.Xevitris)
-                .HasForeignKey(d => d.IdXe)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_xevitri_xe");
-
-            entity.HasOne(d => d.IdVitriNavigation).WithMany(p => p.Xevitris)
-                .HasForeignKey(d => d.IdViTri)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_xevitri_vitri");
+            entity.HasMany(d => d.IdViTris).WithMany(p => p.IdXes)
+                .UsingEntity<Dictionary<string, object>>(
+                    "Xevitri",
+                    r => r.HasOne<Vitri>().WithMany()
+                        .HasForeignKey("IdViTri")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_xevitri_vitri"),
+                    l => l.HasOne<Xe>().WithMany()
+                        .HasForeignKey("IdXe")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_xevitri_xe"),
+                    j =>
+                    {
+                        j.HasKey("IdXe", "IdViTri");
+                        j.ToTable("xevitri");
+                        j.IndexerProperty<int>("IdXe").HasColumnName("ID_Xe");
+                        j.IndexerProperty<int>("IdViTri").HasColumnName("ID_ViTri");
+                    });
         });
 
         OnModelCreatingPartial(modelBuilder);
