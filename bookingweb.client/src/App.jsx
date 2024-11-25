@@ -6,6 +6,7 @@ import '@/assets/root.css';
 import Booking from './pages/Booking';
 import Footer from "./component/Footer/index";
 import Header from "./component/Header/index";
+import UserInfo from "./pages/UserInfo/index";
 // import Authentication from "./component/Authentication";
 // import { useEffect } from "react";
 // import { useDispatch } from "react-redux";
@@ -32,7 +33,8 @@ return (
         <Route path="/" element={<Home />} />
         <Route path="/dang-nhap"  element={<Auth />} />
          <Route path="/lich-trinh" element={<Schedule />} />
-        <Route path="/dat-ve" element={<Booking />} />
+            <Route path="/dat-ve" element={<Booking />} />
+            <Route path="/user-info" element={<UserInfo />} />
         </Routes>
         <Footer />
     </Router>

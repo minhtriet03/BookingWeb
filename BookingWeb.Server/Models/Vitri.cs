@@ -13,7 +13,9 @@ public partial class Vitri
 
     public bool? TrangThai { get; set; }
 
-    public virtual Xe IdXeNavigation { get; set; } = null!;
+    // Quan hệ nhiều-nhiều với Xe thông qua XeVitri
+    public virtual ICollection<XeVitri> XeVitries { get; set; } = new List<XeVitri>();
 
+    // Quan hệ một-nhiều với Vexe
     public virtual ICollection<Vexe> Vexes { get; set; } = new List<Vexe>();
 }
