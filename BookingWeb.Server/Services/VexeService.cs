@@ -17,6 +17,11 @@ namespace BookingWeb.Server.Services
         {
             return await _unitOfWork.vexes.GetAllAsync();
         }
+
+        public async Task<List<Vexe>> getByPage(int page)
+        {
+            return await _unitOfWork.vexes.GetByPageAsync(page, 10);
+        }
         public async Task<bool> addVeXe(Vexe vexe)
         {
             return await _unitOfWork.vexes.AddAsync(vexe);

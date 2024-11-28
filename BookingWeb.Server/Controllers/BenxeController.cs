@@ -71,7 +71,7 @@ namespace BookingWeb.Server.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("{id}")]
         public async Task<ActionResult<Benxe>> updateBenXe(Benxe benxe)
         {
             try

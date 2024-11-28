@@ -26,6 +26,11 @@ namespace BookingWeb.Server.Services
             return await _unitOfWork.tinhs.GetByIdAsync(id);
         }
 
+        public async Task<List<Tinhthanh>> getbyPage(int page)
+        {
+            return await _unitOfWork.tinhs.GetByPageAsync(page, 10);
+        }
+
         public async Task<bool> addTinhThanh(Tinhthanh tinhthanh)
         {
             return await _unitOfWork.tinhs.AddAsync(tinhthanh);

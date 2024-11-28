@@ -20,6 +20,11 @@ namespace BookingWeb.Server.Services
             return await _unitOfWork.vitris.GetAllAsync();
         }
 
+        public async Task<List<Vitri>> getByPage(int page)
+        {
+            return await _unitOfWork.vitris.GetByPageAsync(page, 10);
+        }
+
         public async Task<List<Vitri>> GetByIdXe(int idXe)
         {
             try
@@ -32,7 +37,7 @@ namespace BookingWeb.Server.Services
             }
         }
 
-        //public List<Vitri> listvitri(int idxe)
+       //public List<Vitri> listvitri(int idxe)
         //{
         //    List<Vitri> vitris = new List<Vitri>();
         //    for (int i = 0; i < 17; i++)
@@ -41,7 +46,7 @@ namespace BookingWeb.Server.Services
                 
         //    }
         //}
-
+ 
         //public async Task<bool> addVitriGhe(int idxe)
         //{
         //    try

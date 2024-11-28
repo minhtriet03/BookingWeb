@@ -29,6 +29,19 @@ namespace BookingWeb.Server.Repositories
                 return false;
             }
         }
+        public async Task<List<Vexe>> GetByPageAsync(int pageNumber, int pageSize)
+        {
+            if (pageNumber <= 0 || pageSize <= 0)
+            {
+                throw new ArgumentException("Page number and page size must be greater than zero.");
+            }
+
+            return await _dbSet
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
 
         public async Task<Vexe> getBydId(int id)
         {

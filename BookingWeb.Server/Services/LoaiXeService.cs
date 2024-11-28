@@ -2,6 +2,7 @@
 using BookingWeb.Server.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BookingWeb.Server.ViewModels;
 
 namespace BookingWeb.Server.Services
 {
@@ -20,6 +21,31 @@ namespace BookingWeb.Server.Services
         {
             return await _unitOfWork.loaiXeRepository.GetAllAsync();
         }
+
+
+        public async Task<PagedLoaiXeVM> GetByPageAsync(int pageNumber, int pageSize)
+        {
+            var skip = (pageNumber - 1) * pageSize;
+
+            var totalRecords = await _unitOfWork.loaiXeRepository.CountAsync();
+
+            var loaiXes = await _unitOfWork.loaiXeRepository.GetPagedAsync(skip, pageSize);
+
+            var data = loaiXes.Select(lx => new LoaiXeVM
+            {
+                IdLoai = lx.IdLoai,
+                SoGhe = lx.SoGhe,
+                TenLoai = lx.TenLoai,
+                TrangThai = lx.TrangThai,
+            }).ToList();
+
+            return new PagedLoaiXeVM
+            {
+                LoaiXes = data,
+                CurrentPage = pageNumber,
+                TotalPages = (int)Math.Ceiling((double)totalRecords / pageSize)
+            };
+        } 
 
         // Sử dụng async để gọi phương thức bất đồng bộ trong repository
         public async Task<Loaixe> GetLoaixe(int id)

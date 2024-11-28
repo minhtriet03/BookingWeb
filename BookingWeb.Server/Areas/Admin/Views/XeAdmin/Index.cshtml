@@ -1,0 +1,80 @@
+﻿@model BookingWeb.Server.ViewModels.PagedXeVM
+
+@{
+	ViewData["Title"] = "Xe";
+}
+
+<h1 class="h3 mb-2 text-gray-800">Quản lý xe</h1>
+@Html.Partial("./../Shared/Alert.cshtml")
+
+<div class="card shadow mb-4">
+
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Table Data Users</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Biển số</th>
+                        <th>Loại xe</th>
+                        <th>Số ghế</th>
+                        <th>Tình trạng</th>
+                        <th>Chức Năng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        int i = 1;
+                        foreach (var xe in Model.Xes)
+                        {
+                            <tr>
+                                <td>@xe.IdXe</td>
+                                <td>@xe.BienSo</td>
+                                <td>@xe.LoaiXeVM?.TenLoai</td>
+                                <td>@xe.LoaiXeVM?.SoGhe</td>
+                                <td>@(xe.TinhTrang == true ? "Hoạt động" : "Không hoạt động")</td>
+                                <td>
+                                    <a href="@Url.Action("Details", "Xe", new { id = xe.IdXe })" class="btn btn-info">Chi tiết</a>
+                                    @if (@xe.TinhTrang == true)
+                                    {
+                                        <button type="submit" class="btn btn-danger" onclick="confirmDeactivate(@xe.IdXe)">Khóa</button>
+                                    }
+                                    else if (@xe.TinhTrang == false)
+                                    {
+                                        <button type="submit" class="btn btn-success" onclick="confirmDeactivate(@xe.IdXe)">Mở khóa</button>
+                                    }
+                                </td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center">Không có dữ liệu xe.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <nav>
+                <ul class="pagination">
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("Index", new { pageNumber = i })">@i</a>
+                        </li>
+                    }
+                </ul>
+                <div>
+                    <a class="btn btn-success">Thêm Xe Mới</a>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/admin/xe.js"></script>

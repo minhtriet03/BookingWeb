@@ -13,14 +13,12 @@ public partial class Xe
 
     public bool? TinhTrang { get; set; }
 
-    // Quan hệ một-nhiều với Chuyenxe
     public virtual ICollection<Chuyenxe> Chuyenxes { get; set; } = new List<Chuyenxe>();
 
-    // Quan hệ với Loaixe
+
     public virtual Loaixe? IdLoaiNavigation { get; set; }
 
-    // Quan hệ nhiều-nhiều với Vitri thông qua XeVitri
-    public virtual ICollection<XeVitri> XeVitries { get; set; } = new List<XeVitri>();
 
+    public virtual ICollection<Vitri> IdViTris { get; set; } = new List<Vitri>();
 
 }

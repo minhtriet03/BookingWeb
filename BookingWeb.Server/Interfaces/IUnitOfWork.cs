@@ -7,12 +7,15 @@ public interface IUnitOfWork : IDisposable
     IVitriRepository vitris { get; set; }
     IVexeRepository vexes { get; set; }
 
+    IVitriXeRepository xevitris { get; set; }
     IUserRepository userRepository { get; }
     IOrderRepository orderRepository { get; }
 
     IAccountRepository accountRepository { get; }
     ILoaiXeRepository loaiXeRepository { get; }
     IXeRepository xeRepository { get; }
+    IChuyenXeRepository chuyenXeRepository { get; }
+    ITuyenDuongRepository tuyenDuongRepository { get; }
     Task<int> SaveChangesAsync();
     
 }

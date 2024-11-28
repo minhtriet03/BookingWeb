@@ -11,9 +11,9 @@ public partial class Chuyenxe
 
     public int? IdTuyenDuong { get; set; }
 
-    public DateTime? ThoiGianKh { get; set; }
+    public string? ThoiGianKh { get; set; }
 
-    public DateTime? ThoiGianDen { get; set; }
+    public string? ThoiGianDen { get; set; }
 
     public bool? TrangThai { get; set; }
 
@@ -21,5 +21,5 @@ public partial class Chuyenxe
 
     public virtual Xe? IdXeNavigation { get; set; }
 
-    public virtual ICollection<Vexe> Vexes { get; set; } = new List<Vexe>();
+    public virtual ICollection<Vexechuyenxe> Vexechuyenxes { get; set; } = new List<Vexechuyenxe>();
 }

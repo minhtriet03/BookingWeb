@@ -29,6 +29,21 @@ namespace BookingWeb.Server.Controllers
             }
         }
 
+        [HttpGet("page={i}")]
+        public async Task<ActionResult<List<Vexe>>> GetVexeByPage(int i)
+        {
+
+            try
+            {
+                var data = await _vexeService.getByPage(i);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+
+            }
+        }
         [HttpPost]
         public async Task<ActionResult<bool>> addVexe(Vexe vexe)
         {

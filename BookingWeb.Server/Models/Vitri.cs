@@ -7,15 +7,11 @@ public partial class Vitri
 {
     public int IdViTriGhe { get; set; }
 
-    public int IdXe { get; set; }
-
-    public string? Maso { get; set; }
+    public string? ViTri1 { get; set; }
 
     public bool? TrangThai { get; set; }
 
-    // Quan hệ nhiều-nhiều với Xe thông qua XeVitri
-    public virtual ICollection<XeVitri> XeVitries { get; set; } = new List<XeVitri>();
-
-    // Quan hệ một-nhiều với Vexe
     public virtual ICollection<Vexe> Vexes { get; set; } = new List<Vexe>();
+
+    public virtual ICollection<Xe> IdXes { get; set; } = new List<Xe>();
 }

@@ -11,8 +11,8 @@ public class UserVM
     public string Email { get; set; }
 
     public string Phone { get; set; }
-    
-    public bool TrangThai { get; set; }
+
+    public bool? TrangThai { get; set; }
 }
 
 public class PagedUserVM

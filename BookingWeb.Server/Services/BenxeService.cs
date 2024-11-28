@@ -41,7 +41,8 @@ namespace BookingWeb.Server.Services
         {
             try
             {
-                return await _unitOfWork.benXes.AddAsync(benxe);
+                await _unitOfWork.benXes.AddAsync(benxe);
+                return await _unitOfWork.SaveChangesAsync() > 0;
             }
             catch (Exception ex)
             {

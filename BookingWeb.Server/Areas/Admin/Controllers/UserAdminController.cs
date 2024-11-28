@@ -65,13 +65,16 @@ namespace BookingWeb.Server.Areas.Admin.Controllers
                     HoTen = model.HoTen,
                     Email = model.Email,
                     DiaChi = model.DiaChi,
-                    Phone = model.Phone
+                    Phone = model.Phone,
+                    TrangThai = model.TrangThai
+                    
                 };
-                
+
                 var isUpdated = await _userService.UpdateUserAsync(userToUpdate);
                 if (isUpdated)
                 {
-                    TempData["SuccessMessage"] = "Cập nhật thành công";
+                    TempData["AlertMessage"] = "Cập nhật thành công";
+                    TempData["AlertType"] = "success";
                     return RedirectToAction("Index");
                 }
                 else
@@ -89,7 +92,8 @@ namespace BookingWeb.Server.Areas.Admin.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> DeactivateUserAsync(int id)
+        [Route("DeactivateUserAsync")]
+        public async Task<IActionResult> DeactivateUserAsync([FromQuery]int id)
         {
             try
             {
@@ -98,7 +102,8 @@ namespace BookingWeb.Server.Areas.Admin.Controllers
                 if (result)
                 {
                     // Nếu cập nhật thành công, chuyển hướng về trang Index
-                    TempData["SuccessMessage"] = "Người dùng đã được vô hiệu hóa thành công.";
+                    TempData["AlertMessage"] = "Vô hiệu hóa người dùng thành công";
+                    TempData["AlertType"] = "success";
                     return RedirectToAction("Index");
                 }
                 else

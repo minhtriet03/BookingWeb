@@ -26,8 +26,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 
-builder.Services.AddControllersWithViews();  
-builder.Services.AddRazorPages();            
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -39,12 +39,12 @@ builder.Services.AddCors(options =>
         policy.WithOrigins("https://localhost:5173", "http://localhost:5173", "http://localhost:5108", "https://localhost:7241")
               .AllowAnyHeader()
               .AllowAnyMethod()
-              .AllowCredentials(); 
+              .AllowCredentials();
     });
 });
 
 builder.Services.AddDbContext<BookingBusContext>(options => {
-	options.UseSqlServer(builder.Configuration.GetConnectionString("BookingBus"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("BookingBus"));
 });
 
 // Đăng ký dịch vụ XeService
@@ -89,11 +89,24 @@ builder.Services.AddScoped<IBenXeRepository, BenXeRepository>();
 builder.Services.AddScoped<IGenericRepository<Benxe>, GenericRepository<Benxe>>();
 builder.Services.AddScoped<BenxeService>();
 
-//Role
+//TuyenDuong
+builder.Services.AddScoped<ITuyenDuongRepository, TuyenDuongRepository>();
+builder.Services.AddScoped<IGenericRepository<Tuyenduong>, GenericRepository<Tuyenduong>>();
+builder.Services.AddScoped<TuyenDuongService>();
+//ChuyenXe
+builder.Services.AddScoped<IChuyenXeRepository, ChuyenXeRepository>();
+builder.Services.AddScoped<IGenericRepository<Chuyenxe>, GenericRepository<Chuyenxe>>();
+builder.Services.AddScoped<ChuyenXeService>();
 
+//Role
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IGenericRepository<Phanquyen>, GenericRepository<Phanquyen>>();
 builder.Services.AddScoped<RoleService>();
+
+//Xevitri
+builder.Services.AddScoped<IVitriXeRepository, XevitriRepository>();
+builder.Services.AddScoped<IGenericRepository<Xevitri>, GenericRepository<Xevitri>>();
+builder.Services.AddScoped<XevitriService>();
 
 // Đăng ký UnitOfWork
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -110,13 +123,13 @@ app.UseStaticFiles();
 // Cấu hình pipeline xử lý yêu cầu HTTP
 if (app.Environment.IsDevelopment())
 {
-	app.UseSwagger();
-	app.UseSwaggerUI();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 //app.UseHttpsRedirection();
 
-app.UseCors("AllowAllOrigins"); 
+app.UseCors("AllowAllOrigins");
 
 app.UseRouting();
 
@@ -128,11 +141,11 @@ app.MapRazorPages();
 
 // Ánh xạ Controllers
 app.MapControllerRoute(
-	name: "MyArea",
-	pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+    name: "MyArea",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
-	name: "default",
-	pattern: "{controller=Home}/{action=Index}/{id?}");
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

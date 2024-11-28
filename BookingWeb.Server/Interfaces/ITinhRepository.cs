@@ -6,5 +6,6 @@ namespace BookingWeb.Server.Interfaces
     {
         Task<Tinhthanh> GetbyNameAsync(string name);
         Task<bool> deleteTinh(int id);
+        Task<List<Tinhthanh>> GetByPageAsync(int skip, int take);
     }
 }

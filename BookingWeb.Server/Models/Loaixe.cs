@@ -9,6 +9,8 @@ public partial class Loaixe
 
     public string? TenLoai { get; set; }
 
+    public int? SoGhe { get; set; }
+
     public bool? TrangThai { get; set; }
 
     public virtual ICollection<Xe> Xes { get; set; } = new List<Xe>();
