@@ -44,6 +44,7 @@ public partial class BookingBusContext : DbContext
     public virtual DbSet<Xe> Xes { get; set; }
 
 
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Benxe>(entity =>
