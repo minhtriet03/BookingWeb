@@ -1,0 +1,43 @@
+﻿@model BookingWeb.Server.ViewModels.UserVM
+
+<!-- Areas/Admin/Views/QuanLyNguoiDung/Index.cshtml -->
+@{
+    ViewData["Title"] = "Chỉnh Sửa Thông Tin Người Dùng";
+}
+
+<h1 class="h3 mb-2 text-gray-800">Chỉnh Sửa Thông Tin Người Dùng</h1>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Thông tin người dùng</h6>
+    </div>
+    <div class="card-body p-3">
+        <form asp-action="Edit" asp-controller="UserAdmin" method="post" >
+            <input type="hidden" asp-for="IdUser" />
+            <div class="mb-3">
+                <label class="form-label">Họ và tên</label>
+                <input type="text" class="form-control" id="input-email" asp-for="HoTen">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Địa chỉ</label>
+                <input type="text" class="form-control" id="input-address" asp-for="DiaChi">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Email address</label>
+                <input type="email" class="form-control" id="input-email" asp-for="Email">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Số điện thoại</label>
+                <input type="tel" class="form-control" id="input-phone" asp-for="Phone">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Trạng thái</label>
+                <input type="text" class="form-control" id="input-phone" asp-for="TrangThai">
+            </div>
+            <div class="form-group float-right">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="button" class="btn btn-danger">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

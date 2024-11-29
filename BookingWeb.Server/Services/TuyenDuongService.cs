@@ -1,7 +1,8 @@
-﻿using BookingWeb.Server.Interfaces;
+﻿using BookingWeb.Server.Dto;
+using BookingWeb.Server.Interfaces;
 using BookingWeb.Server.Models;
 using BookingWeb.Server.ViewModels;
-using BookingWeb.Server.Dto;
+
 namespace BookingWeb.Server.Services
 {
     public class TuyenDuongService
@@ -12,7 +13,24 @@ namespace BookingWeb.Server.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<Tuyenduong>> GetAllTuyenDuong()
+        //Toàn viết để Toàn lấy thêm mấy cái navigation
+        public async Task<List<Tuyenduong>> GetAllTuyenDuongAsync()
+        {
+            try
+            {
+                var listTuyenDuong = await _unitOfWork.tuyenDuongRepository.GetAllTuyenDuongVMAsync();
+
+                return listTuyenDuong;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+        //Toàn sửa cái IEnumable thành List rồi nha Híu, do Toàn chạy thấy nó bị lỗi mà đổi sang List thì không lôỗi
+        public async Task<List<Tuyenduong>> GetAllTuyenDuong()
         {
             try
             {
@@ -124,9 +142,8 @@ namespace BookingWeb.Server.Services
             return await _unitOfWork.tuyenDuongRepository.DeleteAsync(id);
         }
 
-        public async Task<List<ChuyenxeDetailDto>> GetLichtrinhAsync(int skip, int take)
-        {
-            return await _unitOfWork.tuyenDuongRepository.GetLichtrinhAsync( skip,take);
+        public async Task<List<ChuyenxeDetailDto>> GetLichtrinhAsync(int skip, int take) { 
+            return await _unitOfWork.tuyenDuongRepository.GetLichtrinhAsync(skip, take); 
         }
     }
 }

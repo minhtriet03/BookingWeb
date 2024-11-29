@@ -91,7 +91,7 @@ namespace BookingWeb.Server.Controllers
             }
         }
         [HttpGet("lichtrinh")]
-        public async Task<IActionResult> GetLichtrinh(int skip = 0, int take = 10)
+        public async Task<IActionResult> GetLichtrinh(int skip = 0, int take = 20)
         {
             try
             {

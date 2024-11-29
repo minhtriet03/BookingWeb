@@ -14,12 +14,12 @@ namespace BookingWeb.Server.Repositories
         {
             return await _dbContext.Chuyenxes
                 .Include(cx => cx.IdXeNavigation) // Nạp thông tin Xe
-                .ThenInclude(x => x.IdLoaiNavigation) // Nạp thông tin Loại Xe
+                    .ThenInclude(x => x.IdLoaiNavigation) // Nạp thông tin Loại Xe
                 .Include(cx => cx.IdTuyenDuongNavigation) // Nạp thông tin Tuyến Đường
-                .ThenInclude(td => td.NoiKhoiHanhNavigation) // Nạp thông tin Nơi Khởi Hành
-                .ThenInclude(nkh => nkh.IdTinhThanhNavigation) // Nạp thông tin Tỉnh Thành (Nơi Khởi Hành)
+                    .ThenInclude(td => td.NoiKhoiHanhNavigation) // Nạp thông tin Nơi Khởi Hành
+                        .ThenInclude(nkh => nkh.IdTinhThanhNavigation) // Nạp thông tin Tỉnh Thành (Nơi Khởi Hành)
                 .Include(cx => cx.IdTuyenDuongNavigation.NoiDenNavigation) // Nạp thông tin Nơi Đến
-                .ThenInclude(nd => nd.IdTinhThanhNavigation) // Nạp thông tin Tỉnh Thành (Nơi Đến)
+                    .ThenInclude(nd => nd.IdTinhThanhNavigation) // Nạp thông tin Tỉnh Thành (Nơi Đến)
                 .ToListAsync();
         }
         

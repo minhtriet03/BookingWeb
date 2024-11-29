@@ -19,18 +19,25 @@ function ScheduleMain() {
                 const result = await response.json();
                 console.log("Dữ liệu từ API:", result);
 
-                // Nhóm dữ liệu theo 'noiDenTinhThanh' (Nơi đến)
-                const grouped = result.reduce((acc, item) => {
-                    const destination = item.noiDenTinhThanh; // Nơi đến
-                    if (!acc[destination]) {
-                        acc[destination] = [];
-                    }
-                    acc[destination].push(item);
-                    return acc;
-                }, {});
+                // Kiểm tra xem dữ liệu có thuộc tính $values không
+                if (result && Array.isArray(result.$values)) {
+                    const dataArray = result.$values; // Trích xuất mảng từ $values
 
-                console.log("Dữ liệu đã nhóm theo nơi đến:", grouped); // In dữ liệu sau khi nhóm
-                setData(grouped);
+                    // Nhóm dữ liệu theo 'noiDenTinhThanh' (Nơi đến)
+                    const grouped = dataArray.reduce((acc, item) => {
+                        const destination = item.noiDenTinhThanh; // Nơi đến
+                        if (!acc[destination]) {
+                            acc[destination] = [];
+                        }
+                        acc[destination].push(item);
+                        return acc;
+                    }, {});
+
+                    console.log("Dữ liệu đã nhóm theo nơi đến:", grouped); // In dữ liệu sau khi nhóm
+                    setData(grouped);
+                } else {
+                    throw new Error('Dữ liệu không phải là mảng');
+                }
             } catch (err) {
                 console.error("Lỗi khi gọi API:", err);
                 setError(err.message);
@@ -41,6 +48,8 @@ function ScheduleMain() {
 
         fetchData();
     }, []);
+
+
 
     // Hiển thị trạng thái loading hoặc lỗi
     if (loading) {
@@ -56,7 +65,7 @@ function ScheduleMain() {
             {/* Tiêu đề bảng */}
             <div className="row mx-2 schedule-card">
                 <div className="text-header fw-medium col-3">Tuyến xe</div>
-                <div className="text-header fw-medium col-2">Loại xe</div>
+                <div className="text-header fw-medium col-1">Loại xe</div>
                 <div className="text-header fw-medium col-2">Quãng đường</div>
                 <div className="text-header fw-medium col-2">Thời gian hành trình</div>
                 <div className="text-header fw-medium col-1">Giá vé</div>
@@ -71,7 +80,7 @@ function ScheduleMain() {
                     {items.map((item, index) => (
                         <div className="row my-2" key={index}>
                             <div className="text-header fw-medium col-3">{`${item.noiKhoiHanhTinhThanh} - ${item.noiDenTinhThanh}`}</div>
-                            <div className="text-header fw-medium col-2">{item.loaiXe}</div>
+                            <div className="text-header fw-medium col-1">{item.loaiXe}</div>
                             <div className="text-header fw-medium col-2">{item.khoangCach}</div>
                             <div className="text-header fw-medium col-2">{item.tongThoiGian}</div>
                             <div className="text-header fw-medium col-1">--</div>

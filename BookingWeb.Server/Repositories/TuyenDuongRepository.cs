@@ -24,6 +24,7 @@ namespace BookingWeb.Server.Repositories
                 .ToListAsync();
         }
 
+
         public async Task<List<ChuyenxeDetailDto>> GetLichtrinhAsync(int skip, int take)
         {
             // Lấy dữ liệu từ cơ sở dữ liệu trước
@@ -68,6 +69,17 @@ namespace BookingWeb.Server.Repositories
         }
 
 
+
+
+        public async Task<List<Tuyenduong>> GetAllTuyenDuongVMAsync()
+        {
+            return await _dbContext.Tuyenduongs
+                .Include(td => td.NoiKhoiHanhNavigation)
+                    .ThenInclude(bx => bx.IdTinhThanhNavigation)
+                .Include(td => td.NoiDenNavigation)
+                    .ThenInclude(bx => bx.IdTinhThanhNavigation)
+                .ToListAsync();
+        }
 
     }
 }
