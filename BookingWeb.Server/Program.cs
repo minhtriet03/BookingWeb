@@ -47,6 +47,14 @@ builder.Services.AddDbContext<BookingBusContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("BookingBus"));
 });
 
+//Tránh lồng nhau
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+    });
+
+
 // Đăng ký dịch vụ XeService
 builder.Services.AddScoped<XeService>();
 builder.Services.AddScoped<IXeRepository, XeRepository>();

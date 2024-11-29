@@ -22,5 +22,15 @@ namespace BookingWeb.Server.Repositories
                 .Take(take)
                 .ToListAsync();
         }
+
+        public async Task<List<Tuyenduong>> GetAllTuyenDuongVMAsync()
+        {
+            return await _dbContext.Tuyenduongs
+                .Include(td => td.NoiKhoiHanhNavigation)
+                    .ThenInclude(bx => bx.IdTinhThanhNavigation)
+                .Include(td => td.NoiDenNavigation)
+                    .ThenInclude(bx => bx.IdTinhThanhNavigation)
+                .ToListAsync();
+        }
     }
 }

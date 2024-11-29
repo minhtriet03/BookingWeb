@@ -43,7 +43,8 @@ public partial class BookingBusContext : DbContext
 
     public virtual DbSet<Xe> Xes { get; set; }
 
-
+    public virtual DbSet<Xevitri> Xevitris { get; set; }
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Benxe>(entity =>
@@ -386,25 +387,28 @@ public partial class BookingBusContext : DbContext
             entity.HasOne(d => d.IdLoaiNavigation).WithMany(p => p.Xes)
                 .HasForeignKey(d => d.IdLoai)
                 .HasConstraintName("fk_xe_loaixe");
+        });
 
-            entity.HasMany(d => d.IdViTris).WithMany(p => p.IdXes)
-                .UsingEntity<Dictionary<string, object>>(
-                    "Xevitri",
-                    r => r.HasOne<Vitri>().WithMany()
-                        .HasForeignKey("IdViTri")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_xevitri_vitri"),
-                    l => l.HasOne<Xe>().WithMany()
-                        .HasForeignKey("IdXe")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_xevitri_xe"),
-                    j =>
-                    {
-                        j.HasKey("IdXe", "IdViTri");
-                        j.ToTable("xevitri");
-                        j.IndexerProperty<int>("IdXe").HasColumnName("ID_Xe");
-                        j.IndexerProperty<int>("IdViTri").HasColumnName("ID_ViTri");
-                    });
+        modelBuilder.Entity<Xevitri>(entity =>
+        {
+            entity.HasKey(e => new { e.IdXe, e.IdViTri });
+
+            entity.ToTable("xevitri");
+
+            entity.HasIndex(e => e.IdViTri, "IX_xevitri_ID_ViTri");
+
+            entity.Property(e => e.IdXe).HasColumnName("ID_Xe");
+            entity.Property(e => e.IdViTri).HasColumnName("ID_ViTri");
+
+            entity.HasOne(d => d.IdViTriNavigation).WithMany(p => p.Xevitris)
+                .HasForeignKey(d => d.IdViTri)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_xevitri_vitri");
+
+            entity.HasOne(d => d.IdXeNavigation).WithMany(p => p.Xevitris)
+                .HasForeignKey(d => d.IdXe)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_xevitri_xe");
         });
 
         OnModelCreatingPartial(modelBuilder);
