@@ -30,7 +30,7 @@ namespace BookingWeb.Server.Services
             var totalRecords = await _unitOfWork.loaiXeRepository.CountAsync();
 
             var loaiXes = await _unitOfWork.loaiXeRepository.GetPagedAsync(skip, pageSize);
-
+            
             var data = loaiXes.Select(lx => new LoaiXeVM
             {
                 IdLoai = lx.IdLoai,
@@ -54,7 +54,9 @@ namespace BookingWeb.Server.Services
         }
         public async Task<bool> AddLoaixe(Loaixe loaixe)
         {
-            return await _unitOfWork.loaiXeRepository.AddAsync(loaixe);
+            await _unitOfWork.loaiXeRepository.AddAsync(loaixe);
+            await _unitOfWork.SaveChangesAsync();
+            return true;
         }
         public async Task<bool> UpdateLoaixe(Loaixe loaixe)
         {

@@ -1,6 +1,12 @@
 ﻿namespace BookingWeb.Server.ViewModels;
+public class PagedList<T> 
+{
+    public List<T> Items { get; set; }
+    public int TotalPages { get; set; }
+    public int CurrentPage { get; set; }
+}
 
-public class PagedList<T>
+/*public class PagedList<T>
 {
     public List<T> Items { get; set; } = new List<T>();
     public int CurrentPage { get; set; } 
@@ -14,5 +20,5 @@ public class PagedList<T>
         CurrentPage = currentPage;
         TotalPages = totalPages;
     }
-}
+}*/
 

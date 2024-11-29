@@ -9,7 +9,9 @@ public partial class Xevitri
 
     public int IdViTri { get; set; }
 
-    public virtual Xe IdXeNavigation { get; set; } = null!;
+    public bool? TrangThai { get; set; }
 
-    public virtual Vitri IdVitriNavigation { get; set; } = null!;
+    public virtual Vitri IdViTriNavigation { get; set; } = null!;
+
+    public virtual Xe IdXeNavigation { get; set; } = null!;
 }
