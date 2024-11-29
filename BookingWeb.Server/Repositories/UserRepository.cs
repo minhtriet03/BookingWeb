@@ -14,6 +14,11 @@ namespace BookingWeb.Server.Repositories
         {
         }
 
+        public async Task<Nguoidung> GetByIdAccount(int IdAccount)
+        {
+            return await _dbContext.Set<Nguoidung>().FirstOrDefaultAsync(u => u.IdAccount == IdAccount);
+        }
+
         public async Task<Nguoidung> GetByUsername(string username)
         {
             return await _dbContext.Set<Nguoidung>().FirstOrDefaultAsync(u => u.HoTen == username);

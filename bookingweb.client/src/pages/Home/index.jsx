@@ -3,9 +3,11 @@ import SearchForm from '../../component/SearchForm/index.jsx';
 import { Container } from 'react-bootstrap';
 import PromoSection from './PromoSection/index.jsx';
 import PopularRoutes from './PopularRoutes/index.jsx';
+// import { useSelector } from 'react-redux';
 
 
 function Home() {
+    
   return (
     <>
     

@@ -4,19 +4,19 @@ import { SetUser } from "../actions/UserAction";
 const UserSlice = createSlice({
     name: "user",
     initialState: {
-		userInfo: [],
+        userInfo: null,
     },
-		reducers: {},
-	extraReducers:(builder) => {
-		builder
-			.addCase(SetUser.fulfilled,(state,action) => {
-				const infor = action.payload
-				state.userInfo = infor?.userInfo || []
-			})
-			.addCase(SetUser.rejected,(state) => {
-				state.userInfo = []
-			})
-	}
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(SetUser.fulfilled, (state, action) => {
+                state.userInfo = action.payload || null;
+            })
+            .addCase(SetUser.rejected, (state) => {
+                state.userInfo = null;
+            });
+    },
 });
 
-export default UserSlice.reducer
+export default UserSlice.reducer;
+
