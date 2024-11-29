@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '@/redux/actions/authAction'; 
 import { registerUser } from '@/apis';
+import { SetUser } from '@/redux/actions/UserAction';
 // import { useSelector } from 'react-redux';
 import './Auth.css';
 
@@ -33,6 +34,7 @@ function Auth() {
                 console.log(actionResult);
     
                 if (actionResult.type === 'auth/login/fulfilled') {
+                    await dispatch(SetUser());
                     navigate('/');
                 } else {
                     console.error('Đăng nhập thất bại:', actionResult.error?.message || 'Không rõ nguyên nhân');
