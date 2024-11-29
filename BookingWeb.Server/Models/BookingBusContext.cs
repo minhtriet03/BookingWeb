@@ -44,8 +44,8 @@ public partial class BookingBusContext : DbContext
     public virtual DbSet<Xe> Xes { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=ToanLD;Initial Catalog=BookingBus;Persist Security Info=True;User ID=sa;Trust Server Certificate=True");
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Data Source=localhost\\SQLEXPRESS;Initial Catalog=BookingBus;Persist Security Info=True;Trust Server Certificate=True;Integrated Security=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -63,7 +63,7 @@ public partial class BookingBusContext : DbContext
                 .HasColumnName("ID_TinhThanh");
             entity.Property(e => e.TenBenXe)
                 .HasMaxLength(100)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasDefaultValueSql("(NULL)");
 
             entity.HasOne(d => d.IdTinhThanhNavigation).WithMany(p => p.Benxes)
@@ -119,7 +119,7 @@ public partial class BookingBusContext : DbContext
                 .HasColumnName("So_Ghe");
             entity.Property(e => e.TenLoai)
                 .HasMaxLength(100)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasDefaultValueSql("(NULL)")
                 .HasColumnName("Ten_Loai");
         });
@@ -135,16 +135,16 @@ public partial class BookingBusContext : DbContext
             entity.Property(e => e.IdUser).HasColumnName("ID_User");
             entity.Property(e => e.DiaChi)
                 .HasMaxLength(255)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasDefaultValueSql("(NULL)")
                 .HasColumnName("Dia_Chi");
             entity.Property(e => e.Email)
                 .HasMaxLength(255)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasDefaultValueSql("(NULL)");
             entity.Property(e => e.HoTen)
                 .HasMaxLength(255)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasDefaultValueSql("(NULL)")
                 .HasColumnName("Ho_Ten");
             entity.Property(e => e.IdAccount)
@@ -152,7 +152,7 @@ public partial class BookingBusContext : DbContext
                 .HasColumnName("ID_Account");
             entity.Property(e => e.Phone)
                 .HasMaxLength(15)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasDefaultValueSql("(NULL)");
 
             entity.HasOne(d => d.IdAccountNavigation).WithMany(p => p.Nguoidungs)
@@ -169,7 +169,7 @@ public partial class BookingBusContext : DbContext
             entity.Property(e => e.IdQuyen).HasColumnName("ID_Quyen");
             entity.Property(e => e.TenQuyen)
                 .HasMaxLength(255)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasDefaultValueSql("(NULL)");
         });
 
@@ -212,11 +212,11 @@ public partial class BookingBusContext : DbContext
                 .HasColumnName("ID_Quyen");
             entity.Property(e => e.Password)
                 .HasMaxLength(255)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasDefaultValueSql("(NULL)");
             entity.Property(e => e.UserName)
                 .HasMaxLength(255)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasDefaultValueSql("(NULL)");
 
             entity.HasOne(d => d.IdQuyenNavigation).WithMany(p => p.Taikhoans)
@@ -238,7 +238,7 @@ public partial class BookingBusContext : DbContext
                 .HasColumnName("ID_PhieuDat");
             entity.Property(e => e.PhuongThucTt)
                 .HasMaxLength(50)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasDefaultValueSql("(NULL)")
                 .HasColumnName("PhuongThuc_TT");
             entity.Property(e => e.SoTien)
@@ -261,7 +261,7 @@ public partial class BookingBusContext : DbContext
             entity.Property(e => e.IdTinhThanh).HasColumnName("ID_TinhThanh");
             entity.Property(e => e.TenTinhThanh)
                 .HasMaxLength(100)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasDefaultValueSql("(NULL)")
                 .HasColumnName("Ten_TinhThanh");
         });
@@ -360,7 +360,7 @@ public partial class BookingBusContext : DbContext
             entity.Property(e => e.IdViTriGhe).HasColumnName("ID_ViTriGhe");
             entity.Property(e => e.ViTri1)
                 .HasMaxLength(50)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasDefaultValueSql("(NULL)")
                 .HasColumnName("ViTri");
         });
@@ -376,7 +376,7 @@ public partial class BookingBusContext : DbContext
             entity.Property(e => e.IdXe).HasColumnName("ID_Xe");
             entity.Property(e => e.BienSo)
                 .HasMaxLength(50)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasDefaultValueSql("(NULL)")
                 .HasColumnName("Bien_So");
             entity.Property(e => e.IdLoai)
