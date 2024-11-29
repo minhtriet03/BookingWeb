@@ -3,6 +3,10 @@ using BookingWeb.Server.Models;
 using Microsoft.AspNetCore.Mvc;
 using BookingWeb.Server.Services;
 using BookingWeb.Server.ViewModels;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
+using System.Text.RegularExpressions;
+using BookingWeb.Server.Helpers;
 
 namespace BookingWeb.Server.Controllers
 {
@@ -14,6 +18,16 @@ namespace BookingWeb.Server.Controllers
         public UserController(UserService userService, IUnitOfWork unitOfWork)
         {
             _userService = userService;
+        }
+
+        [HttpGet("user-login")]
+        public async Task<IActionResult> FindById()
+        {
+            var userId = MiddleWare.GetUserIdFromCookie(Request);
+            if (userId == -1) return null;
+
+            var user = await _userService.GetUserById(userId);
+            return Ok(new { userInfo = user });
         }
 
         [HttpGet]

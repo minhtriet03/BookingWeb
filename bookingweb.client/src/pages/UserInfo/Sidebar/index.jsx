@@ -1,18 +1,28 @@
 ﻿import ProfileIcon from './Icon/Profile.svg';
 import HistoryIcon from './Icon/History.svg';
 import PasswordIcon from './Icon/Password.svg';
-
+import { useNavigate } from 'react-router-dom';
 
 const Sidebar = () => {
-    const handleClick = () => {
-        console.log('Đã nhấp vào "Thông tin hồ sơ"'); // Log ra console
-        alert('Bạn đã nhấp vào Thông tin hồ sơ!');   // Hiển thị thông báo
+
+    const navigate = useNavigate(); 
+
+    const historyClick = () => {
+        navigate("/history")
+    };
+
+    const infoClick = () => {
+        navigate("/user-info")
+    };
+
+    const passClick = () => {
+        navigate("/changepass")
     };
     return (
-        <div className="col-span-12 hidden rounded-2xl border p-2 sm:col-span-3 lg:block" style={{ height:'65vh', width: '250px', border: '1px solid #ddd', borderRadius: '8px', padding: '10px' }}>
+        <div className="col-span-12 hidden rounded-2xl border p-2 sm:col-span-3 lg:block" style={{ height:'68vh', width: '250px', border: '1px solid #ddd', borderRadius: '8px', padding: '10px' }}>
             <div
                 className="cursor-pointer p-2"
-                onClick={handleClick} 
+                onClick={infoClick }
                 style={{
                     transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
                     cursor:"pointer"
@@ -28,7 +38,7 @@ const Sidebar = () => {
             </div>
             <div
                 className="cursor-pointer p-2"
-                onClick={handleClick}
+                onClick={historyClick}
                 style={{
                     transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
                     cursor: "pointer"
@@ -44,7 +54,7 @@ const Sidebar = () => {
             </div>
             <div
                 className="cursor-pointer p-2"
-                onClick={handleClick}
+                onClick={passClick}
                 style={{
                     transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
                     cursor: "pointer"

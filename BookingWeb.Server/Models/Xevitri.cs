@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace BookingWeb.Server.Models;
-
-public partial class Xevitri
+﻿namespace BookingWeb.Server.Models
 {
-    public int IdXe { get; set; }
+    public class Xevitri
+    {
+        public int IdXe { get; set; }
 
-    public int IdViTri { get; set; }
+        public int IdViTri { get; set; }
 
-    public virtual Xe? IdXeNavigation { get; set; } = null!;
+        public bool? TrangThai { get; set; }
 
-    public virtual Vitri? IdVitriNavigation { get; set; } = null!;
+        public virtual Vitri IdViTriNavigation { get; set; } = null!;
+
+        public virtual Xe IdXeNavigation { get; set; } = null!;
+    }
 }

@@ -60,24 +60,24 @@ namespace BookingWeb.Server.Services
         }
         public async Task<bool> Addxe(Xe xe)
         {
-            List<Vitri> Vitris = await _unitOfWork.vitris.GetAllAsync();
-            try
-            {
-                foreach (Vitri i in Vitris)
-                {
-                    Xevitri entity = new Xevitri();
-                    entity.IdViTri = i.IdViTriGhe;
-                    entity.IdXe = xe.IdXe;
-                    await _unitOfWork.xevitris.AddAsync(entity);
-                    Console.WriteLine("Ok" + i.IdViTriGhe);
-                }
-                await _unitOfWork.xeRepository.AddAsync(xe);
-                await _unitOfWork.SaveChangesAsync();
-                return true;
-            } catch (Exception ex)
-            {
+            //List<Vitri> Vitris = await _unitOfWork.vitris.GetAllAsync();
+            //try
+            //{
+            //    foreach (Vitri i in Vitris)
+            //    {
+            //        Xevitri entity = new Xevitri();
+            //        entity.IdViTri = i.IdViTriGhe;
+            //        entity.IdXe = xe.IdXe;
+            //        await _unitOfWork.xevitris.AddAsync(entity);
+            //        Console.WriteLine("Ok" + i.IdViTriGhe);
+            //    }
+            //    await _unitOfWork.xeRepository.AddAsync(xe);
+            //    await _unitOfWork.SaveChangesAsync();
+            //    return true;
+            //} catch (Exception ex)
+            //{
                 return false;
-            }
+            //}
         }    
          public async Task<bool> Updatexe(Xe xe)
         {
