@@ -10,7 +10,7 @@ namespace BookingWeb.Server.Helpers
 	{
 		public static int GetUserIdFromCookie(HttpRequest request)
 		{
-			var token = request.Cookies["jwt"];
+			var token = request.Cookies["jwt_token"];
 			if (string.IsNullOrEmpty(token))
 			{
 				return -1;
@@ -18,9 +18,9 @@ namespace BookingWeb.Server.Helpers
 
 			var tokenHandler = new JwtSecurityTokenHandler();
 			var jwtToken = tokenHandler.ReadJwtToken(token);
-			var userId = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var idAccount = jwtToken.Claims.FirstOrDefault(c => c.Type == "IdAccount")?.Value;
 
-			return int.Parse(userId);
+            return int.Parse(idAccount);
 		}
 
 		public static async Task<string> GetFileHashAsync(IFormFile file)
