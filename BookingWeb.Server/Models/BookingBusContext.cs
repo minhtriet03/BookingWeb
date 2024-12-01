@@ -43,7 +43,7 @@ public partial class BookingBusContext : DbContext
 
     public virtual DbSet<Xe> Xes { get; set; }
 
-
+    public virtual DbSet<Xevitri> Xevitris { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
