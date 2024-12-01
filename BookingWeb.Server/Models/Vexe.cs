@@ -7,15 +7,19 @@ public partial class Vexe
 {
     public int IdVe { get; set; }
 
-    public int? IdPhieu { get; set; }
+    public int IdPhieu { get; set; }
 
-    public int? IdViTriGhe { get; set; }
+    public int IdViTriGhe { get; set; }
 
-    public bool? TrangThai { get; set; }
+    public int IdChuyenXe { get; set; }
 
-    public virtual Phieudat? IdPhieuNavigation { get; set; }
+    public DateOnly NgayKhoiHanh { get; set; }
 
-    public virtual Vitri? IdViTriGheNavigation { get; set; }
+    public bool TrangThai { get; set; }
 
-    public virtual ICollection<Vexechuyenxe> Vexechuyenxes { get; set; } = new List<Vexechuyenxe>();
+    public virtual Chuyenxe IdChuyenXeNavigation { get; set; } = null!;
+
+    public virtual Phieudat IdPhieuNavigation { get; set; } = null!;
+
+    public virtual Vitri IdViTriGheNavigation { get; set; } = null!;
 }

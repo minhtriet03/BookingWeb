@@ -42,7 +42,7 @@ namespace BookingWeb.Server.Services
                     XeVM = cx.IdXeNavigation == null ? null : new XeVM
                     {
                         BienSo = cx.IdXeNavigation?.BienSo,
-                        TinhTrang = cx.IdXeNavigation?.TinhTrang,
+                        TinhTrang = cx.IdXeNavigation.TinhTrang,
 
                         LoaiXeVM = cx.IdXeNavigation?.IdLoaiNavigation == null ? null : new LoaiXeVM
                         {
@@ -83,7 +83,7 @@ namespace BookingWeb.Server.Services
                 XeVM = cx.IdXeNavigation == null ? null : new XeVM
                 {
                     BienSo = cx.IdXeNavigation?.BienSo,
-                    TinhTrang = cx.IdXeNavigation?.TinhTrang,
+                    TinhTrang = cx.IdXeNavigation.TinhTrang,
 
                     LoaiXeVM = cx.IdXeNavigation?.IdLoaiNavigation == null ? null : new LoaiXeVM
                     {
@@ -149,7 +149,7 @@ namespace BookingWeb.Server.Services
                 XeVM = cx.IdXeNavigation == null ? null : new XeVM
                 {
                     BienSo = cx.IdXeNavigation?.BienSo,
-                    TinhTrang = cx.IdXeNavigation?.TinhTrang,
+                    TinhTrang = cx.IdXeNavigation.TinhTrang,
 
                     LoaiXeVM = cx.IdXeNavigation?.IdLoaiNavigation == null ? null : new LoaiXeVM
                     {

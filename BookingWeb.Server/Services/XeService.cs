@@ -28,7 +28,7 @@ namespace BookingWeb.Server.Services
             var totalRecords = await _unitOfWork.xeRepository.CountAsync();
 
             var xes = await _unitOfWork.xeRepository.GetPageAsync(skip, pageSize);
-            var loaiXes = await _unitOfWork.loaiXeRepository.GetAllAsync();
+            var loaiXes = await _unitOfWork.loaiXeRepository.GetByConditionAsync(lx => lx.TrangThai == true);
 
             var data = xes.Select(x => new XeVM
             {

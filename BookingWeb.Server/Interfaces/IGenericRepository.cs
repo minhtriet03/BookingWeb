@@ -1,8 +1,11 @@
-﻿namespace BookingWeb.Server.Interfaces;
+﻿using System.Linq.Expressions;
+
+namespace BookingWeb.Server.Interfaces;
 
 public interface IGenericRepository<T> where T : class
 {
     Task<List<T>> GetAllAsync();
+    Task<List<T>> GetByConditionAsync(Expression<Func<T, bool>> expression);
     Task<T> GetByIdAsync(int id);
     Task<bool> AddAsync(T entity);
     Task<bool> UpdateAsync(T entity);
