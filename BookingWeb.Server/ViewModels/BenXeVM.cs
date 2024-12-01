@@ -5,7 +5,7 @@ public class BenXeVM
     public int IdBenXe { get; set; }
     public string TenBenXe { get; set; } = string.Empty;
     public string TenTinhThanh { get; set; } = string.Empty;
-    public bool? TrangThai { get; set; }
+    public bool TrangThai { get; set; }
 }
 
 public class PagedBenXeVM

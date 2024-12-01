@@ -12,7 +12,7 @@ public class UserVM
 
     public string Phone { get; set; }
 
-    public bool? TrangThai { get; set; }
+    public bool TrangThai { get; set; }
 }
 
 public class PagedUserVM

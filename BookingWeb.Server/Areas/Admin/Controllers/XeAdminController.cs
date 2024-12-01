@@ -23,7 +23,7 @@ public class XeAdminController : Controller
 
         return View(viewModel);
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> AddLoaiXeAsync([FromForm] XeVM model)
     {
@@ -42,13 +42,13 @@ public class XeAdminController : Controller
                 TempData["AlertType"] = "danger";
                 return RedirectToAction("Index");
             }
-            
+
             var data = new Xe
             {
                 BienSo = model.BienSo,
-                IdLoai = model.LoaiXeVM?.IdLoai,
+                IdLoai = model.LoaiXeVM.IdLoai,
                 TinhTrang = true
-                
+
             };
 
             var result = await _xeService.Addxe(data);
@@ -59,7 +59,7 @@ public class XeAdminController : Controller
                 TempData["AlertType"] = "success";
                 return RedirectToAction("Index");
             }
-            
+
             return RedirectToAction("Index");
         }
         catch (Exception ex)
