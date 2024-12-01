@@ -1,4 +1,5 @@
-﻿using BookingWeb.Server.Interfaces;
+﻿using BookingWeb.Server.Dto;
+using BookingWeb.Server.Interfaces;
 using BookingWeb.Server.Models;
 using BookingWeb.Server.ViewModels;
 
@@ -12,7 +13,24 @@ namespace BookingWeb.Server.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<Tuyenduong>> GetAllTuyenDuong()
+        //Toàn viết để Toàn lấy thêm mấy cái navigation
+        public async Task<List<Tuyenduong>> GetAllTuyenDuongAsync()
+        {
+            try
+            {
+                var listTuyenDuong = await _unitOfWork.tuyenDuongRepository.GetAllTuyenDuongVMAsync();
+
+                return listTuyenDuong;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+        //Toàn sửa cái IEnumable thành List rồi nha Híu, do Toàn chạy thấy nó bị lỗi mà đổi sang List thì không lôỗi
+        public async Task<List<Tuyenduong>> GetAllTuyenDuong()
         {
             try
             {
@@ -33,7 +51,7 @@ namespace BookingWeb.Server.Services
             var totalRecords = await _unitOfWork.tuyenDuongRepository.CountAsync();
 
             var tuyenDuongs = await _unitOfWork.tuyenDuongRepository.GetPagedAsync(skip, pageSize);
-            
+
             var data = tuyenDuongs.Select(td => new TuyenDuongVM
             {
                 IdTuyenDuong = td.IdTuyenDuong,
@@ -52,8 +70,8 @@ namespace BookingWeb.Server.Services
                 TotalPages = (int)Math.Ceiling((double)totalRecords / pageSize)
             };
         }
-            
-        
+
+
         public async Task<Tuyenduong> GetTuyenDuongById(int id)
         {
             try
@@ -86,7 +104,7 @@ namespace BookingWeb.Server.Services
             try
             {
                 await _unitOfWork.tuyenDuongRepository.UpdateAsync(tuyenduong);
-                
+
                 return await _unitOfWork.SaveChangesAsync();
 
             }
@@ -107,7 +125,7 @@ namespace BookingWeb.Server.Services
                 }
 
                 td.TrangThai = !td.TrangThai;
-                
+
                 await _unitOfWork.tuyenDuongRepository.UpdateAsync(td);
                 await _unitOfWork.SaveChangesAsync();
 
@@ -118,10 +136,14 @@ namespace BookingWeb.Server.Services
                 throw new Exception("Lỗi: " + ex.Message);
             }
         }
-        
+
         public async Task<bool> DeleteTuyenDuong(int id)
         {
             return await _unitOfWork.tuyenDuongRepository.DeleteAsync(id);
+        }
+
+        public async Task<List<ChuyenxeDetailDto>> GetLichtrinhAsync(int skip, int take) { 
+            return await _unitOfWork.tuyenDuongRepository.GetLichtrinhAsync(skip, take); 
         }
     }
 }

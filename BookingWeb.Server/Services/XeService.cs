@@ -28,6 +28,7 @@ namespace BookingWeb.Server.Services
             var totalRecords = await _unitOfWork.xeRepository.CountAsync();
 
             var xes = await _unitOfWork.xeRepository.GetPageAsync(skip, pageSize);
+            var loaiXes = await _unitOfWork.loaiXeRepository.GetByConditionAsync(lx => lx.TrangThai == true);
 
             var data = xes.Select(x => new XeVM
             {
@@ -44,12 +45,21 @@ namespace BookingWeb.Server.Services
                         TrangThai = x.IdLoaiNavigation.TrangThai,
                     }
             }).ToList();
+            
+            var loaiXeVM = loaiXes.Select(lx => new LoaiXeVM
+            {
+                IdLoai = lx.IdLoai,
+                SoGhe = lx.SoGhe,
+                TenLoai = lx.TenLoai,
+                TrangThai = lx.TrangThai,
+            }).ToList();
 
             return new PagedXeVM
             {
                 Xes = data,
                 CurrentPage = pageNumber,
-                TotalPages = (int)Math.Ceiling((double)totalRecords / pageSize)
+                TotalPages = (int)Math.Ceiling((double)totalRecords / pageSize),
+                Loaixes = loaiXeVM
             };
         }
 

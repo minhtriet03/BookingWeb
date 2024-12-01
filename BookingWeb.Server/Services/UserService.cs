@@ -13,7 +13,24 @@ public class UserService
     {
         _unitOfWork = unitOfWork;
     }
-    
+
+    // lấy by idAccount
+    public async Task<UserVM> GetUserByIdAccount(int idAccount)
+    {
+        var user = await _unitOfWork.userRepository.GetByIdAccount(idAccount);
+        if (user == null) return null;
+
+        return new UserVM
+        {
+            IdUser = user.IdUser,
+            HoTen = user.HoTen,
+            DiaChi = user.DiaChi,
+            Email = user.Email,
+            Phone = user.Phone,
+            TrangThai = user.TrangThai
+        };
+    }
+
     //Lấy tất cả
     public async Task<List<UserVM>> GetAllUsers()
     {

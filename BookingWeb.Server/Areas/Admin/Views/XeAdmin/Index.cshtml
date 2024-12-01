@@ -16,51 +16,49 @@
         <div class="table-responsive">
             <table class="table table-bordered" width="100%" cellspacing="0">
                 <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Biển số</th>
-                        <th>Loại xe</th>
-                        <th>Số ghế</th>
-                        <th>Tình trạng</th>
-                        <th>Chức Năng</th>
-                    </tr>
+                <tr>
+                    <th>ID</th>
+                    <th>Biển số</th>
+                    <th>Loại xe</th>
+                    <th>Tình trạng</th>
+                    <th>Chức Năng</th>
+                </tr>
                 </thead>
                 <tbody>
-                    @if (Model != null)
-                    {
-                        int i = 1;
-                        foreach (var xe in Model.Xes)
-                        {
-                            <tr>
-                                <td>@xe.IdXe</td>
-                                <td>@xe.BienSo</td>
-                                <td>@xe.LoaiXeVM?.TenLoai</td>
-                                <td>@xe.LoaiXeVM?.SoGhe</td>
-                                <td>@(xe.TinhTrang == true ? "Hoạt động" : "Không hoạt động")</td>
-                                <td>
-                                    <a href="@Url.Action("Details", "Xe", new { id = xe.IdXe })" class="btn btn-info">Chi tiết</a>
-                                    @if (@xe.TinhTrang == true)
-                                    {
-                                        <button type="submit" class="btn btn-danger" onclick="confirmDeactivate(@xe.IdXe)">Khóa</button>
-                                    }
-                                    else if (@xe.TinhTrang == false)
-                                    {
-                                        <button type="submit" class="btn btn-success" onclick="confirmDeactivate(@xe.IdXe)">Mở khóa</button>
-                                    }
-                                </td>
-                            </tr>
-                            i++;
-                        }
-                    }
-                    else
+                @if (Model != null)
+                {
+                    int i = 1;
+                    foreach (var xe in Model.Xes)
                     {
                         <tr>
-                            <td colspan="5" class="text-center">Không có dữ liệu xe.</td>
+                            <td>@xe.IdXe</td>
+                            <td>@xe.BienSo</td>
+                            <td>@xe.LoaiXeVM?.TenLoai</td>
+                            <td>@(xe.TinhTrang == true ? "Hoạt động" : "Không hoạt động")</td>
+                            <td>
+                                <a href="@Url.Action("Details", "Xe", new { id = xe.IdXe })" class="btn btn-info">Chi tiết</a>
+                                @if (@xe.TinhTrang == true)
+                                {
+                                    <button type="submit" class="btn btn-danger" onclick="confirmDeactivate(@xe.IdXe)">Khóa</button>
+                                }
+                                else if (@xe.TinhTrang == false)
+                                {
+                                    <button type="submit" class="btn btn-success" onclick="confirmDeactivate(@xe.IdXe)">Mở khóa</button>
+                                }
+                            </td>
                         </tr>
+                        i++;
                     }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" class="text-center">Không có dữ liệu xe.</td>
+                    </tr>
+                }
                 </tbody>
             </table>
-            <nav>
+            <nav class="d-flex justify-content-between">
                 <ul class="pagination">
                     @for (int i = 1; i <= Model.TotalPages; i++)
                     {
@@ -70,9 +68,40 @@
                     }
                 </ul>
                 <div>
-                    <a class="btn btn-success">Thêm Xe Mới</a>
+                    <a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addXeModal">Thêm Xe Mới</a>
                 </div>
             </nav>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addXeModal" tabindex="-1" aria-labelledby="addXeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addXeModalLabel">Thêm Xe Mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Form thêm mới xe -->
+                <form id="addXeForm" asp-action="">
+                    <div class="mb-3">
+                        <label for="bienSo" class="form-label">Biển số</label>
+                        <input type="text" class="form-control" id="bienSo" name="BienSo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="loaiXe" class="form-label">Loại xe</label>
+                        <select class="form-control" id="loaiXe" name="LoaiXeVM.IdLoai" required>
+                            @foreach (var loai in Model.Loaixes)
+                            {
+                                <option value="@loai.IdLoai">@loai.TenLoai</option>
+                            }
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Thêm</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>

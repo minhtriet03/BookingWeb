@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { loginUser } from '@/redux/actions/authAction'; 
 import { registerUser } from '@/apis';
 import { SetUser } from '@/redux/actions/UserAction';
-// import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import './Auth.css';
 
 function Auth() {
@@ -18,6 +18,12 @@ function Auth() {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const userred = useSelector((state) => state.user.userInfo);
+    console.log("userInfooo", userred?.hoTen);
+
+
+
     // const { auth } = useSelector(x => x.auth);
 
     // Xử lý khi form được submit
@@ -35,7 +41,8 @@ function Auth() {
     
                 if (actionResult.type === 'auth/login/fulfilled') {
                     await dispatch(SetUser());
-                    navigate('/');
+                   
+                     navigate('/');
                 } else {
                     console.error('Đăng nhập thất bại:', actionResult.error?.message || 'Không rõ nguyên nhân');
                 }
@@ -64,6 +71,9 @@ function Auth() {
             console.error('Lỗi xảy ra:', error);
         }
     };
+
+
+
 
     // Xử lý khi người dùng nhập form
     const handleChange = (e) => {

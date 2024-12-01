@@ -1,0 +1,50 @@
+﻿@model BookingWeb.Server.Models.Chuyenxe
+
+<h1 class="h3 mb-2 text-gray-800">Chi Tiết Chuyến Xe</h1>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Thông Tin Chuyến Xe</h6>
+    </div>
+    <div class="card-body">
+        <form method="post" asp-action="UpdateChuyenXe" asp-controller="ChuyenXeAdmin">
+            <div class="form-group">
+                <label for="XeVM">Biển số</label>
+                <input  value="@Model.IdXeNavigation?.BienSo" readonly="readonly">
+                <select name="XeVM.IdXe" class="form-control" required>
+                    @foreach (var xe in ViewBag.XeList)
+                    {
+                        <option value="@xe.IdXe">@xe.BienSo</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="TuyenDuongVM">Tên Tuyến Đường</label>
+                <input  value="@Model.IdTuyenDuongNavigation?.NoiKhoiHanhNavigation?.IdTinhThanhNavigation?.TenTinhThanh - @Model.IdTuyenDuongNavigation?.NoiDenNavigation?.IdTinhThanhNavigation?.TenTinhThanh" readonly="readonly">
+                <select name="TuyenDuongVM.IdTuyenDuong" class="form-control" required>
+                    @foreach (var tuyenDuong in ViewBag.TuyenDuongList)
+                    {
+                        <option value="@tuyenDuong.IdTuyenDuong">
+                            @tuyenDuong.NoiKhoiHanhNavigation?.IdTinhThanhNavigation?.TenTinhThanh -
+                            @tuyenDuong.NoiDenNavigation?.IdTinhThanhNavigation?.TenTinhThanh
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ThoiGianKh">Thời gian khởi hành(Dự kiến)</label>
+                <input type="time" class="form-control" id="thoiGianKH" name="ThoiGianKh" required value="@Model.ThoiGianKh">
+            </div>
+
+            <div class="form-group">
+                <label for="ThoiGianDen">Thời gian kết thúc(Dự kiến)</label>
+                <input type="time" class="form-control" id="thoiGianKT" name="ThoiGianDen" required value="@Model.ThoiGianDen">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Cập nhật</button>
+            <a href="@Url.Action("Index", "ChuyenXeAdmin")" class="btn btn-secondary">Quay lại</a>
+        </form>
+    </div>
+</div>

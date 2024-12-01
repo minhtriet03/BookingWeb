@@ -109,10 +109,10 @@ namespace BookingWeb.Server.Controllers
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-            new Claim(ClaimTypes.NameIdentifier, taikhoan.IdAccount.ToString()),
-            new Claim(ClaimTypes.Name, taikhoan.UserName),
+            new Claim("IdAccount", taikhoan.IdAccount+""),
+            new Claim("UserName", taikhoan.UserName),
                 }),
-                Expires = DateTime.UtcNow.AddHours(1),
+                Expires = DateTime.UtcNow.AddHours(9),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
@@ -128,7 +128,9 @@ namespace BookingWeb.Server.Controllers
                 Expires = DateTime.UtcNow.AddHours(1) // Thời hạn cookies
             };
 
-            Response.Cookies.Append("jwt_token", tokenString, cookieOptions);
+
+
+            Response.Cookies.Append("jwt", tokenString, cookieOptions);
 
             return Ok("Đăng nhập thành công");
         }

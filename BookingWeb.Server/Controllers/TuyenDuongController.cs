@@ -90,5 +90,19 @@ namespace BookingWeb.Server.Controllers
 
             }
         }
+        [HttpGet("lichtrinh")]
+        public async Task<IActionResult> GetLichtrinh(int skip = 0, int take = 20)
+        {
+            try
+            {
+                var result = await _tuyenDuongService.GetLichtrinhAsync(skip, take);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+
+            }
+        }
     }
 }
