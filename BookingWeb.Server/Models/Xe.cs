@@ -15,10 +15,7 @@ public partial class Xe
 
     public virtual ICollection<Chuyenxe> Chuyenxes { get; set; } = new List<Chuyenxe>();
 
-
     public virtual Loaixe? IdLoaiNavigation { get; set; }
 
-
-    public virtual ICollection<Xevitri> IdXeVitris { get; set; } = new List<Xevitri>();
-
+    public virtual ICollection<Xevitri> Xevitris { get; set; } = new List<Xevitri>();
 }

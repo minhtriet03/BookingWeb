@@ -58,12 +58,37 @@
                     }
                 </ul>
                 <div>
-                    <a class="btn btn-success">Thêm mới</a>
+                    <a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addLoaiXeModal">Thêm mới</a>
                 </div>
             </nav>
         </div>
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="addLoaiXeModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thêm loại xe mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addLoaiXeForm" asp-action="AddLoaiXe" method="post">
+                    <div class="mb-3">
+                        <label for="tenLoai" class="form-label">Tên loại xe</label>
+                        <input type="text" class="form-control" id="tenLoai" name="tenLoai" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="soGhe" class="form-label">Số ghế</label>
+                        <input type="number" min="1" max="32" class="form-control" id="soGhe" name="soGhe" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Thêm</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 <script src="~/js/admin/loaixe.js"></script>

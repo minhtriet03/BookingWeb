@@ -12,7 +12,24 @@ namespace BookingWeb.Server.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<Tuyenduong>> GetAllTuyenDuong()
+        //Toàn viết để Toàn lấy thêm mấy cái navigation
+        public async Task<List<Tuyenduong>> GetAllTuyenDuongAsync()
+        {
+            try
+            {
+                var listTuyenDuong = await _unitOfWork.tuyenDuongRepository.GetAllTuyenDuongVMAsync();
+
+                return listTuyenDuong;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        
+        //Toàn sửa cái IEnumable thành List rồi nha Híu, do Toàn chạy thấy nó bị lỗi mà đổi sang List thì không lôỗi
+        public async Task<List<Tuyenduong>> GetAllTuyenDuong()
         {
             try
             {

@@ -1,5 +1,5 @@
 ﻿import Sidebar from "./Sidebar/index";
-import { Form, Button, Col, Row } from 'react-bootstrap';
+import { Form, Button} from 'react-bootstrap';
 
 const History = () => {
     return (

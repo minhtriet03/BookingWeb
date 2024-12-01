@@ -28,6 +28,7 @@ namespace BookingWeb.Server.Services
             var totalRecords = await _unitOfWork.xeRepository.CountAsync();
 
             var xes = await _unitOfWork.xeRepository.GetPageAsync(skip, pageSize);
+            var loaiXes = await _unitOfWork.loaiXeRepository.GetAllAsync();
 
             var data = xes.Select(x => new XeVM
             {
@@ -44,42 +45,51 @@ namespace BookingWeb.Server.Services
                         TrangThai = x.IdLoaiNavigation.TrangThai,
                     }
             }).ToList();
+            
+            var loaiXeVM = loaiXes.Select(lx => new LoaiXeVM
+            {
+                IdLoai = lx.IdLoai,
+                SoGhe = lx.SoGhe,
+                TenLoai = lx.TenLoai,
+                TrangThai = lx.TrangThai,
+            }).ToList();
 
             return new PagedXeVM
             {
                 Xes = data,
                 CurrentPage = pageNumber,
-                TotalPages = (int)Math.Ceiling((double)totalRecords / pageSize)
+                TotalPages = (int)Math.Ceiling((double)totalRecords / pageSize),
+                Loaixes = loaiXeVM
             };
         }
 
-        // Sử dụng async để gọi phương thức bất đồng bộ trong repository
         public async Task<Xe> Getxe(int id)
         {
             return await _unitOfWork.xeRepository.GetByIdAsync(id);
         }
         public async Task<bool> Addxe(Xe xe)
         {
-            //List<Vitri> Vitris = await _unitOfWork.vitris.GetAllAsync();
-            //try
-            //{
-            //    foreach (Vitri i in Vitris)
-            //    {
-            //        Xevitri entity = new Xevitri();
-            //        entity.IdViTri = i.IdViTriGhe;
-            //        entity.IdXe = xe.IdXe;
-            //        await _unitOfWork.xevitris.AddAsync(entity);
-            //        Console.WriteLine("Ok" + i.IdViTriGhe);
-            //    }
-            //    await _unitOfWork.xeRepository.AddAsync(xe);
-            //    await _unitOfWork.SaveChangesAsync();
-            //    return true;
-            //} catch (Exception ex)
-            //{
+            List<Vitri> Vitris = await _unitOfWork.vitris.GetAllAsync();
+            await _unitOfWork.xeRepository.AddAsync(xe);
+            try
+            {
+                foreach (Vitri i in Vitris)
+                {
+                    Xevitri entity = new Xevitri();
+                    entity.IdViTri = i.IdViTriGhe;
+                    entity.IdXe = xe.IdXe;
+                    entity.TrangThai = true;
+                    await _unitOfWork.xevitris.AddAsync(entity);
+                }
+                await _unitOfWork.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
                 return false;
-            //}
-        }    
-         public async Task<bool> Updatexe(Xe xe)
+            }
+        }
+        public async Task<bool> Updatexe(Xe xe)
         {
             return await _unitOfWork.xeRepository.UpdateAsync(xe);
         }
