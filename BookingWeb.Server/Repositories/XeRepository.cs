@@ -72,6 +72,7 @@ namespace BookingWeb.Server.Repositories
         // Triển khai phương thức AddAsync
         public async Task<bool> AddAsync(Xe entity)
         {
+
             _context.Xes.Add(entity);
             return await _context.SaveChangesAsync() > 0;
         }

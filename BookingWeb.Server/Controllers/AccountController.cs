@@ -16,6 +16,7 @@ namespace BookingWeb.Server.Controllers
     {
 
         private readonly AccountService _accountService;
+        private readonly UserService _userService;
 
         public AccountController(AccountService accountService)
         {
@@ -66,11 +67,22 @@ namespace BookingWeb.Server.Controllers
                 return BadRequest("Dữ liệu không hợp lệ");
             }
 
+            Nguoidung newUser = new Nguoidung();
+            newUser.HoTen = null;
+            newUser.Email = acc.UserName;
+            newUser.DiaChi = null;
+            newUser.Phone = null;
+            newUser.TrangThai = true;
+            newUser.IdAccount = acc.IdAccount;
+
+            await _userService.AddUserAsync(newUser);
+
             Taikhoan taikhoan = new Taikhoan
             {
                 UserName = acc.UserName,
                 Password = acc.Password,
                 IdQuyen = 1,
+                TrangThai = true,
             };
 
             Console.WriteLine(taikhoan.IdAccount + taikhoan.IdQuyen +taikhoan.UserName + taikhoan.Password);

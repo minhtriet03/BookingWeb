@@ -18,7 +18,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
 
     public async Task<List<T>> GetAllAsync()
     {
-         return await _dbSet.ToListAsync();
+        return await _dbSet.ToListAsync();
     }
     public Task<List<T>> GetByConditionAsync(Expression<Func<T, bool>> expression)
     {
@@ -32,7 +32,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
 
     public async Task<bool> AddAsync(T entity)
     {
-       try
+        try
         {
             await _dbSet.AddAsync(entity);
             return true;
@@ -56,7 +56,6 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         }
 
     }
-
     public async Task<bool> DeleteAsync(int id)
     {
         try

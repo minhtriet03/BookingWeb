@@ -10,7 +10,7 @@ namespace BookingWeb.Server.Helpers
 	{
 		public static int GetUserIdFromCookie(HttpRequest request)
 		{
-			var token = request.Cookies["jwt_token"];
+			var token = request.Cookies["jwt"];
 			if (string.IsNullOrEmpty(token))
 			{
 				return -1;

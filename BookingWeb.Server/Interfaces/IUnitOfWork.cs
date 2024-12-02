@@ -2,6 +2,12 @@
 
 public interface IUnitOfWork : IDisposable
 {
+    IBenXeRepository benXes { get; set; }
+    ITinhRepository tinhs { get; set; }
+    IVitriRepository vitris { get; set; }
+    IVexeRepository vexes { get; set; }
+
+
     IUserRepository userRepository { get; }
     IOrderRepository orderRepository { get; }
 

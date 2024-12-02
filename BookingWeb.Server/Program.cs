@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BookingWeb.Server.Helpers;
 using BookingWeb.Server.Interfaces;
 using BookingWeb.Server.Models;
 using BookingWeb.Server.Repositories;
@@ -9,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using BookingWeb.Server.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
@@ -76,6 +76,27 @@ builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IGenericRepository<Taikhoan>, GenericRepository<Taikhoan>>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<OrderService>();
+
+//Vitri
+builder.Services.AddScoped<IVitriRepository, VitriRepository>();
+builder.Services.AddScoped<IGenericRepository<Vitri>, GenericRepository<Vitri>>();
+builder.Services.AddScoped<VitriService>();
+
+//Tinh
+builder.Services.AddScoped<ITinhRepository, TinhRepository>();
+builder.Services.AddScoped<IGenericRepository<Tinhthanh>, GenericRepository<Tinhthanh>>();
+builder.Services.AddScoped<TinhService>();
+
+//Vexe
+builder.Services.AddScoped<IVexeRepository, VexeRepository>();
+builder.Services.AddScoped<IGenericRepository<Vexe>, GenericRepository<Vexe>>();
+builder.Services.AddScoped<VexeService>();
+
+//Benxe
+builder.Services.AddScoped<IBenXeRepository, BenXeRepository>();
+builder.Services.AddScoped<IGenericRepository<Benxe>, GenericRepository<Benxe>>();
+builder.Services.AddScoped<BenxeService>();
+
 //TuyenDuong
 builder.Services.AddScoped<ITuyenDuongRepository, TuyenDuongRepository>();
 builder.Services.AddScoped<IGenericRepository<Tuyenduong>, GenericRepository<Tuyenduong>>();
@@ -84,14 +105,15 @@ builder.Services.AddScoped<TuyenDuongService>();
 builder.Services.AddScoped<IChuyenXeRepository, ChuyenXeRepository>();
 builder.Services.AddScoped<IGenericRepository<Chuyenxe>, GenericRepository<Chuyenxe>>();
 builder.Services.AddScoped<ChuyenXeService>();
+
 //Role
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IGenericRepository<Phanquyen>, GenericRepository<Phanquyen>>();
-builder.Services.AddScoped<RoleService>(); 
+builder.Services.AddScoped<RoleService>();
+
 // Đăng ký UnitOfWork
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-
+builder.Services.AddScoped<UnitOfWork>();
 builder.Services.AddScoped<AccountService>();
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
