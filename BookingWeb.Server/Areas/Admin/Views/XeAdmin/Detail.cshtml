@@ -1,4 +1,4 @@
-﻿@model BookingWeb.Server.ViewModels.UserVM
+﻿@model BookingWeb.Server.Models.Xe
 
 <!-- Areas/Admin/Views/QuanLyNguoiDung/Index.cshtml -->
 @{
@@ -12,27 +12,53 @@
         <h6 class="m-0 font-weight-bold text-primary">Thông tin người dùng</h6>
     </div>
     <div class="card-body p-3">
-        <form asp-action="Edit" asp-controller="UserAdmin" method="post" >
-            <input type="hidden" asp-for="IdUser" />
+        <form asp-action="EditXe" asp-controller="XeAdmin" method="post" >
+            <input type="hidden" asp-for="IdXe" />
             <div class="mb-3">
-                <label class="form-label">Họ và tên</label>
-                <input type="text" class="form-control" id="input-email" asp-for="HoTen">
+                <label class="form-label">Loại Xe</label>
+                <select class="form-control" id="loaiXe5" name="IdLoai" required>
+                    @if (!@Model.TinhTrang)
+                    {
+                        <option value="@Model.IdLoai" selected disabled>@Model.IdLoaiNavigation.TenLoai</option>
+                        @foreach(var loai in ViewBag.LoaiXeList)
+                        {
+                            <option value="@loai.IdLoai">@loai.TenLoai</option>
+                        }
+                    }
+
+                    
+                    @*@if (Model.IdLoaiNavigation.TrangThai == false)
+                    {
+                        @foreach (var loai in ViewBag.LoaiXeList)
+                        {
+                            @if (Model.IdLoai != @loai.IdLoai)
+                            {
+                                <option value="@Model.IdLoai" selected>@Model.IdLoaiNavigation.TenLoai</option>
+                            }
+                            else
+                            {
+                                <option value="@loai.IdLoai">@loai.TenLoai</option>
+                            }
+                        }
+                    }
+                    else
+                    {*@
+                    @*@foreach (var loai in ViewBag.LoaiXeList)
+                {
+                    @if (Model.IdLoai == @loai.IdLoai)
+                    {
+                        <option value="@Model.IdLoai" selected>@Model.IdLoaiNavigation.TenLoai</option>
+                    }
+                    else
+                    {
+                        <option value="@loai.IdLoai">@loai.TenLoai</option>
+                    }
+                }*@
+                </select>
             </div>
             <div class="mb-3">
-                <label class="form-label">Địa chỉ</label>
-                <input type="text" class="form-control" id="input-address" asp-for="DiaChi">
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Email address</label>
-                <input type="email" class="form-control" id="input-email" asp-for="Email">
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Số điện thoại</label>
-                <input type="tel" class="form-control" id="input-phone" asp-for="Phone">
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Trạng thái</label>
-                <input type="text" class="form-control" id="input-phone" asp-for="TrangThai">
+                <label class="form-label">Biển số</label>
+                <input type="text" class="form-control" id="bienSo" asp-for="BienSo">
             </div>
             <div class="form-group float-right">
                 <button type="submit" class="btn btn-primary">Submit</button>

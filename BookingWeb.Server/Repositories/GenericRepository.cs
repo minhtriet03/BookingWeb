@@ -75,8 +75,29 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         }
 
     }
+
+    public async Task<bool> DeactivateAsync(int id, Func<T, bool> condition, Action<T> change )
+    {
+        var entity = await GetByIdAsync(id);
+        if (entity == null)
+        {
+            throw new InvalidOperationException("Entity not found");
+        }
+        if(!condition(entity))
+        {
+            throw new InvalidOperationException("Condition not met");
+        }
+        
+        change(entity);
+        await UpdateAsync(entity);
+
+        return true;
+    }
+
+    
     public async Task<int> CountAsync()
     {
         return await _dbSet.CountAsync();
     }
+    
 }

@@ -8,6 +8,7 @@ namespace BookingWeb.Server.Interfaces
         Task<List<XeVM>> GetAllXeVMsAsync();
         Task<int> CountAsync();
         Task<List<Xe>> GetPageAsync(int skip, int take);
+        Task<Xe?> GetById(int id);
     }
     
 

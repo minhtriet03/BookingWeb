@@ -17,6 +17,19 @@ namespace BookingWeb.Server.Controllers
             _xeService = xeService;
         }
 
+        #region Toan Test Api
+
+        [HttpGet("Toan")]
+        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 10)
+        {
+            var viewModel = await _xeService.GetXesByPageAsync(pageNumber, pageSize);
+
+            return Ok(viewModel);
+        }
+
+        #endregion
+        
+
         // Lấy tất cả xe
         [HttpGet]
         public async Task<ActionResult<List<Xe>>> GetAllXe()
@@ -24,6 +37,13 @@ namespace BookingWeb.Server.Controllers
             var xes = await _xeService.GetAllXes();
             return Ok(xes);
         }
+        
+        [HttpGet("BienSo")]
+        public async Task<ActionResult<List<Xe>>> GetBienSoByConditionAsync([FromQuery]string bienSo)
+        {
+            var xes = await _xeService.GetBienSoByConditionAsync(bienSo);
+            return Ok(xes);
+        } 
 
         // Lấy xe theo ID
         [HttpGet("{id}")]
