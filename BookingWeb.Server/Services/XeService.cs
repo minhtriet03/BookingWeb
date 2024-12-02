@@ -1,7 +1,5 @@
 ﻿using BookingWeb.Server.Interfaces;
 using BookingWeb.Server.Models;
-using BookingWeb.Server.Repositories;
-using System.Security.AccessControl;
 using BookingWeb.Server.ViewModels;
 
 namespace BookingWeb.Server.Services
@@ -15,10 +13,19 @@ namespace BookingWeb.Server.Services
             _unitOfWork = unitOfWork;
         }
 
-        // Sử dụng async để gọi phương thức bất đồng bộ trong repository
         public async Task<List<Xe>> GetAllXes()
         {
             return await _unitOfWork.xeRepository.GetAllAsync();
+        }
+        
+        public async Task<List<Xe>> GetTrangThaiByConditionAsync()
+        {
+            return await _unitOfWork.xeRepository.GetByConditionAsync(x => x.TinhTrang == true);
+        }
+        
+        public async Task<List<Xe>> GetBienSoByConditionAsync(string bienSo)
+        {
+            return await _unitOfWork.xeRepository.GetByConditionAsync(x => x.BienSo == bienSo);
         }
 
         public async Task<PagedXeVM> GetXesByPageAsync(int pageNumber, int pageSize)
@@ -28,7 +35,6 @@ namespace BookingWeb.Server.Services
             var totalRecords = await _unitOfWork.xeRepository.CountAsync();
 
             var xes = await _unitOfWork.xeRepository.GetPageAsync(skip, pageSize);
-            var loaiXes = await _unitOfWork.loaiXeRepository.GetByConditionAsync(lx => lx.TrangThai == true);
 
             var data = xes.Select(x => new XeVM
             {
@@ -46,27 +52,18 @@ namespace BookingWeb.Server.Services
                     }
             }).ToList();
             
-            var loaiXeVM = loaiXes.Select(lx => new LoaiXeVM
-            {
-                IdLoai = lx.IdLoai,
-                SoGhe = lx.SoGhe,
-                TenLoai = lx.TenLoai,
-                TrangThai = lx.TrangThai,
-            }).ToList();
-
             return new PagedXeVM
             {
                 Xes = data,
                 CurrentPage = pageNumber,
                 TotalPages = (int)Math.Ceiling((double)totalRecords / pageSize),
-                Loaixes = loaiXeVM
             };
         }
 
         // Sử dụng async để gọi phương thức bất đồng bộ trong repository
         public async Task<Xe> Getxe(int id)
         {
-            return await _unitOfWork.xeRepository.GetByIdAsync(id);
+            return await _unitOfWork.xeRepository.GetById(id);
         }
         public async Task<bool> Addxe(Xe xe)
         {
@@ -74,7 +71,10 @@ namespace BookingWeb.Server.Services
         }
         public async Task<bool> Updatexe(Xe xe)
         {
-            return await _unitOfWork.xeRepository.UpdateAsync(xe);
+            var result = await _unitOfWork.xeRepository.UpdateAsync(xe);
+            if(!result) return false;
+            await _unitOfWork.SaveChangesAsync();
+            return true;
         }
 
         public async Task<bool> Deletexe(int id)

@@ -36,7 +36,7 @@
                             <td>@xe.LoaiXeVM?.TenLoai</td>
                             <td>@(xe.TinhTrang == true ? "Hoạt động" : "Không hoạt động")</td>
                             <td>
-                                <a href="@Url.Action("Details", "Xe", new { id = xe.IdXe })" class="btn btn-info">Chi tiết</a>
+                                <a href="@Url.Action("Detail", "XeAdmin", new { id = xe.IdXe })" class="btn btn-info">Chi tiết</a>
                                 @if (@xe.TinhTrang == true)
                                 {
                                     <button type="submit" class="btn btn-danger" onclick="confirmDeactivate(@xe.IdXe)">Khóa</button>
@@ -85,15 +85,15 @@
             </div>
             <div class="modal-body">
                 <!-- Form thêm mới xe -->
-                <form id="addXeForm" asp-action="">
+                <form asp-action="AddXe" asp-controller="XeAdmin" id="addXeForm"   onSubmit="return validateBienSo()" method="post">   
                     <div class="mb-3">
                         <label for="bienSo" class="form-label">Biển số</label>
                         <input type="text" class="form-control" id="bienSo" name="BienSo" required>
                     </div>
                     <div class="mb-3">
                         <label for="loaiXe" class="form-label">Loại xe</label>
-                        <select class="form-control" id="loaiXe" name="LoaiXeVM.IdLoai" required>
-                            @foreach (var loai in Model.Loaixes)
+                        <select class="form-control" id="loaiXe5" name="LoaiXeVM.IdLoai" required>
+                            @foreach (var loai in ViewBag.LoaiXeList)
                             {
                                 <option value="@loai.IdLoai">@loai.TenLoai</option>
                             }
@@ -105,5 +105,7 @@
         </div>
     </div>
 </div>
+
+
 
 <script src="~/js/admin/xe.js"></script>

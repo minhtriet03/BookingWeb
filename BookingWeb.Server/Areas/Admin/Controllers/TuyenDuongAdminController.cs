@@ -22,6 +22,14 @@ public class TuyenDuongAdminController : Controller
         return View(viewModel);
     }
     
+    /*[HttpGet("DataViewBag")]
+    public async Task<IActionResult> DataViewBag()
+    {
+        
+        return View();
+    }
+    */
+    
     [HttpPost]
     [Route("DeactivateAsync")]
     public async Task<IActionResult> DeactivateUserAsync([FromQuery]int id)

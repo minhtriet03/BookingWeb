@@ -2,7 +2,7 @@
     if (confirm("Bạn có muốn thay đổi không ? ")) {
         const form = document.createElement("form");
         form.method = "Post";
-        form.action = `/Admin/LoaiXeController/DeactivateAsync?id=${id}`;
+        form.action = `/Admin/LoaiXeAdmin/DeactivateAsync?id=${id}`;
         document.body.appendChild(form);
         form.submit();
     }

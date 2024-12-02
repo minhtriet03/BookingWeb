@@ -19,48 +19,12 @@ public class ChuyenXeAdminController : Controller
         _xeService = xeService;
         _tuyenDuong = tuyenDuong;
     }
-
-    /*[HttpGet]
-    public async Task<IActionResult> Index()
-    {
-        var viewModel = await _chuyenXeService.GetAllChuyenXeVM();
-        return View(viewModel);
-    }*/
-
-    /*[HttpGet]
-    public async Task<IActionResult> Index(string searchString)
-    {
-        var viewModel = await _chuyenXeService.GetAllChuyenXeVM();
-
-        if (viewModel == null)
-        {
-            return Problem("Entity set is null.");
-        }
-
-        /*if (!String.IsNullOrEmpty(searchString))
-        {
-            viewModel = viewModel.Where(cx => (bool)cx.XeVM?.BienSo.Contains(searchString.ToUpper()));
-        }#1#
-
-        if (!String.IsNullOrEmpty(searchString))
-        {
-            viewModel = viewModel.Where(cx =>
-                    (cx.XeVM?.BienSo?.ToUpper().Contains(searchString.ToUpper()) ?? false) ||
-                    (cx.XeVM?.LoaiXeVM?.TenLoai?.ToUpper().Contains(searchString.ToUpper()) ?? false) ||
-                    (cx.TuyenDuongVM?.NoiDen?.ToUpper().Contains(searchString.ToUpper()) ?? false) ||
-                    (cx.TuyenDuongVM?.NoiKhoiHanh?.ToUpper().Contains(searchString.ToUpper()) ?? false) ||
-                    (cx.TuyenDuongVM?.KhoangCach?.ToString()?.Contains(searchString.ToUpper()) ?? false) ||
-                    (cx.TuyenDuongVM?.GiaVe?.ToString()?.Contains(searchString.ToUpper()) ?? false)
-            );
-        }
-
-        return View(viewModel);
-    }*/
+    
     [HttpGet]
     public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 5)
     {
         var viewModel = await _chuyenXeService.GetByPageAsync(pageNumber, pageSize);
-        var xeList = await _xeService.GetAllXes();
+        var xeList = await _xeService.GetTrangThaiByConditionAsync();
         var tuyenDuongList = await _tuyenDuong.GetAllTuyenDuongAsync();
 
         ViewBag.XeList = xeList;
@@ -196,3 +160,40 @@ public class ChuyenXeAdminController : Controller
         }
     }
 }
+
+/*[HttpGet]
+public async Task<IActionResult> Index()
+{
+    var viewModel = await _chuyenXeService.GetAllChuyenXeVM();
+    return View(viewModel);
+}*/
+
+/*[HttpGet]
+public async Task<IActionResult> Index(string searchString)
+{
+    var viewModel = await _chuyenXeService.GetAllChuyenXeVM();
+
+    if (viewModel == null)
+    {
+        return Problem("Entity set is null.");
+    }
+
+    /*if (!String.IsNullOrEmpty(searchString))
+    {
+        viewModel = viewModel.Where(cx => (bool)cx.XeVM?.BienSo.Contains(searchString.ToUpper()));
+    }#1#
+
+    if (!String.IsNullOrEmpty(searchString))
+    {
+        viewModel = viewModel.Where(cx =>
+                (cx.XeVM?.BienSo?.ToUpper().Contains(searchString.ToUpper()) ?? false) ||
+                (cx.XeVM?.LoaiXeVM?.TenLoai?.ToUpper().Contains(searchString.ToUpper()) ?? false) ||
+                (cx.TuyenDuongVM?.NoiDen?.ToUpper().Contains(searchString.ToUpper()) ?? false) ||
+                (cx.TuyenDuongVM?.NoiKhoiHanh?.ToUpper().Contains(searchString.ToUpper()) ?? false) ||
+                (cx.TuyenDuongVM?.KhoangCach?.ToString()?.Contains(searchString.ToUpper()) ?? false) ||
+                (cx.TuyenDuongVM?.GiaVe?.ToString()?.Contains(searchString.ToUpper()) ?? false)
+        );
+    }
+
+    return View(viewModel);
+}*/

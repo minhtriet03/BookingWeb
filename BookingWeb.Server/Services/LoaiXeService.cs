@@ -15,12 +15,22 @@ namespace BookingWeb.Server.Services
         {
              _unitOfWork = unitOfWork;
         }
-
-        // Sử dụng async để gọi phương thức bất đồng bộ trong repository
+        
+        public async Task<List<Loaixe>> GetTrangThaiByConditionAsync()
+        {
+            return await _unitOfWork.loaiXeRepository.GetByConditionAsync(lx => lx.TrangThai == true);
+        }
+        
+        public async Task<Loaixe> GetByIdAsync(int id)
+        {
+            return await _unitOfWork.loaiXeRepository.GetByIdAsync(id);
+        }
+        
         public async Task<List<Loaixe>> GetAllLoaiXes()
         {
             return await _unitOfWork.loaiXeRepository.GetAllAsync();
         }
+        
 
 
         public async Task<PagedLoaiXeVM> GetByPageAsync(int pageNumber, int pageSize)
@@ -60,12 +70,35 @@ namespace BookingWeb.Server.Services
         }
         public async Task<bool> UpdateLoaixe(Loaixe loaixe)
         {
-            return await _unitOfWork.loaiXeRepository.UpdateAsync(loaixe);
+            var data = await _unitOfWork.loaiXeRepository.UpdateAsync(loaixe);
+            if (data == null)
+            {
+                return false;
+            }
+            
+            await _unitOfWork.SaveChangesAsync();
+            return true;
         }
 
         public async Task<bool> DeleteLoaixe(int id)
         {
             return await _unitOfWork.loaiXeRepository.DeleteAsync(id);
+        }
+        public async Task<bool> DeactivateLoaiXeAsync(int id)
+        {
+            var data = await _unitOfWork.loaiXeRepository.GetByIdAsync(id);
+            
+            Console.WriteLine($"Trạng thái hiện tại của lx.TrangThai: {data.TrangThai}");
+            
+            var result = await _unitOfWork.loaiXeRepository.DeactivateAsync(
+                id,
+                lx => lx.TrangThai == false || lx.TrangThai == true,
+                lx => lx.TrangThai = !lx.TrangThai
+            );
+        
+            await  _unitOfWork.SaveChangesAsync();
+
+            return result;
         }
     }
 }

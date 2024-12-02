@@ -9,7 +9,7 @@ public class LoaiXeVM
     public int IdLoai { get; set; }
     public string? TenLoai { get; set; }
     public int? SoGhe { get; set; }
-    public bool? TrangThai { get; set; }
+    public bool TrangThai { get; set; }
 }
 
 public class PagedLoaiXeVM
