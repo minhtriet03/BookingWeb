@@ -42,9 +42,6 @@ public partial class BookingBusContext : DbContext
     public virtual DbSet<Xe> Xes { get; set; }
 
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Data Source=DESKTOP-LD9DI6O;Initial Catalog=BookingBus;Persist Security Info=True;User ID=sa;Password=12345;Trust Server Certificate=True");
-
 
 
 
