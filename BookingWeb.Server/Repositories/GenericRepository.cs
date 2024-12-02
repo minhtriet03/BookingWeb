@@ -1,4 +1,5 @@
-﻿using BookingWeb.Server.Interfaces;
+﻿using System.Linq.Expressions;
+using BookingWeb.Server.Interfaces;
 using BookingWeb.Server.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,6 +19,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     public async Task<List<T>> GetAllAsync()
     {
         return await _dbSet.ToListAsync();
+    }
+    public Task<List<T>> GetByConditionAsync(Expression<Func<T, bool>> expression)
+    {
+        return _dbSet.Where(expression).ToListAsync();
     }
 
     public async Task<T> GetByIdAsync(int id)

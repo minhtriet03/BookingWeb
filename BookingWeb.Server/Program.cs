@@ -111,11 +111,6 @@ builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IGenericRepository<Phanquyen>, GenericRepository<Phanquyen>>();
 builder.Services.AddScoped<RoleService>();
 
-//Xevitri
-builder.Services.AddScoped<IVitriXeRepository, XevitriRepository>();
-builder.Services.AddScoped<IGenericRepository<Xevitri>, GenericRepository<Xevitri>>();
-builder.Services.AddScoped<XevitriService>();
-
 // Đăng ký UnitOfWork
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<UnitOfWork>();

@@ -1,6 +1,8 @@
 ﻿import Sidebar from "./Sidebar/index";
 import { Button,Form,Col,Row} from "react-bootstrap";
 import { useState } from "react";
+import { useSelector } from 'react-redux';
+
 
 const UserInfo = () => {
 
@@ -19,6 +21,9 @@ const UserInfo = () => {
         setIsEditing(false);
         
     };
+
+    const userred = useSelector((state) => state.user.userInfo);
+    console.log(userred)
     return (
         <div
             className="d-flex justify-content-center align-items-center"

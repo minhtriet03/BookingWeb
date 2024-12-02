@@ -126,8 +126,8 @@ public class ChuyenXeAdminController : Controller
                 ThoiGianKh = model.ThoiGianKh,
                 ThoiGianDen = model.ThoiGianDen,
                 TrangThai = true,
-                IdXe = model.XeVM?.IdXe,
-                IdTuyenDuong = model.TuyenDuongVM?.IdTuyenDuong,
+                IdXe = model.XeVM.IdXe,
+                IdTuyenDuong = model.TuyenDuongVM.IdTuyenDuong,
             };
 
             var result = await _chuyenXeService.UpdateChuyenXe(data);
@@ -173,8 +173,8 @@ public class ChuyenXeAdminController : Controller
                 ThoiGianKh = model.ThoiGianKh,
                 ThoiGianDen = model.ThoiGianDen,
                 TrangThai = true,
-                IdXe = model.XeVM?.IdXe,
-                IdTuyenDuong = model.TuyenDuongVM?.IdTuyenDuong,
+                IdXe = model.XeVM.IdXe,
+                IdTuyenDuong = model.TuyenDuongVM.IdTuyenDuong,
             };
 
             var result = await _chuyenXeService.AddChuyenXe(data);

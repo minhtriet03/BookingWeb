@@ -18,9 +18,9 @@ namespace BookingWeb.Server.Helpers
 
 			var tokenHandler = new JwtSecurityTokenHandler();
 			var jwtToken = tokenHandler.ReadJwtToken(token);
-			var userId = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var idAccount = jwtToken.Claims.FirstOrDefault(c => c.Type == "IdAccount")?.Value;
 
-			return int.Parse(userId);
+            return int.Parse(idAccount);
 		}
 
 		public static async Task<string> GetFileHashAsync(IFormFile file)

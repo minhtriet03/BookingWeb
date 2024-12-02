@@ -2,12 +2,13 @@
 using BookingWeb.Server.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using BookingWeb.Server.ViewModels;
 
 namespace BookingWeb.Server.Repositories
 {
-    public class XeRepository : IXeRepository
+    public class XeRepository : IGenericRepository<Xe>, IXeRepository
     {
         private readonly BookingBusContext _context;
 
@@ -21,7 +22,10 @@ namespace BookingWeb.Server.Repositories
         {
             return await _context.Xes.ToListAsync();
         }
-
+        public Task<List<Xe>> GetByConditionAsync(Expression<Func<Xe, bool>> expression)
+        {
+            throw new NotImplementedException();
+        }
         public async Task<List<XeVM>> GetAllXeVMsAsync()
         {
             var xeVMs = await _context.Xes

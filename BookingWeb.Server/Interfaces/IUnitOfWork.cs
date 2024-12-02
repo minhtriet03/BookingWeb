@@ -7,7 +7,7 @@ public interface IUnitOfWork : IDisposable
     IVitriRepository vitris { get; set; }
     IVexeRepository vexes { get; set; }
 
-    IVitriXeRepository xevitris { get; set; }
+
     IUserRepository userRepository { get; }
     IOrderRepository orderRepository { get; }
 

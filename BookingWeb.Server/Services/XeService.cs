@@ -28,7 +28,7 @@ namespace BookingWeb.Server.Services
             var totalRecords = await _unitOfWork.xeRepository.CountAsync();
 
             var xes = await _unitOfWork.xeRepository.GetPageAsync(skip, pageSize);
-            var loaiXes = await _unitOfWork.loaiXeRepository.GetAllAsync();
+            var loaiXes = await _unitOfWork.loaiXeRepository.GetByConditionAsync(lx => lx.TrangThai == true);
 
             var data = xes.Select(x => new XeVM
             {
@@ -69,25 +69,7 @@ namespace BookingWeb.Server.Services
         }
         public async Task<bool> Addxe(Xe xe)
         {
-            List<Vitri> Vitris = await _unitOfWork.vitris.GetAllAsync();
-            await _unitOfWork.xeRepository.AddAsync(xe);
-            try
-            {
-                foreach (Vitri i in Vitris)
-                {
-                    Xevitri entity = new Xevitri();
-                    entity.IdViTri = i.IdViTriGhe;
-                    entity.IdXe = xe.IdXe;
-                    entity.TrangThai = true;
-                    await _unitOfWork.xevitris.AddAsync(entity);
-                }
-                await _unitOfWork.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
+            return await _unitOfWork.xeRepository.AddAsync(xe); ;
         }
         public async Task<bool> Updatexe(Xe xe)
         {

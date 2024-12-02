@@ -15,11 +15,11 @@ public partial class Nguoidung
 
     public string? Phone { get; set; }
 
-    public bool? TrangThai { get; set; }
+    public bool TrangThai { get; set; }
 
-    public int? IdAccount { get; set; }
+    public int IdAccount { get; set; }
 
-    public virtual Taikhoan? IdAccountNavigation { get; set; }
+    public virtual Taikhoan IdAccountNavigation { get; set; } = null!;
 
     public virtual ICollection<Phieudat> Phieudats { get; set; } = new List<Phieudat>();
 }

@@ -5,6 +5,8 @@ public interface IUserRepository : IGenericRepository<Nguoidung>
 {
     Task<Nguoidung> GetByUsername(string username);
 
+    Task<Nguoidung> GetByIdAccount(int IdAccount);
+
     Task<List<Nguoidung>> GetPagedAsync(int skip, int take);
     
     Task<int> CountAsync();

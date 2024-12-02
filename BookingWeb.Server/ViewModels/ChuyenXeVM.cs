@@ -8,7 +8,7 @@ public class ChuyenXeVM
 
     public string? ThoiGianDen { get; set; }
 
-    public bool? TrangThai { get; set; }
+    public bool TrangThai { get; set; }
 
     public XeVM? XeVM { get; set; }
 

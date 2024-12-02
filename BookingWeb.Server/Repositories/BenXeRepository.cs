@@ -41,6 +41,7 @@ namespace BookingWeb.Server.Repositories
                 {
                     benxe.TrangThai = false;
                     await _unitOfWork.benXes.UpdateAsync(benxe);
+                    await _unitOfWork.SaveChangesAsync();
                     return true;
                 }
                 return false;

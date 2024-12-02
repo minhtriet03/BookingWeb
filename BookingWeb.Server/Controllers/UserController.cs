@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 using System.Text.RegularExpressions;
 using BookingWeb.Server.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BookingWeb.Server.Controllers
 {
@@ -20,14 +21,16 @@ namespace BookingWeb.Server.Controllers
             _userService = userService;
         }
 
+
         [HttpGet("user-login")]
         public async Task<IActionResult> FindById()
         {
-            var userId = MiddleWare.GetUserIdFromCookie(Request);
-            if (userId == -1) return null;
-
-            var user = await _userService.GetUserById(userId);
-            return Ok(new { userInfo = user });
+            var idAccount = MiddleWare.GetUserIdFromCookie(Request);
+            Console.WriteLine("day la Idaccount" + idAccount);
+            if (idAccount == -1) return BadRequest();
+            var user = await _userService.GetUserByIdAccount(idAccount);
+            Console.WriteLine("day la user" + user);
+            return Ok(new { userInfo = user});
         }
 
         [HttpGet]

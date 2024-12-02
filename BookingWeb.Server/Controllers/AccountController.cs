@@ -16,6 +16,7 @@ namespace BookingWeb.Server.Controllers
     {
 
         private readonly AccountService _accountService;
+        private readonly UserService _userService;
 
         public AccountController(AccountService accountService)
         {
@@ -66,6 +67,16 @@ namespace BookingWeb.Server.Controllers
                 return BadRequest("Dữ liệu không hợp lệ");
             }
 
+            Nguoidung newUser = new Nguoidung();
+            newUser.HoTen = null;
+            newUser.Email = acc.UserName;
+            newUser.DiaChi = null;
+            newUser.Phone = null;
+            newUser.TrangThai = true;
+            newUser.IdAccount = acc.IdAccount;
+
+            await _userService.AddUserAsync(newUser);
+
             Taikhoan taikhoan = new Taikhoan
             {
                 UserName = acc.UserName,
@@ -110,10 +121,10 @@ namespace BookingWeb.Server.Controllers
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-            new Claim(ClaimTypes.NameIdentifier, taikhoan.IdAccount.ToString()),
-            new Claim(ClaimTypes.Name, taikhoan.UserName),
+            new Claim("IdAccount", taikhoan.IdAccount+""),
+            new Claim("UserName", taikhoan.UserName),
                 }),
-                Expires = DateTime.UtcNow.AddHours(1),
+                Expires = DateTime.UtcNow.AddHours(9),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
@@ -129,7 +140,9 @@ namespace BookingWeb.Server.Controllers
                 Expires = DateTime.UtcNow.AddHours(1) // Thời hạn cookies
             };
 
-            Response.Cookies.Append("jwt_token", tokenString, cookieOptions);
+
+
+            Response.Cookies.Append("jwt", tokenString, cookieOptions);
 
             return Ok("Đăng nhập thành công");
         }
