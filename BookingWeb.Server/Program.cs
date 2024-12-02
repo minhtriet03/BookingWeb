@@ -11,7 +11,16 @@ using System.Text;
 using BookingWeb.Server.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddControllers();
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        // Tạo JSON dễ đọc (Indented Formatting)
+        options.JsonSerializerOptions.WriteIndented = true;
+        // Xử lý vòng lặp tham chiếu
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+    });
+
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

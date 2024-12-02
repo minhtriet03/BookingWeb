@@ -1,5 +1,5 @@
 ﻿function confirmDeactivate(xeId) {
-    if(confirm("Bạn có muốn thay đổi hoạt động của xe này không?")) {
+    if (confirm("Bạn có muốn thay đổi hoạt động của xe này không?")) {
         const form = document.createElement("form");
         form.method = "Post";
         form.action = `/Admin/XeAdmin/DeactivateXeAsync?id=${xeId}`;
@@ -7,36 +7,43 @@
         form.submit();
     }
 }
+function validateBienSo() {
+    var bienSoInput = document.getElementById("bienSo");
+    var bienSoValue = bienSoInput.value;
+    var regex = /^\d{2}[A-Z]-\d{5}$/;
 
-document.addEventListener('DOMContentLoaded', function () {
-    // Gọi hàm để lấy danh sách loại xe
-    fetchLoaiXe();
-});
-
-// Hàm lấy danh sách loại xe
-async function fetchLoaiXe() {
-    const apiUrl = 'http://localhost:5108/api/loaixe'; // Thay đổi port nếu cần
-    try {
-        const response = await fetch(apiUrl);
-        if (!response.ok) {
-            throw new Error('Mạng lỗi hoặc không tìm thấy dữ liệu');
-        }
-        const loaixes = await response.json();
-        renderLoaiXe(loaixes);
-    } catch (error) {
-        console.error('Có lỗi xảy ra:', error);
+    if (!regex.test(bienSoValue)) {
+        alert("Biển số xe không hợp lệ. Vui lòng nhập theo định dạng");
+        return false;
     }
+    // const isExistXe = await checkXeExist();
+    // if (!isExistXe) {
+    //     alert("Xe đã tồn tại. Vui lòng nhập lại.");
+    //     return false; // Ngăn không cho gửi form
+    // }
+
+    return true;
 }
 
-// Hàm render loại xe vào select
-function renderLoaiXe(loaixes) {
-    const loaiXeSelect = document.getElementById('loaiXe');
-    loaiXeSelect.innerHTML = ''; // Xóa các tùy chọn cũ
+document.getElementById("addXeForm").onsubmit = function () {
+    return validateBienSo(); // Gọi hàm kiểm tra khi gửi form
+};
 
-    loaixes.forEach(loaixe => {
-        const option = document.createElement('option');
-        option.value = loaixe.idLoai; // Giả sử idLoai là giá trị của tùy chọn
-        option.textContent = loaixe.tenLoai || 'Chưa có tên'; // Hiển thị tên loại xe
-        loaiXeSelect.appendChild(option);
-    });
-}
+
+
+// // Fetch API
+// async function checkXeExist() {
+//     const bienSo = document.getElementById("bienSo").value;
+//     const isExistXe = await checkBienSoExists(bienSo);
+
+//     return !isExistXe; // Trả về true nếu không tồn tại, false nếu đã tồn tại
+// }
+
+// async function checkBienSoExists(bienSo) {
+//     const response = await fetch(`/api/Xe/BienSo?bienSo=${bienSo}`);
+//     const data = await response.json();
+//     if (data != null) {
+//         return false;
+//     }
+//     return data.true;
+// }
