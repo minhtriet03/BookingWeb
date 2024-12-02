@@ -132,7 +132,33 @@ public class UserService
         }
     }
 
-    
+    public async Task<bool> AddUserRegister(Nguoidung user)
+    {
+        try
+        {
+            Console.WriteLine("Checking if email exists: " + user.Email);
+            bool isExistEmail = await _unitOfWork.userRepository.IsEmailExist(user.Email);
+
+            if (isExistEmail)
+            {
+                Console.WriteLine("Email already exists: " + user.Email);
+                throw new InvalidOperationException("Email đã tồn tại");
+            }
+
+            Console.WriteLine("Adding new user...");
+            await _unitOfWork.userRepository.AddAsync(user);
+            await _unitOfWork.SaveChangesAsync();
+
+            Console.WriteLine("User added successfully.");
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error in AddUserRegister: " + ex.Message);
+            throw;
+        }
+    }
+
     public async Task<bool> UpdateUserAsync(Nguoidung user)
     {
         try
