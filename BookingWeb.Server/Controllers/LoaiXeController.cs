@@ -22,6 +22,13 @@ namespace BookingWeb.Server.Controllers
             var loaixes = await _loaixeService.GetAllLoaiXes();
             return Ok(loaixes);
         }
+        
+        [HttpGet("GetByCondition")]
+        public async Task<ActionResult<List<Loaixe>>> GetByCondition()
+        {
+            var loaixes = await _loaixeService.GetTrangThaiByConditionAsync();
+            return Ok(loaixes);
+        }
 
         // Lấy loại xe theo ID
         [HttpGet("{id}")]

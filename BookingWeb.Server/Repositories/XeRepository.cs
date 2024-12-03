@@ -8,7 +8,7 @@ using BookingWeb.Server.ViewModels;
 
 namespace BookingWeb.Server.Repositories
 {
-    public class XeRepository : IGenericRepository<Xe>, IXeRepository
+    public class XeRepository : IXeRepository
     {
         private readonly BookingBusContext _context;
 
@@ -24,8 +24,9 @@ namespace BookingWeb.Server.Repositories
         }
         public Task<List<Xe>> GetByConditionAsync(Expression<Func<Xe, bool>> expression)
         {
-            throw new NotImplementedException();
+            return _context.Xes.Where(expression).ToListAsync();
         }
+
         public async Task<List<XeVM>> GetAllXeVMsAsync()
         {
             var xeVMs = await _context.Xes
@@ -53,6 +54,7 @@ namespace BookingWeb.Server.Repositories
                 .CountAsync();
         }
 
+
         public async Task<List<Xe>> GetPageAsync(int skip, int take)
         {
             return await _context.Xes
@@ -61,6 +63,12 @@ namespace BookingWeb.Server.Repositories
                 .Skip(skip)
                 .Take(take)
                 .ToListAsync();
+        }
+        public async Task<Xe?> GetById(int id)
+        {
+            return await _context.Xes
+                .Include(x => x.IdLoaiNavigation)
+                .FirstOrDefaultAsync(x => x.IdXe == id);
         }
 
         // Triển khai phương thức GetByIdAsync
@@ -72,6 +80,7 @@ namespace BookingWeb.Server.Repositories
         // Triển khai phương thức AddAsync
         public async Task<bool> AddAsync(Xe entity)
         {
+
             _context.Xes.Add(entity);
             return await _context.SaveChangesAsync() > 0;
         }
@@ -91,6 +100,11 @@ namespace BookingWeb.Server.Repositories
 
             _context.Xes.Remove(entity);
             return await _context.SaveChangesAsync() > 0;
+        }
+        
+        public Task<bool> DeactivateAsync(int id, Func<Xe, bool> condition, Action<Xe> change)
+        {
+            throw new NotImplementedException();
         }
     }
 }

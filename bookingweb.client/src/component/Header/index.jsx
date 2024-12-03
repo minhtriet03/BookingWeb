@@ -6,10 +6,10 @@ import { useNavigate } from 'react-router-dom';
 
 
 function Header () {
-  const navigate = useNavigate(); // Khởi tạo hook navigate
+  const navigate = useNavigate(); 
 
   const handleClick = () => {
-    navigate('/dang-nhap'); // Chuyển hướng đến trang "/dang-nhap"
+    navigate('/dang-nhap'); 
   };
 
   return (

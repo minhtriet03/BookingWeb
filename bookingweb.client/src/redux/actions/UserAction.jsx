@@ -6,7 +6,7 @@ const SetUser = createAsyncThunk("User/get", async () => {
         const response = await axiosInstance.get('/api/User/user-login')    
         return response.data.userInfo;
     } catch {
-        return null;
+        return "Khong goi duoc ";
     }
 });
 

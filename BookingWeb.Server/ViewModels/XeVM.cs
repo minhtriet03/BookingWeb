@@ -17,6 +17,4 @@ public class PagedXeVM
     public List<XeVM> Xes { get; set; } = new List<XeVM>(); // Danh sách người dùng
     public int CurrentPage { get; set; } // Trang hiện tại
     public int TotalPages { get; set; } // Tổng số trang
-
-    public IEnumerable<LoaiXeVM> Loaixes { get; set; }
 }

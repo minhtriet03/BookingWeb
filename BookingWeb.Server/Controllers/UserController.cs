@@ -27,7 +27,7 @@ namespace BookingWeb.Server.Controllers
         {
             var idAccount = MiddleWare.GetUserIdFromCookie(Request);
             Console.WriteLine("day la Idaccount" + idAccount);
-            if (idAccount == -1) return null;
+            if (idAccount == -1) return BadRequest();
             var user = await _userService.GetUserByIdAccount(idAccount);
             Console.WriteLine("day la user" + user);
             return Ok(new { userInfo = user});

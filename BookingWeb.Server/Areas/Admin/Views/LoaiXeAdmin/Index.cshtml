@@ -3,7 +3,7 @@
 @{
 	ViewData["Title"] = "Loại xe";
 }
-<h1 class="h3 mb-2 text-gray-800">Quản lý tuyến đường</h1>
+<h1 class="h3 mb-2 text-gray-800">Quản lý loại xe</h1>
 @Html.Partial("./../Shared/Alert.cshtml")
 
 <div class="card shadow mb-4">
@@ -34,15 +34,12 @@
                             <td>@lx.SoGhe</td>
                             <td>@(lx.TrangThai == true ? "Hoạt động" : "Không hoạt động")</td>
                             <td>
-                                <a href="@Url.Action("Details", "Xe", new { id = lx.IdLoai })" class="btn btn-info">Chi tiết</a>
-                                @if (@lx.TrangThai == true)
-                                {
-                                <button type="submit" class="btn btn-danger" onclick="confirmDeactivate(@lx.IdLoai)">Khóa</button>
-                                }
-                                else if (@lx.TrangThai == false)
-                                {
-                                <button type="submit" class="btn btn-success" onclick="confirmDeactivate(@lx.IdLoai)">Mở khóa</button>
-                                }
+                                <a asp-action="Detail" asp-controller="LoaiXeAdmin" asp-route-id="@lx.IdLoai" class="btn btn-info">Chi tiết</a>
+                                <form asp-action="DeactivateLoaiXe" asp-controller="LoaiXeAdmin" asp-route-id="@lx.IdLoai" method="post" style="display: inline;">
+                                    <button type="submit" class="btn @(lx.TrangThai ? "btn-danger" : "btn-success")">
+                                        @(lx.TrangThai ? "Khóa" : "Mở khóa")
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     }
@@ -83,12 +80,12 @@
                         <label for="soGhe" class="form-label">Số ghế</label>
                         <input type="number" min="1" max="32" class="form-control" id="soGhe" name="soGhe" required>
                     </div>
+
                     <button type="submit" class="btn btn-primary">Thêm</button>
                 </form>
             </div>
         </div>
     </div>
-
 </div>
 
 <script src="~/js/admin/loaixe.js"></script>

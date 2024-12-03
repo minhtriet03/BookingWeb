@@ -76,7 +76,12 @@ namespace BookingWeb.Server.Repositories
 
         public async Task<Loaixe> GetByIdAsync(int id)
         {
+<<<<<<< HEAD
+            return await _context.Loaixes.Include(l => l.Xes).FirstOrDefaultAsync(l => l.IdLoai == id); 
+        }
+=======
             return await _context.Loaixes.Include(l => l.Xes).FirstOrDefaultAsync(l => l.IdLoai == id);  // Lấy loại xe theo id
         }*/
+
     }
 }

@@ -28,7 +28,6 @@ namespace BookingWeb.Server.Services
             }
         }
 
-
         //Toàn sửa cái IEnumable thành List rồi nha Híu, do Toàn chạy thấy nó bị lỗi mà đổi sang List thì không lôỗi
         public async Task<List<Tuyenduong>> GetAllTuyenDuong()
         {
