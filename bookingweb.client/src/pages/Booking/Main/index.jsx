@@ -3,10 +3,11 @@ import { Card, Form, Container, Row, Col, Button } from 'react-bootstrap';
 import './Main.css';
 
 
-function BookingMain() {
-  
-  
- 
+function BookingMain({ handleDisplay }) {
+
+    const handleOnSubmit = () => {
+        handleDisplay();
+    }
     return (
         <>
             <div className="d-flex flex-column flex-xl-row gap-4 pt-xl-5">
@@ -168,6 +169,7 @@ function BookingMain() {
                                         <span className="mt-2 text-end text-lg font-semibold text-warning">
                                             470.000đ
                                         </span>
+                                        <button onClick={handleOnSubmit} className="btn btn-warning mt-2">Chọn</button>
                                     </Col>
                                 </Row>
 
@@ -186,7 +188,7 @@ function BookingMain() {
                 
             </Container>
             </div>
-
+            
         </>
     );
 }
