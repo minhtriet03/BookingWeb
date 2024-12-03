@@ -1,218 +1,240 @@
-﻿import { Container, Row, Col, Table, OverlayTrigger,Tooltip,Image } from 'react-bootstrap';
-function DatGhe({ handleDisplay }) {
-        const lowerSeats = [
-            { id: "A01", status: "active" },
-            { id: "A02", status: "active" },
-            { id: "A03", status: "active" },
-            { id: "A04", status: "active" },
-            { id: "A05", status: "active" },
-            { id: "A06", status: "active" },
-            { id: "A07", status: "active" },
-            { id: "A08", status: "active" },
-            { id: "A09", status: "active" },
-            { id: "A10", status: "active" },
-            { id: "A11", status: "active" },
-            { id: "A12", status: "active" },
-            { id: "A13", status: "active" },
-            { id: "A14", status: "active" },
-            { id: "A15", status: "active" },
-            { id: "A16", status: "active" },
-            { id: "A17", status: "active" },
-        ];
+﻿import { Container, Row, Col, Card, Alert, Form, Button } from 'react-bootstrap';
+import { useRef } from 'react';
+import { useState, useEffect } from 'react';
+import './datghe.css';
+import RenderSeats from './renderSeats';
+function DatGhe({ handleDisplay, infoTuyenDuong}) {
 
-        const upperSeats = [
-            { id: "B01", status: "active" },
-            { id: "B02", status: "active" },
-            { id: "B03", status: "active" },
-            { id: "B04", status: "active" },
-            { id: "B05", status: "active" },
-            { id: "B06", status: "active" },
-            { id: "B07", status: "active" },
-            { id: "B08", status: "active" },
-            { id: "B09", status: "active" },
-            { id: "B10", status: "active" },
-            { id: "B11", status: "active" },
-            { id: "B12", status: "active" },
-            { id: "B13", status: "active" },
-            { id: "B14", status: "active" },
-            { id: "B15", status: "active" },
-            { id: "B16", status: "active" },
-            { id: "B17", status: "active" },
-        ];
+    //const {Noi_KhoiHanh,Noi_Den } = infoTuyenDuong;
+    const legend = [
+        { color: "#D5D9DD", label: "Đã đặt" }, // Đã đặt
+        { color: "#DEF3FF", label: "Còn trống" }, // Ghế trống
+        { color: "#FDEDE8", label: "Đang chọn" }, // Ghế đang chọn
+    ];
 
-        const legend = [
-            { color: "#D5D9DD", label: "Đã bán" },
-            { color: "#DEF3FF", label: "Còn trống" },
-            { color: "#FDEDE8", label: "Đang chọn" },
-        ];
     const handleBack = () => {
         handleDisplay();
     }
+    const [formData, setFormData] = useState({
+        fullName: "",
+        phoneNumber: "",
+        email: "",
+    });
+
+    const [errors, setErrors] = useState({});
+    const formRef = useRef(null); // Tham chiếu đến biểu mẫu để gọi các phương thức từ bên ngoài
+
+    // Hàm kiểm tra hợp lệ
+    const validate = () => {
+        const newErrors = {};
+        if (!formData.fullName.trim()) {
+            newErrors.fullName = "Họ và tên là bắt buộc.";
+        }
+        const phoneRegex = /^[0-9]{10}$/;
+        if (!formData.phoneNumber) {
+            newErrors.phoneNumber = "Số điện thoại là bắt buộc.";
+        } else if (!phoneRegex.test(formData.phoneNumber)) {
+            newErrors.phoneNumber = "Số điện thoại không hợp lệ (10 số).";
+        }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!formData.email) {
+            newErrors.email = "Email là bắt buộc.";
+        } else if (!emailRegex.test(formData.email)) {
+            newErrors.email = "Email không hợp lệ.";
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
+    // Xử lý khi nhấn nút trong div khác
+    const handleExternalSubmit = () => {
+        if (validate()) {
+            alert("Biểu mẫu hợp lệ!");
+            // Logic gửi dữ liệu ở đây
+        }
+    };
+
+    // Xử lý khi nhập dữ liệu
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+        setErrors({ ...errors, [name]: "" });
+    };
+
+    const [selectedSeats, setSelectedSeats] = useState({});
+    const [bookedSeats, setBookedSeats] = useState({});
+    const [selectedSeatCount, setSelectedSeatCount] = useState(0);
+    const [showLimitAlert, setShowLimitAlert] = useState(false);
+
+    useEffect(() => {
+        const fetchedBookedSeats = ["A01", "B03", "A06"];
+        const bookedSeatsObj = fetchedBookedSeats.reduce((acc, seatId) => {
+            acc[seatId] = true;
+            return acc;
+        }, {});
+        setBookedSeats(bookedSeatsObj);
+    }, []);
+
+    const handleSeatSelection = (seatId) => {
+        if (bookedSeats[seatId]) return;
+
+        if (selectedSeatCount >= 5 && !selectedSeats[seatId]) {
+            setShowLimitAlert(true);
+            return;
+        }
+
+        setSelectedSeats((prev) => {
+            const updated = { ...prev, [seatId]: !prev[seatId] };
+            setSelectedSeatCount(Object.values(updated).filter(Boolean).length);
+            setShowLimitAlert(false);
+            return updated;
+        });
+    };
+
+    const selectedSeatIds = Object.keys(selectedSeats).filter(seatId => selectedSeats[seatId]);
 
     return (
         <>
             <button onClick={handleBack}>Quay lại</button>
             <Container className="my-4 ">
-                <Row className="">
-                    <Col md={8} className="border bg-white rounded-4 me-3 p-3">
-                        {/* Cột chọn ghế */}
-                        <h5>Chọn ghế </h5>
-                        <Row className="mt-4 text-sm font-normal p-3">
-                            <Table  className="seatTable">
-                                <thead>
-                                    <tr>
-                                        <th colSpan="3">Tầng dưới</th>
-                                        <th colSpan="3">Tầng trên</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td className="justify-content-center align-items-center" style={{ position: 'relative' }}>
-                                            <div className="position-relative d-flex justify-content-center align-items-center">
-                                                <Image width={32} src="https://futabus.vn/images/icons/seat_active.svg" alt="seat icon" />
-                                                <span
-                                                    className="position-absolute"
-                                                    style={{
-                                                        fontSize: '10px',
-                                                        fontWeight: '600',
-                                                        color: '#A2ABB3',
-                                                        top: '50%',
-                                                        left: '50%',
-                                                        transform: 'translate(-50%, -50%)',
-                                                        cursor: 'default'
-                                                    }}
-                                                >
-                                                    A01
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td className="justify-content-center align-items-center" style={{ position: 'relative' }}>
-                                            <div className="position-relative d-flex justify-content-center align-items-center">
-                                                <Image width={32} src="https://futabus.vn/images/icons/seat_active.svg" alt="seat icon" />
-                                                <span
-                                                    className="position-absolute"
-                                                    style={{
-                                                        fontSize: '10px',
-                                                        fontWeight: '600',
-                                                        color: '#A2ABB3',
-                                                        top: '50%',
-                                                        left: '50%',
-                                                        transform: 'translate(-50%, -50%)',
-                                                        cursor: 'default'
-                                                    }}
-                                                >
-                                                    A01
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td className="justify-content-center align-items-center" style={{ position: 'relative' }}>
-                                            <div className="position-relative d-flex justify-content-center align-items-center">
-                                                <Image width={32} src="https://futabus.vn/images/icons/seat_active.svg" alt="seat icon" />
-                                                <span
-                                                    className="position-absolute"
-                                                    style={{
-                                                        fontSize: '10px',
-                                                        fontWeight: '600',
-                                                        color: '#A2ABB3',
-                                                        top: '50%',
-                                                        left: '50%',
-                                                        transform: 'translate(-50%, -50%)',
-                                                        cursor: 'default'
-                                                    }}
-                                                >
-                                                    A01
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td className="justify-content-center align-items-center" style={{ position: 'relative' }}>
-                                            <div className="position-relative d-flex justify-content-center align-items-center">
-                                                <Image width={32} src="https://futabus.vn/images/icons/seat_active.svg" alt="seat icon" />
-                                                <span
-                                                    className="position-absolute"
-                                                    style={{
-                                                        fontSize: '10px',
-                                                        fontWeight: '600',
-                                                        color: '#A2ABB3',
-                                                        top: '50%',
-                                                        left: '50%',
-                                                        transform: 'translate(-50%, -50%)',
-                                                        cursor: 'default'
-                                                    }}
-                                                >
-                                                    A01
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td className="justify-content-center align-items-center" style={{ position: 'relative' }}>
-                                            <div className="position-relative d-flex justify-content-center align-items-center">
-                                                <Image width={32} src="https://futabus.vn/images/icons/seat_active.svg" alt="seat icon" />
-                                                <span
-                                                    className="position-absolute"
-                                                    style={{
-                                                        fontSize: '10px',
-                                                        fontWeight: '600',
-                                                        color: '#A2ABB3',
-                                                        top: '50%',
-                                                        left: '50%',
-                                                        transform: 'translate(-50%, -50%)',
-                                                        cursor: 'default'
-                                                    }}
-                                                >
-                                                    A01
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td className="justify-content-center align-items-center" style={{ position: 'relative' }}>
-                                            <div className="position-relative d-flex justify-content-center align-items-center">
-                                                <Image width={32} src="https://futabus.vn/images/icons/seat_active.svg" alt="seat icon" />
-                                                <span
-                                                    className="position-absolute"
-                                                    style={{
-                                                        fontSize: '10px',
-                                                        fontWeight: '600',
-                                                        color: '#A2ABB3',
-                                                        top: '50%',
-                                                        left: '50%',
-                                                        transform: 'translate(-50%, -50%)',
-                                                        cursor: 'default'
-                                                    }}
-                                                >
-                                                    A01
-                                                </span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        { }
-                                    </tr>
-                                </tbody>
-                            </Table>
+                <Row>
+                    <Col md={7} className="border bg-white rounded-4 me-3 p-3">
+                        <Row className="mt-3 text-sm font-normal px-2">
+                            <h5 className="mb-3">Chọn ghế</h5>
+                            <Col>
+                                <RenderSeats
+                                    title="Tầng dưới"
+                                    bookedSeats={bookedSeats}
+                                    selectedSeats={selectedSeats}
+                                    onSeatSelect={handleSeatSelection}
+                                />
+                            </Col>
+                            <Col>
+                                <RenderSeats
+                                    title="Tầng trên"
+                                    bookedSeats={bookedSeats}
+                                    selectedSeats={selectedSeats}
+                                    onSeatSelect={handleSeatSelection}
+                                />
+                            </Col>
+                            <Row className="h-auto mt-5 text-sm font-normal">
+                                {legend.map((item, index) => (
+                                    <Col key={index} className="d-flex align-items-center justify-content-center gap-2">
+                                        <div className="iconChuThich" style={{ backgroundColor: item.color }}></div>
+                                        <span>{item.label}</span>
+                                    </Col>
+                                ))}
+                            </Row>
                         </Row>
-                        {/* Legend */}
-                        <Row className="mt-4 text-sm font-normal">
-                            {legend.map((item, index) => (
-                                <Col key={index} className="d-flex align-items-center justify-content-center gap-2">
-                                    <div
-                                        style={{
-                                            width: "16px",
-                                            height: "16px",
-                                            backgroundColor: item.color,
-                                            borderRadius: "50%",
-                                            border: "1px solid #ccc",
-                                        }}
-                                    ></div>
-                                    <span>{item.label}</span>
-                                </Col>
-                            ))}
-                        </Row>
+                        <Row className="mt-2 w-100 border m-auto" />
                     </Col>
                     <Col>
-                        <Row className="border bg-white rounded-4 p-3 mb-3">
-                            <h5>Thông tin lượt đi</h5>
+                        <Row className="border bg-white rounded-4 p-3 mb-1">
+                            <h5 className="my-3 ">Thông tin khách hàng</h5>
+                                <Form autoComplete="off" ref={formRef}>
+                                <Form.Group className="mb-3" controlId="formBasicFullName">
+                                    <Form.Label className="formLabel mb-1">Họ và tên</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Họ và tên"
+                                            name="fullName"
+                                            value={formData.fullName}
+                                            onChange={handleChange}
+                                            isInvalid={!!errors.fullName}
+                                        />
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.fullName}
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
 
+                                    <Form.Group className="mb-3" controlId="formBasicPhone">
+                                    <Form.Label className="formLabel mb-1">Số điện thoại</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Số điện thoại"
+                                            name="phoneNumber"
+                                            value={formData.phoneNumber}
+                                            onChange={handleChange}
+                                            isInvalid={!!errors.phoneNumber}
+                                        />
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.phoneNumber}
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
+
+                                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                                    <Form.Label className="formLabel mb-1">Email</Form.Label>
+                                        <Form.Control
+                                            type="email"
+                                            placeholder="Email"
+                                            name="email"
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                            isInvalid={!!errors.email}
+                                        />
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.email}
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
+                                </Form>
                         </Row>
-                        <Row className="border bg-white rounded-4 p-3">
-                            <h5>Thông tin lượt đi</h5>
+                        <Row className="border bg-white rounded-4 p-3 mb-3">
+                            <h5 className="my-3">Thông tin lượt đi</h5>
+                            <Row className="d-flex justify-content-between">
+                                <Col xs={4} className="text-gray">
+                                    Tuyến xe:
+                                </Col>
+                                <Col xs={8} className="text-end text-black">
+                                    Long Xuyên - Miền Tây
+                                    {/*{Noi_KhoiHanh || ''} - {Noi_Den || ''}*/}
+                                </Col>
+                            </Row>
+                            <Row className="mt-2 d-flex justify-content-between">
+                                <Col xs={5} className="text-gray">
+                                    Thời gian xuất bến:
+                                </Col>
+                                <Col xs={7} className="text-end text-black">
+                                    00:00 01/01/2024 {/*{Noi_KhoiHanh || ''} - {Noi_Den || ''}*/}
+                                </Col>
+                            </Row>
+                            <Row className="mt-2 d-flex justify-content-between">
+                                <Col xs={5} className="text-gray">
+                                    Số ghế đã chọn: 
+                                </Col>
+                                <Col xs={7} className="text-end text-black">
+                                    {selectedSeatCount}
+                                </Col>
+                            </Row>
+                            <Row className="mt-2 d-flex justify-content-between">
+                                <Col xs={5} className="text-gray">
+                                    Số ghế:
+                                </Col>
+                                <Col xs={7} className="text-end text-black">
+                                    {selectedSeatCount > 0
+                                        ? selectedSeatIds.slice().reverse().join(", ") // Đảo ngược mảng và nối chuỗi
+                                        : <div></div>}
+                                </Col>
+                            </Row>
+
+                            <Row className="mt-2 d-flex justify-content-between">
+                                {showLimitAlert && (
+                                    <Alert variant="danger">
+                                        Bạn chỉ có thể chọn tối đa 5 ghế!
+                                    </Alert>
+                                )}
+                            </Row>
+                        </Row>
+                        <Row className="border bg-white rounded-4 p-3 mb-1">
+                            <div className="mt-2 d-flex justify-content-between">
+                                <h5 className="text-end text-black p-2">
+                                    190.000đ
+                                </h5>
+                                <Button variant="" onClick={handleExternalSubmit}>
+                                        Xử lý từ div khác
+                                </Button>
+                            </div>
+
                         </Row>
                     </Col>
                 </Row>
