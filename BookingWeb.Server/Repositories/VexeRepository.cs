@@ -6,7 +6,6 @@ namespace BookingWeb.Server.Repositories
 {
     public class VexeRepository : GenericRepository<Vexe>,IVexeRepository
     {
-        private IUnitOfWork _unitOfWork;
 
         public VexeRepository(BookingBusContext dbContext) : base(dbContext)
         {
@@ -15,20 +14,10 @@ namespace BookingWeb.Server.Repositories
 
         public async Task<List<Vexe>> getAll()
         {
-            return await _unitOfWork.vexes.GetAllAsync();
+            return await _dbContext.Vexes.ToListAsync();
         }
 
-        public async Task<bool> addVeXe(Vexe vexe)
-        {
-            try
-            {
-                return await _unitOfWork.vexes.AddAsync(vexe);
-            }
-            catch
-            {
-                return false;
-            }
-        }
+       
         public async Task<List<Vexe>> GetByPageAsync(int pageNumber, int pageSize)
         {
             if (pageNumber <= 0 || pageSize <= 0)
@@ -43,13 +32,15 @@ namespace BookingWeb.Server.Repositories
         }
 
 
-        public async Task<Vexe> getBydId(int id)
+        public async Task<Vexe> GetByIdAsync(int id)
         {
             try
             {
-                return await _unitOfWork.vexes.GetByIdAsync(id);
+                return await _dbContext.Vexes
+                    .FirstOrDefaultAsync(v => v.IdVe == id); 
             }
-            catch{
+            catch
+            {
                 return null;
             }
         }
@@ -69,18 +60,7 @@ namespace BookingWeb.Server.Repositories
             }
         }
         
-        public async Task<bool> update(Vexe vexe)
-        {
-            try
-            {
-                return await _unitOfWork.vexes.UpdateAsync(vexe);
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-
-        }
+      
         public async Task<bool> deleteVexe(int id)
         {
             try
@@ -89,7 +69,7 @@ namespace BookingWeb.Server.Repositories
                 if (vexe != null)
                 {
                     vexe.TrangThai = false;
-                    await _unitOfWork.vexes.UpdateAsync(vexe);
+                    _dbContext.Vexes.Update(vexe);
                     return true;
                 }
                 return false;
