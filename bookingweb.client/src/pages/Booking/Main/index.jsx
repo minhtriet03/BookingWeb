@@ -1,13 +1,40 @@
 ﻿
 import { Card, Form, Container, Row, Col, Button } from 'react-bootstrap';
 import './Main.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+import { GetChuyenXe } from '@/redux/actions/ChuyenXeAction';
+import { useState } from 'react';
+import locationImage from '@/assets/image/location.svg';
 
 
-function BookingMain({ handleDisplay }) {
+function BookingMain() {
+  
+    const dispatch = useDispatch();
+    const [selectedIndex, setSelectedIndex] = useState(); 
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const noidi = queryParams.get("noidi"); 
+    const noiden = queryParams.get("noiden");
+    const chuyenXeList = useSelector((state) => state.chuyenxe);
 
-    const handleOnSubmit = () => {
-        handleDisplay();
-    }
+    useEffect(() => {
+        if (noidi && noiden) {
+            dispatch(GetChuyenXe({ noidi, noiden }));
+        }
+    }, [dispatch, noidi, noiden]);
+
+
+    const chuyenXeData = chuyenXeList?.cxInfo?.$values || [];
+    
+    const handleSelected = (index) => {
+        console.log("selectedIndex", selectedIndex);
+        setSelectedIndex(index); 
+    };
+
+
+ 
     return (
         <>
             <div className="d-flex flex-column flex-xl-row gap-4 pt-xl-5">
@@ -90,102 +117,84 @@ function BookingMain({ handleDisplay }) {
                 </div>
 
                 <Container fluid className="d-flex flex-column w-100">
-                <header className="sticky-top bg-light p-3">
-                    <Row className="d-none d-lg-flex">
-                        <Col>
-                            <h2 className="text-xl font-medium">TP. Hồ Chí Minh - Thừa Thiên - Huế (4)</h2>
+
+                <header className="sticky-top">
+                        <Row className="d-none d-lg-flex">
+                            <Col className="p-0 bg-light">
+                                <h2 className="text-xl font-medium">{noidi} - {noiden} ({chuyenXeData.length})</h2>
                         </Col>
                     </Row>
-                    <Row className="d-lg-none align-items-center">
-                        <Col className="d-flex justify-content-between">
-                            <img src="./images/icons/back.svg" alt="back" style={{ width: '20px' }} />
-                            <div className="text-center">
-                                <span className="d-block">TP. Hồ Chí Minh - Thừa Thiên - Huế (4)</span>
-                                <small className="text-muted">Thứ 7, 09/11</small>
-                            </div>
-                            <img src="./images/icons/edit_filter.svg" alt="open filter" style={{ width: '20px' }} />
-                        </Col>
-                    </Row>
+
                 </header>
 
-                <Row className="p-3">
-                    <Col className="d-flex gap-3 overflow-auto">
-                        <Button variant="outline-warning" className="d-flex align-items-center gap-2">
-                            <img src="./images/icons/save_money.svg" alt="icon" width="20" />
-                            Giá rẻ bất ngờ
-                        </Button>
-                        <Button variant="outline-warning" className="d-flex align-items-center gap-2">
-                            <img src="./images/icons/clock.svg" alt="icon" width="20" />
-                            Giờ khởi hành
-                        </Button>
-                        <Button variant="outline-secondary" className="d-flex align-items-center gap-2">
-                            <img src="./images/icons/seat.svg" alt="icon" width="20" />
-                            Ghế trống
-                        </Button>
-                    </Col>
-                </Row>
 
-                <Row className="overflow-auto mb-3">
-                    <Card className="mb-3 w-100 border-secondary">
-                        <Card.Body>
-                                <Row className="d-flex">
-                                    {/* First section: align-items-center, takes up 7 columns */}
-                                    <Col xs={7} className="d-flex align-items-center">
-                                        <h5 className="font-weight-bold">08:30</h5>
-                                        <div className="d-flex align-items-center justify-content-center flex-grow-1 mx-3">
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="16"
-                                                height="16"
-                                                fill="currentColor"
-                                                className="bi bi-circle-fill"
-                                                viewBox="0 0 16 16"
-                                            >
-                                                <circle cx="8" cy="8" r="8" />
-                                            </svg>
-                                            <span className="flex-1 border-b-2 border-dotted dotted-line"></span>
-                                            <span className="text-muted">
-                                                22 giờ <small>(Asian/Ho Chi Minh)</small>
+                    <Row className="mb-3">
+                        {chuyenXeData.map((chuyenXe, index) => (
+                            <Card
+                                key={index}
+                                className="mb-3 w-100 shadow-light"
+                                style={{
+                                    //borderColor: selectedIndex === index ? '#F2744E' : '#ddd',
+                                    //borderWidth: selectedIndex === index ? '2px' : '1px',
+                                    border: selectedIndex === index ? '2px solid #F2744E' : '1px solid #ddd',
+                                    boxShadow: selectedIndex === index ? '0 0 10px 0 #F2744E' : 'none',
+                                }}
+                                onClick={() => handleSelected(index)}
+                            >
+                                <Card.Body>
+                                    <Row className="d-flex justify-content-around">
+                                        <Col xs={7} className="d-flex align-items-center">
+                                            <h5 className="font-weight-bold">{chuyenXe.tgkh}:00</h5>
+                                            <div className="d-flex align-items-center justify-content-center flex-grow-1 mx-3">
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="16"
+                                                    height="16"
+                                                    fill="currentColor"
+                                                    className="bi bi-circle-fill"
+                                                    viewBox="0 0 15 15"
+                                                >
+                                                    <circle cx="6" cy="6" r="6" />
+                                                </svg>
+                                                <span className="flex-1 border-b-2 border-dotted dotted-line"></span>
+                                                <span className="text-muted">{chuyenXe.tongThoiGian}</span>
+                                                <span className="flex-1 border-b-2 border-dotted dotted-line"></span>
+                                                <img
+                                                    src={locationImage}
+                                                    alt="location"
+                                                    className="location"
+                                                    width={19}
+                                                    height={19}
+                                                />
+                                            </div>
+                                            <h5 className="font-weight-bold">{chuyenXe.tgkt}:00</h5>
+                                        </Col>
+
+                                        <Col xs={4} className="mt-2 d-flex flex-column justify-content-end">
+                                            <div className="d-flex justify-content-end gap-3">
+                                                <span className="fw-bold">{chuyenXe.loaiXe}</span>
+                                                <span className="text-success fw-bold">
+                                                    {30 - chuyenXe.soLuongVeDaDat} chỗ trống
+                                                </span>
+                                            </div>
+                                            <span className="mt-2 text-end text-lg fw-bold text-warning">
+                                                {chuyenXe.giaVe.toLocaleString()}
                                             </span>
-                                            <span className="flex-1 border-b-2 border-dotted dotted-line"></span>
-                                            <img
-                                                src="./images/icons/station.svg"
-                                                alt="station"
-                                                className="mx-2"
-                                            />
-                                        </div>
-                                        <h5 className="font-weight-bold">06:30</h5>
-                                    </Col>
+                                        </Col>
+                                    </Row>
 
-                                    {/* Second section: mt-2 justify-content-end, takes up 3 columns */}
-                                    <Col xs={4} className="mt-2 d-flex flex-column w-full justify-content-end">
-                                        <div className="d-flex align-items-end gap-2">
-                                            <div className="h-[6px] w-[6px] rounded-full bg-[#C8CCD3]"></div>
-                                            <span>Limousine</span>
-                                            <div className="h-[6px] w-[10px] rounded-full bg-[#C8CCD3]"></div>
-                                            <span className="text-success ">28 chỗ trống</span>
-                                          
-                                        </div>
-                                        <span className="mt-2 text-end text-lg font-semibold text-warning">
-                                            470.000đ
-                                        </span>
-                                        <button onClick={handleOnSubmit} className="btn btn-warning mt-2">Chọn</button>
-                                    </Col>
-                                </Row>
-
-                            <Row className="mt-2">
-                                <Col>
-                                    <strong>BX Miền Đông Mới</strong>
-                                </Col>
-                                <Col className="text-right">
-                                    <strong>Bến Xe Phía Nam Huế</strong>
-                                </Col>
-                              </Row>
-
-                        </Card.Body>
-                    </Card>
-                </Row>
-                
+                                    <Row className="pl-4">
+                                        <Col>
+                                            <strong>{chuyenXe.noiKhoiHanhTinhThanh}</strong>
+                                        </Col>
+                                        <Col className="text-right p-0">
+                                            <strong>{chuyenXe.noiDenTinhThanh}</strong>
+                                        </Col>
+                                    </Row>
+                                </Card.Body>
+                            </Card>
+                        ))}
+                    </Row>             
             </Container>
             </div>
             

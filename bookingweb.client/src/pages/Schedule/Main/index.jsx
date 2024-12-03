@@ -3,11 +3,10 @@ import { Button } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 
 function ScheduleMain() {
-    const [data, setData] = useState({}); // State để lưu dữ liệu đã nhóm
-    const [loading, setLoading] = useState(true); // State để hiển thị trạng thái loading
-    const [error, setError] = useState(null); // State để xử lý lỗi
+    const [data, setData] = useState({}); 
+    const [loading, setLoading] = useState(true); 
+    const [error, setError] = useState(null); 
 
-    // Hàm fetch dữ liệu từ API
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -19,13 +18,11 @@ function ScheduleMain() {
                 const result = await response.json();
                 console.log("Dữ liệu từ API:", result);
 
-                // Kiểm tra xem dữ liệu có thuộc tính $values không
                 if (result && Array.isArray(result.$values)) {
-                    const dataArray = result.$values; // Trích xuất mảng từ $values
+                    const dataArray = result.$values; 
 
-                    // Nhóm dữ liệu theo 'noiDenTinhThanh' (Nơi đến)
                     const grouped = dataArray.reduce((acc, item) => {
-                        const destination = item.noiDenTinhThanh; // Nơi đến
+                        const destination = item.noiDenTinhThanh; 
                         if (!acc[destination]) {
                             acc[destination] = [];
                         }
@@ -33,7 +30,7 @@ function ScheduleMain() {
                         return acc;
                     }, {});
 
-                    console.log("Dữ liệu đã nhóm theo nơi đến:", grouped); // In dữ liệu sau khi nhóm
+                    console.log("Dữ liệu đã nhóm theo nơi đến:", grouped); 
                     setData(grouped);
                 } else {
                     throw new Error('Dữ liệu không phải là mảng');
