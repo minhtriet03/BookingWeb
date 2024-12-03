@@ -7,7 +7,7 @@ namespace BookingWeb.Server.Repositories
 {
     public class BenXeRepository : GenericRepository<Benxe>, IBenXeRepository
     {
-        private readonly IUnitOfWork _unitOfWork;
+ 
         public BenXeRepository(BookingBusContext dbContext) : base(dbContext)
         {
 
@@ -36,12 +36,11 @@ namespace BookingWeb.Server.Repositories
         {
             try
             {
-                var benxe = await _dbContext.Benxes.FirstOrDefaultAsync(u => u.IdBenXe == id);
+                Benxe benxe = await _dbContext.Benxes.FirstOrDefaultAsync(u => u.IdBenXe == id);
                 if (benxe != null)
                 {
                     benxe.TrangThai = false;
-                    await _unitOfWork.benXes.UpdateAsync(benxe);
-                    await _unitOfWork.SaveChangesAsync();
+                    _dbContext.Benxes.Update(benxe);
                     return true;
                 }
                 return false;

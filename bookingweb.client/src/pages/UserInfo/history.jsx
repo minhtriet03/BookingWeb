@@ -1,24 +1,26 @@
-﻿import Sidebar from "./Sidebar/index";
-//import Paper from '@mui/material/Paper';
+﻿import { useState } from 'react';
+import Sidebar from "./Sidebar/index";
+import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
-//import TablePagination from '@mui/material/TablePagination';
+import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Button } from 'react-bootstrap';
 
 const columns = [
-    { id: 'mave', label: 'Mã\u00a0Vé', minWidth: 170 },
-    { id: 'maphieu', label: 'Mã\u00a0Phiếu', minWidth: 170 },
-    { id: 'tuyenduong', label: 'Tuyến\u00a0Đường', minWidth: 200 },
-    { id: 'ngaydi', label: 'Ngày\u00a0Đi', minWidth: 170 },
-    { id: 'giave', label: 'Giá\u00a0Vé', minWidth: 150, align: 'right' },
-    { id: 'thanhtoan', label: 'Thanh\u00a0Toán', minWidth: 150, align: 'right' },
-    { id: 'trangthai', label: 'Trạng\u00a0Thái', minWidth: 150, align: 'right' },
-    { id: 'thaotac', label: 'Thao\u00a0Tác', minWidth: 150, align: 'right' },
+    { id: 'mave', label: 'Mã Vé', minWidth: 170 },
+    { id: 'maphieu', label: 'Mã Phiếu', minWidth: 170 },
+    { id: 'tuyenduong', label: 'Tuyến Đường', minWidth: 200 },
+    { id: 'ngaydi', label: 'Ngày Đi', minWidth: 170 },
+    { id: 'giave', label: 'Giá Vé', minWidth: 150, align: 'right' },
+    { id: 'thanhtoan', label: 'Thanh Toán', minWidth: 150, align: 'right' },
+    { id: 'trangthai', label: 'Trạng Thái', minWidth: 150, align: 'right' },
+    { id: 'thaotac', label: 'Thao Tác', minWidth: 150, align: 'right' },
 ];
+
 function createData(mave, maphieu, tuyenduong, ngaydi, giave, thanhtoan, trangthai, thaotac) {
     return { mave, maphieu, tuyenduong, ngaydi, giave, thanhtoan, trangthai, thaotac };
 }
@@ -41,13 +43,21 @@ const rows = [
     createData('MV015', 'MP015', 'Hà Nội - Thanh Hóa', '2024-12-15', 200000, 'Chưa Thanh Toán', 'Chờ Xác Nhận', 'Xem'),
 ];
 
-
 const History = () => {
-    return ( 
-        <div
-            className="d-flex justify-content-center align-items-center"
-            style={{ height: "75vh" }}
-        >
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    };
+
+    return (
+        <div className="d-flex justify-content-center align-items-center" style={{ height: "75vh" }}>
             <Sidebar />
             <div className="ms-3" style={{ height: '65vh', width: "800px" }}>
                 <div className="d-flex">
@@ -55,7 +65,7 @@ const History = () => {
                         <h4>Lịch sử đặt vé</h4>
                         <p>Theo dõi và quản lý quá trình lịch sử mua vé của bạn</p>
                     </div>
-                    <div className=" ms-auto">
+                    <div className="ms-auto">
                         <Button
                             variant="warning"
                             className="rounded-pill"
@@ -71,7 +81,8 @@ const History = () => {
                         </Button>
                     </div>
                 </div>
-                <TableContainer sx={{ maxHeight: 415 }}>
+                <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+                <TableContainer sx={{ maxHeight: 360 }}>
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead>
                             <TableRow>
@@ -88,7 +99,7 @@ const History = () => {
                         </TableHead>
                         <TableBody>
                             {rows
-                                //.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row) => (
                                     <TableRow hover role="checkbox" tabIndex={-1} key={row.mave}>
                                         {columns.map((column) => {
@@ -98,7 +109,7 @@ const History = () => {
                                                     {column.id === 'thaotac' ? (
                                                         //<button onClick={() => handleAction(row.mave)}>
                                                         <button>
-                                                            { value }
+                                                            {value}
                                                         </button>
                                                     ) : (
                                                         value
@@ -111,11 +122,19 @@ const History = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-
-
-              
+                    <TablePagination
+                        rowsPerPageOptions={[10, 25, 100]}
+                        component="div"
+                        count={rows.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                </Paper>
             </div>
         </div>
     );
 };
+
 export default History;

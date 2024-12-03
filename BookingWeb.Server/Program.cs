@@ -129,6 +129,12 @@ builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var vitriService = scope.ServiceProvider.GetRequiredService<VitriService>();
+    await vitriService.InitAsync();
+}
+
 app.UseDefaultFiles();
 app.UseStaticFiles();
 

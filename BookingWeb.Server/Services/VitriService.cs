@@ -25,35 +25,32 @@ namespace BookingWeb.Server.Services
             return await _unitOfWork.vitris.GetByPageAsync(page, 10);
         }
 
-        public async Task<List<Vitri>> GetByIdXe(int idXe)
+        public async Task InitAsync()
         {
-            try
-            {
-                return await _unitOfWork.vitris.getByIdXe(idXe);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+          
+            if (await _unitOfWork.vitris.AnyAsync())
+                return;
 
-       //public List<Vitri> listvitri(int idxe)
-        //{
-        //    List<Vitri> vitris = new List<Vitri>();
-        //    for (int i = 0; i < 17; i++)
-        //    {
-        //        Vitri vt = new Vitri();
-                
-        //    }
-        //}
+            var vitris = new List<Vitri>();
+
  
-        //public async Task<bool> addVitriGhe(int idxe)
-        //{
-        //    try
-        //    {
-                
-        //    }
+            for (int i = 1; i <= 17; i++)
+            {
+                vitris.Add(new Vitri { ViTri1 = $"A{i}", TrangThai = true });
+            }
 
-        //}
+
+            for (int i = 1; i <= 17; i++)
+            {
+                vitris.Add(new Vitri { ViTri1 = $"B{i}", TrangThai = true });
+            }
+
+   
+            await _unitOfWork.vitris.AddRangeAsync(vitris);
+
+ 
+            await _unitOfWork.SaveChangesAsync();
+        }
     }
 }
+
