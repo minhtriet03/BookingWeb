@@ -20,7 +20,7 @@ const setupInterceptors = (store) => {
 
                 const token = document.cookie
                     .split("; ")
-                    .find((row) => row.startsWith("jwt_token="))
+                    .find((row) => row.startsWith("jwt="))
                     ?.split("=")[1];
 
                     if (!token) {
