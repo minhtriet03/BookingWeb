@@ -1,11 +1,12 @@
-﻿import { Container, Row, Col, Card, Alert, Form, Button } from 'react-bootstrap';
+﻿import { Container, Row, Col, Alert, Form, Button } from 'react-bootstrap';
 import { useRef } from 'react';
 import { useState, useEffect } from 'react';
 import './datghe.css';
 import RenderSeats from './renderSeats';
-function DatGhe({ handleDisplay, infoTuyenDuong}) {
+import { useNavigate } from 'react-router-dom';
+function DatGhe({ handleDisplay, infoTuyenDuong }) {
 
-    //const {Noi_KhoiHanh,Noi_Den } = infoTuyenDuong;
+    const navigate = useNavigate();
     const legend = [
         { color: "#D5D9DD", label: "Đã đặt" }, // Đã đặt
         { color: "#DEF3FF", label: "Còn trống" }, // Ghế trống
@@ -48,10 +49,11 @@ function DatGhe({ handleDisplay, infoTuyenDuong}) {
     };
 
     // Xử lý khi nhấn nút trong div khác
-    const handleExternalSubmit = () => {
+    const handleExternalSubmit = (e) => {
         if (validate()) {
+            e.preventDefault();
             alert("Biểu mẫu hợp lệ!");
-            // Logic gửi dữ liệu ở đây
+            navigate("/thanh-toan");
         }
     };
 
@@ -231,7 +233,7 @@ function DatGhe({ handleDisplay, infoTuyenDuong}) {
                                     190.000đ
                                 </h5>
                                 <Button variant="" onClick={handleExternalSubmit}>
-                                        Xử lý từ div khác
+                                        Thanh toán
                                 </Button>
                             </div>
 

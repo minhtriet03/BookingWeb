@@ -4,13 +4,13 @@ import Auth from './pages/Auth';
 import Schedule from './pages/Schedule';
 import '@/assets/root.css';
 import Booking from './pages/Booking';
+import ThanhToan from './pages/Booking/ThanhToan';
 import Footer from "./component/Footer/index";
 import Header from "./component/Header/index";
 //import Authentication from "./component/Authentication";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { SetUser } from "./redux/actions/UserAction";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 function App() {
@@ -42,6 +42,7 @@ return (
             <Route path="/dang-nhap"  element={<Auth />} />
             <Route path="/lich-trinh" element={<Schedule />} />
             <Route path="/dat-ve" element={<Booking />} />
+            <Route path="/thanh-toan" element={<ThanhToan />} />
         </Routes>
         <Footer />
     </Router>
