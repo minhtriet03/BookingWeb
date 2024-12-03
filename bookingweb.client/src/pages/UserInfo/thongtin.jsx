@@ -1,18 +1,23 @@
 ﻿import Sidebar from "./Sidebar/index";
 import { Button, Form, Col, Row } from "react-bootstrap";
 import { useState } from "react";
+import { useSelector } from 'react-redux';
 
 const UserInfo = () => {
+
+    const userred = useSelector((state) => state.user);
+    console.log("userInfooo", userred);
+
     const [isEditing, setIsEditing] = useState(false);
 
-    const [userInfo, setUserInfo] = useState({
-        fullName: "Lê Tấn Tài",
-        phoneNumber: "0348696666",
-        gender: "Male",
-        email: "letaikun@gmail.com",
-        dob: "2024-11-25",
-        address: "Nhập địa chỉ"
-    });
+    //const [userInfo, setUserInfo] = useState({
+    //    fullName: "Lê Tấn Tài",
+    //    phoneNumber: "0348696666",
+    //    gender: "Male",
+    //    email: "letaikun@gmail.com",
+    //    dob: "2024-11-25",
+    //    address: "Nhập địa chỉ"
+    //});
 
     const handleEdit = () => {
         setIsEditing(true);
@@ -20,7 +25,7 @@ const UserInfo = () => {
 
     const handleSave = () => {
         setIsEditing(false);
-        console.log("Thông tin đã lưu:", userInfo);
+        //console.log("Thông tin đã lưu:", userInfo);
         // Save user info to the backend or local storage here
     };
 
@@ -29,13 +34,13 @@ const UserInfo = () => {
         // Optionally reset user info to its initial state
     };
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setUserInfo((prevState) => ({
-            ...prevState,
-            [name]: value
-        }));
-    };
+    //const handleChange = (e) => {
+    //    const { name, value } = e.target;
+    //    setUserInfo((prevState) => ({
+    //        ...prevState,
+    //        [name]: value
+    //    }));
+    //};
 
     return (
         <div className="d-flex justify-content-center align-items-center" style={{ height: "75vh" }}>
@@ -54,9 +59,9 @@ const UserInfo = () => {
                                 <Form.Control
                                     type="text"
                                     name="fullName"
-                                    value={userInfo.fullName}
+                                    /*value={userred.name}*/
                                     disabled={!isEditing}
-                                    onChange={handleChange} // This will handle changes in this field
+                                    /*onChange={handleChange} // This will handle changes in this field*/
                                 />
                             </Col>
                         </Form.Group>
@@ -67,9 +72,9 @@ const UserInfo = () => {
                                 <Form.Control
                                     type="text"
                                     name="phoneNumber"
-                                    value={userInfo.phoneNumber}
+                                    /*value={userred.}*/
                                     disabled={!isEditing}
-                                    onChange={handleChange}
+                                    /*onChange={handleChange}*/
                                 />
                             </Col>
                         </Form.Group>
@@ -79,9 +84,9 @@ const UserInfo = () => {
                             <Col sm="2">
                                 <Form.Select
                                     name="gender"
-                                    value={userInfo.gender}
+                                    /*value={userInfo.gender}*/
                                     disabled={!isEditing}
-                                    onChange={handleChange} // This will handle changes in this select field
+                                    /*onChange={handleChange} // This will handle changes in this select field*/
                                 >
                                     <option value="Male">Nam</option>
                                     <option value="Female">Nữ</option>
@@ -96,9 +101,9 @@ const UserInfo = () => {
                                 <Form.Control
                                     type="email"
                                     name="email"
-                                    value={userInfo.email}
+                                    /*value={userred.email}*/
                                     disabled={!isEditing}
-                                    onChange={handleChange}
+                                    /*onChange={handleChange}*/
                                 />
                             </Col>
                         </Form.Group>
@@ -109,9 +114,9 @@ const UserInfo = () => {
                                 <Form.Control
                                     type="date"
                                     name="dob"
-                                    value={userInfo.dob}
+                                    /*value={userInfo.dob}*/
                                     disabled={!isEditing}
-                                    onChange={handleChange}
+                                    /*onChange={handleChange}*/
                                 />
                             </Col>
                         </Form.Group>
@@ -122,9 +127,9 @@ const UserInfo = () => {
                                 <Form.Control
                                     type="text"
                                     name="address"
-                                    value={userInfo.address}
+                                    /*value={userInfo.address}*/
                                     disabled={!isEditing}
-                                    onChange={handleChange}
+                                    /*onChange={handleChange}*/
                                 />
                             </Col>
                         </Form.Group>
