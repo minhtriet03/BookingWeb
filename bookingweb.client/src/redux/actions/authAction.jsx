@@ -23,6 +23,8 @@ export const logout = createAsyncThunk(
           console.error("Logout failed:", error);
           return thunkAPI.rejectWithValue("Logout failed");
       }
-  }
+    }
+
+
 );
 

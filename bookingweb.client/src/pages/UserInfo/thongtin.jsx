@@ -6,18 +6,10 @@ import { useSelector } from 'react-redux';
 const UserInfo = () => {
 
     const userred = useSelector((state) => state.user);
-    console.log("userInfooo", userred);
+    console.log(userred)
 
     const [isEditing, setIsEditing] = useState(false);
 
-    //const [userInfo, setUserInfo] = useState({
-    //    fullName: "Lê Tấn Tài",
-    //    phoneNumber: "0348696666",
-    //    gender: "Male",
-    //    email: "letaikun@gmail.com",
-    //    dob: "2024-11-25",
-    //    address: "Nhập địa chỉ"
-    //});
 
     const handleEdit = () => {
         setIsEditing(true);
@@ -25,22 +17,15 @@ const UserInfo = () => {
 
     const handleSave = () => {
         setIsEditing(false);
-        //console.log("Thông tin đã lưu:", userInfo);
-        // Save user info to the backend or local storage here
+     
     };
 
     const handleCancel = () => {
         setIsEditing(false);
-        // Optionally reset user info to its initial state
+    
     };
 
-    //const handleChange = (e) => {
-    //    const { name, value } = e.target;
-    //    setUserInfo((prevState) => ({
-    //        ...prevState,
-    //        [name]: value
-    //    }));
-    //};
+   
 
     return (
         <div className="d-flex justify-content-center align-items-center" style={{ height: "75vh" }}>
@@ -50,16 +35,28 @@ const UserInfo = () => {
                 <p>Quản thông tin hồ sơ để bảo mật tài khoản</p>
                 <div
                     className="p-4 shadow rounded justify-content-center align-items-center"
-                    style={{ margin: "auto", backgroundColor: "#fff" }}
+                    style={{ height:"56vh", margin: "auto", backgroundColor: "#fff" }}
                 >
                     <Form className="w-100">
+                        <Form.Group as={Row} className="mb-3 d-flex">
+                            <Form.Label column sm="2">ID</Form.Label>
+                            <Col sm="7">
+                                <Form.Control
+                                    type="text"
+                                    name="ID"
+                                    value={"User: " + userred.userInfo.idUser}
+                                    disabled={!isEditing}
+                                /*onChange={handleChange} // This will handle changes in this field*/
+                                />
+                            </Col>
+                        </Form.Group>
                         <Form.Group as={Row} className="mb-3 d-flex">
                             <Form.Label column sm="2">Họ và tên:</Form.Label>
                             <Col sm="7">
                                 <Form.Control
                                     type="text"
                                     name="fullName"
-                                    /*value={userred.name}*/
+                                    value={userred.userInfo.hoTen}
                                     disabled={!isEditing}
                                     /*onChange={handleChange} // This will handle changes in this field*/
                                 />
@@ -72,26 +69,10 @@ const UserInfo = () => {
                                 <Form.Control
                                     type="text"
                                     name="phoneNumber"
-                                    /*value={userred.}*/
+                                    value={userred.userInfo.phone}
                                     disabled={!isEditing}
                                     /*onChange={handleChange}*/
                                 />
-                            </Col>
-                        </Form.Group>
-
-                        <Form.Group as={Row} className="mb-3 d-flex">
-                            <Form.Label column sm="2">Giới tính</Form.Label>
-                            <Col sm="2">
-                                <Form.Select
-                                    name="gender"
-                                    /*value={userInfo.gender}*/
-                                    disabled={!isEditing}
-                                    /*onChange={handleChange} // This will handle changes in this select field*/
-                                >
-                                    <option value="Male">Nam</option>
-                                    <option value="Female">Nữ</option>
-                                    <option value="Other">Other</option>
-                                </Form.Select>
                             </Col>
                         </Form.Group>
 
@@ -101,40 +82,28 @@ const UserInfo = () => {
                                 <Form.Control
                                     type="email"
                                     name="email"
-                                    /*value={userred.email}*/
+                                    value={userred.userInfo.email}
                                     disabled={!isEditing}
-                                    /*onChange={handleChange}*/
+                                /*onChange={handleChange}*/
                                 />
                             </Col>
                         </Form.Group>
 
-                        <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm="2">Ngày sinh:</Form.Label>
-                            <Col sm="7">
-                                <Form.Control
-                                    type="date"
-                                    name="dob"
-                                    /*value={userInfo.dob}*/
-                                    disabled={!isEditing}
-                                    /*onChange={handleChange}*/
-                                />
-                            </Col>
-                        </Form.Group>
-
+                     
                         <Form.Group as={Row} className="mb-3">
                             <Form.Label column sm="2">Địa chỉ:</Form.Label>
                             <Col sm="7">
                                 <Form.Control
                                     type="text"
                                     name="address"
-                                    /*value={userInfo.address}*/
+                                    value={userred.userInfo.address}
                                     disabled={!isEditing}
                                     /*onChange={handleChange}*/
                                 />
                             </Col>
                         </Form.Group>
                     </Form>
-
+                    <br/>
                     <div className="d-flex justify-content-center">
                         {!isEditing ? (
                             <Button
