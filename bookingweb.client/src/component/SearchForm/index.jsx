@@ -18,6 +18,8 @@ function SearchForm() {
     const [returnDate, setReturnDate] = useState(null);
     const [tripType, setTripType] = useState("oneWay"); // Default is one way
 
+    console.log("selectedDate", selectedDate);
+
     const handleTripTypeChange = (type) => {
         setTripType(type);
         if (type === "oneWay") {
@@ -46,6 +48,22 @@ function SearchForm() {
         const temp = selectedDeparture;
         setSelectedDeparture(selectedDestination);
         setSelectedDestination(temp);
+    };
+
+    const formatDateToLocal = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
+    const generateBookingUrl = () => {
+        const departure = selectedDeparture?.tenTinhThanh || "";
+        const destination = selectedDestination?.tenTinhThanh || "";
+        const date = selectedDate ? formatDateToLocal(selectedDate) : ""; // Sử dụng hàm định dạng local
+        console.log("date", date);
+
+        return `/dat-ve?noidi=${encodeURIComponent(departure)}&noiden=${encodeURIComponent(destination)}&ngaydi=${encodeURIComponent(date)}`;
     };
 
     return (
@@ -195,7 +213,7 @@ function SearchForm() {
                 <div className="d-flex justify-content-center position-absolute" style={{ width: '250px', height: '48px', bottom: '-15px' }}>
                     <Button
                         as={Link}
-                        to="/dat-ve"
+                        to={generateBookingUrl()}
                         className="text-white w-100 rounded-pill px-4"
                         variant=""
                         style={{ backgroundColor: '#EF5222', zIndex: 0 }}

@@ -18,7 +18,9 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { SetUser } from "./redux/actions/UserAction";
 import { useState } from "react";
+import Spinner from 'react-bootstrap/Spinner';
 
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 
@@ -36,7 +38,12 @@ function App() {
     };
 
     if (loading) {
-        return <p> dang load....</p>;
+        return (
+            <div className="d-flex justify-content-center align-items-center vh-100">
+                <Spinner animation="border" variant="warning" className="spinner-border-lg" />
+                <div>Loading...</div>
+            </div>
+        );
     }
 
 
