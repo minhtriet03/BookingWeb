@@ -19,8 +19,8 @@ function Auth() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const userred = useSelector((state) => state.user.userInfo);
-    console.log("userInfooo", userred?.hoTen);
+    const userred = useSelector((state) => state.user);
+    console.log("userInfooo", userred);
 
 
 
@@ -36,8 +36,6 @@ function Auth() {
                     email: formData.email, 
                     password: formData.password 
                 }));
-
-                console.log(actionResult);
     
                 if (actionResult.type === 'auth/login/fulfilled') {
                     await dispatch(SetUser());

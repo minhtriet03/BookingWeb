@@ -8,6 +8,7 @@ public class UnitOfWork : IUnitOfWork
 
     private readonly BookingBusContext _context;
  
+
     public UnitOfWork(BookingBusContext context, 
                                   IBenXeRepository benxe, 
                                   ITinhRepository tinh, 
@@ -19,9 +20,8 @@ public class UnitOfWork : IUnitOfWork
                                   IXeRepository xeRepository, 
                                   IAccountRepository accountRepository,
                                   ITuyenDuongRepository tuyenDuongRepository,
-                                IChuyenXeRepository chuyenXeRepository
-        )
-    {
+                                  IChuyenXeRepository chuyenXeRepository
+        ){
         _context = context;
         this.benXes = benxe;
         this.vitris = vitri;
@@ -34,6 +34,7 @@ public class UnitOfWork : IUnitOfWork
         this.xeRepository = xeRepository;
         this.tuyenDuongRepository = tuyenDuongRepository;
         this.chuyenXeRepository = chuyenXeRepository;
+
     }
     public IBenXeRepository benXes { get; set; }
     public ITinhRepository tinhs { get; set; }

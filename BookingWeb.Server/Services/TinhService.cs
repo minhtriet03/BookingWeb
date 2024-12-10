@@ -55,7 +55,8 @@ namespace BookingWeb.Server.Services
         {
             try
             {
-                return await _unitOfWork.tinhs.deleteTinh(id);
+                await _unitOfWork.tinhs.deleteTinh(id);
+                return await _unitOfWork.SaveChangesAsync() > 0;
             }
             catch (Exception ex)
             {

@@ -8,7 +8,6 @@ namespace BookingWeb.Server.Repositories
 {
     public class TinhRepository : GenericRepository<Tinhthanh>, ITinhRepository
     {
-        private IUnitOfWork _unitOfWork;
         public TinhRepository(BookingBusContext dbContext) : base(dbContext)
         {
 
@@ -41,7 +40,7 @@ namespace BookingWeb.Server.Repositories
                 if (tinh != null)
                 {
                     tinh.TrangThai = false;
-                    await _unitOfWork.tinhs.UpdateAsync(tinh);
+                    _dbContext.Tinhthanhs.Update(tinh);
                     return true;
                 }
                 return false;

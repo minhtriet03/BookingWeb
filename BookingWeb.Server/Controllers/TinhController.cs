@@ -12,21 +12,31 @@ namespace BookingWeb.Server.Controllers
         public TinhController(TinhService tinhService) {
             _service = tinhService;
         }
-
         [HttpGet]
         public async Task<ActionResult<List<Tinhthanh>>> GetAllTinh()
         {
-
             try
             {
                 var data = await _service.getAll();
+                Console.WriteLine(data.Count);
+                // Kiểm tra dữ liệu trả về
+                if (data == null || !data.Any())
+                {
+                    return NotFound("Không tìm thấy tỉnh thành nào.");
+                }
+
                 return Ok(data);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                // Ghi log lỗi nếu cần (giả sử bạn sử dụng ILogger)
+                //_logger.LogError(ex, "Lỗi khi lấy danh sách tỉnh thành");
+
+                // Trả về lỗi chung
+                return StatusCode(500, "Đã xảy ra lỗi khi xử lý yêu cầu.");
             }
         }
+
         [HttpGet("id/{id}")]
         public async Task<ActionResult<Tinhthanh>> GetById(int id)
         {

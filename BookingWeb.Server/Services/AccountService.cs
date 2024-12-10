@@ -1,6 +1,8 @@
-﻿using BookingWeb.Server.Interfaces;
+using BookingWeb.Server.Interfaces;
 using BookingWeb.Server.Models;
 using BookingWeb.Server.ViewModels;
+using Microsoft.AspNetCore.Identity;
+
 
 namespace BookingWeb.Server.Services
 {
@@ -119,23 +121,19 @@ namespace BookingWeb.Server.Services
             }
         }
 
-        public async Task<bool> Register(Taikhoan user)
-        {
-            try
-            {
-                return await _unitOfWork.accountRepository.Register(user);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
 
         public async Task<bool> Login(string userName, string password)
         {
             try
             {
-                return await _unitOfWork.accountRepository.Login(userName, password);
+                var taikhoan = await _unitOfWork.accountRepository.GetByUsername(userName);
+
+                if (taikhoan == null) return false;
+
+                var passwordHasher = new PasswordHasher<Taikhoan>();
+                var verificationResult = passwordHasher.VerifyHashedPassword(taikhoan, taikhoan.Password, password);
+
+                return verificationResult == PasswordVerificationResult.Success;
             }
             catch (Exception ex)
             {

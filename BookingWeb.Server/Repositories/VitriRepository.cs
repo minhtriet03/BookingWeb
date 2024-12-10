@@ -6,16 +6,16 @@ namespace BookingWeb.Server.Repositories
 {
     public class VitriRepository : GenericRepository<Vitri>, IVitriRepository
     {
-        private IUnitOfWork _unitOfWork;
 
         public VitriRepository(BookingBusContext dbContext) : base(dbContext)
         {
 
         }
 
-        public async Task<List<Vitri>> getByIdXe(int id)
+       
+        public async Task AddRangeAsync(IEnumerable<Vitri> vitris)
         {
-            return await _unitOfWork.vitris.GetAllAsync();
+            await _dbContext.Vitris.AddRangeAsync(vitris);
         }
 
         public async Task<List<Vitri>> GetByPageAsync(int pageNumber, int pageSize)
@@ -31,18 +31,9 @@ namespace BookingWeb.Server.Repositories
                 .ToListAsync();
         }
 
-        public async Task<bool> AddAsync(Vitri vitri)
+        public async Task<bool> AnyAsync()
         {
-            try
-            {
-                await _unitOfWork.vitris.AddAsync(vitri);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error adding Vitri to database", ex);
-            }
+            return await _dbContext.Vitris.AnyAsync();
         }
-      
     }
 }

@@ -6,6 +6,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using BookingWeb.Server.Dto;
+using Microsoft.AspNetCore.Identity;
 
 
 namespace BookingWeb.Server.Controllers
@@ -18,9 +20,10 @@ namespace BookingWeb.Server.Controllers
         private readonly AccountService _accountService;
         private readonly UserService _userService;
 
-        public AccountController(AccountService accountService)
+        public AccountController(AccountService accountService, UserService userService)
         {
             _accountService = accountService;
+            _userService = userService;
         }
 
         // GET: api/Account
@@ -53,48 +56,64 @@ namespace BookingWeb.Server.Controllers
         }
 
 
-        //POST: api/Account/register
         [HttpPost("register")]
-        public async Task<IActionResult> PostRegister([FromBody] Taikhoan acc)
+        public async Task<IActionResult> PostRegister([FromBody] RegisterModel acc)
         {
-            if ( await _accountService.getAccountByUsername(acc.UserName) != null)
+            if (await _accountService.getAccountByUsername(acc.UserName) != null)
             {
                 return BadRequest("Tài khoản đã tồn tại");
             }
+
+
 
             if (!ModelState.IsValid)
             {
                 return BadRequest("Dữ liệu không hợp lệ");
             }
 
-            Nguoidung newUser = new Nguoidung();
-            newUser.HoTen = null;
-            newUser.Email = acc.UserName;
-            newUser.DiaChi = null;
-            newUser.Phone = null;
-            newUser.TrangThai = true;
-            newUser.IdAccount = acc.IdAccount;
+            var passwordHasher = new PasswordHasher<Taikhoan>();
 
-            await _userService.AddUserAsync(newUser);
-
-            Taikhoan taikhoan = new Taikhoan
+            var taikhoan = new Taikhoan
             {
                 UserName = acc.UserName,
-                Password = acc.Password,
+                Password = null, 
                 IdQuyen = 1,
-                TrangThai = true,
+                TrangThai = true
             };
 
-            Console.WriteLine(taikhoan.IdAccount + taikhoan.IdQuyen +taikhoan.UserName + taikhoan.Password);
+            Console.WriteLine("Password: " + acc.Password);
 
-            bool result = await _accountService.Register(taikhoan);
+            taikhoan.Password = passwordHasher.HashPassword(taikhoan, acc.Password);
 
-            if (result)
+            Console.WriteLine("Password Hashed: " + taikhoan.Password);
+
+            var result = await _accountService.addAccount(taikhoan);
+            if (!result)
             {
-                return Ok("Đăng ký thành công");
+                return BadRequest("Đăng ký tài khoản thất bại");
             }
 
-            return BadRequest("Đăng ký thất bại");
+            var savedAccount = await _accountService.getAccountByUsername(acc.UserName);
+            if (savedAccount == null)
+            {
+                return BadRequest("Không thể tạo tài khoản");
+            }
+
+            var newUser = new Nguoidung
+            {
+                HoTen = null,
+                Email = acc.UserName,
+                DiaChi = null,
+                Phone = null,
+                TrangThai = true,
+                IdAccount = savedAccount.IdAccount 
+            };
+
+            Console.WriteLine("New User: " + newUser.IdAccount + "Email: " + newUser.Email);
+            var test = await _userService.AddUserRegister(newUser);
+            Console.WriteLine("Test: " + test);
+
+            return Ok("Đăng ký thành công");
         }
 
 
@@ -102,7 +121,7 @@ namespace BookingWeb.Server.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> PostLogin([FromBody] LoginModel loginModel)
         {
-            Taikhoan taikhoan = await _accountService.getAccountByUsername(loginModel.Email);
+            var taikhoan = await _accountService.getAccountByUsername(loginModel.Email);
 
             if (taikhoan == null)
             {
@@ -115,15 +134,16 @@ namespace BookingWeb.Server.Controllers
                 return BadRequest("Mật khẩu không đúng");
             }
 
+            // Tạo JWT
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("this is my custom Secret key for authnetication");
+            var key = Encoding.ASCII.GetBytes("this is my custom Secret key for authentication");
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new Claim[]
+                Subject = new ClaimsIdentity(new[]
                 {
-            new Claim("IdAccount", taikhoan.IdAccount+""),
-            new Claim("UserName", taikhoan.UserName),
-                }),
+            new Claim("IdAccount", taikhoan.IdAccount.ToString()),
+            new Claim("UserName", taikhoan.UserName)
+        }),
                 Expires = DateTime.UtcNow.AddHours(9),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
@@ -134,13 +154,11 @@ namespace BookingWeb.Server.Controllers
             // Lưu JWT vào cookies
             var cookieOptions = new CookieOptions
             {
-                HttpOnly = true, 
+                HttpOnly = true,
                 Secure = true,
-                SameSite = SameSiteMode.Strict,
-                Expires = DateTime.UtcNow.AddHours(1) // Thời hạn cookies
+                SameSite = SameSiteMode.None,
+                Expires = DateTime.UtcNow.AddHours(1)
             };
-
-
 
             Response.Cookies.Append("jwt", tokenString, cookieOptions);
 
@@ -151,7 +169,7 @@ namespace BookingWeb.Server.Controllers
         [HttpPost("logout")]
         public IActionResult Logout()
         {
-            Response.Cookies.Delete("access_token");
+            Response.Cookies.Delete("jwt");
             return Ok("Đăng xuất thành công");
         }
 
