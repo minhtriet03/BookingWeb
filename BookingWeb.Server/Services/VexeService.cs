@@ -49,45 +49,47 @@ namespace BookingWeb.Server.Services
             var data = await _unitOfWork.vexes.GetByConditionAsync(vx =>
                 vx.NgayKhoiHanh >= startDateOnly && vx.NgayKhoiHanh <= endDateOnly);
 
-            var veXe = data.Select(vx => new VeXeVM
-            {
-                IdVe = vx.IdVe,
-                IdPhieu = vx.IdPhieu,
-                IdChuyenXe = vx.IdChuyenXe,
-                IdViTriGhe = vx.IdViTriGhe,
-                NgayKhoiHanh = vx.NgayKhoiHanh,
-                TrangThai = vx.TrangThai,
-                IdViTriGheNavigation = vx.IdViTriGheNavigation == null
-                    ? null
-                    : new ViTriVM
-                    {
-                        IdViTriGhe = vx.IdViTriGheNavigation.IdViTriGhe,
-                        ViTri = vx.IdViTriGheNavigation.ViTri1,
-                        TrangThai = vx.IdViTriGheNavigation.TrangThai
-                    },
-                IdChuyenXeNavigation = vx.IdChuyenXeNavigation == null
-                    ? null
-                    : new ChuyenXeVM
-                    {
-                        IdChuyenXe = vx.IdChuyenXeNavigation.IdChuyenXe,
-                        ThoiGianKh = vx.IdChuyenXeNavigation.ThoiGianKh,
-                        ThoiGianDen = vx.IdChuyenXeNavigation.ThoiGianDen,
-                        TuyenDuongVM = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation == null
-                            ? null
-                            : new TuyenDuongVM
-                            {
-                                IdTuyenDuong = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.IdTuyenDuong,
-                                NoiKhoiHanh = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.NoiKhoiHanhNavigation.IdTinhThanhNavigation.TenTinhThanh,
-                                KhoangCach = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.KhoangCach,
-                                NoiDen = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.NoiDenNavigation.IdTinhThanhNavigation.TenTinhThanh,
-                                GiaVe = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.GiaVe,
-                                TenBenXeDi = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.NoiKhoiHanhNavigation.TenBenXe,
-                                TenBenXeDen = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.NoiDenNavigation.TenBenXe,
-                                TrangThai = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.TrangThai
-                            },
+            var veXe = new List<VeXeVM>();
 
-                    }
-            }).ToList();
+            //var veXe = data.Select(vx => new VeXeVM
+            //{
+            //    IdVe = vx.IdVe,
+            //    IdPhieu = vx.IdPhieu,
+            //    IdChuyenXe = vx.IdChuyenXe,
+            //    IdViTriGhe = vx.IdViTriGhe,
+            //    NgayKhoiHanh = vx.NgayKhoiHanh,
+            //    TrangThai = vx.TrangThai,
+            //    IdViTriGheNavigation = vx.IdViTriGheNavigation == null
+            //        ? null
+            //        : new ViTriVM
+            //        {
+            //            IdViTriGhe = vx.IdViTriGheNavigation.IdViTriGhe,
+            //            ViTri = vx.IdViTriGheNavigation.ViTri1,
+            //            TrangThai = vx.IdViTriGheNavigation.TrangThai
+            //        },
+            //    IdChuyenXeNavigation = vx.IdChuyenXeNavigation == null
+            //        ? null
+            //        : new ChuyenXeVM
+            //        {
+            //            IdChuyenXe = vx.IdChuyenXeNavigation.IdChuyenXe,
+            //            ThoiGianKh = vx.IdChuyenXeNavigation.ThoiGianKh,
+            //            ThoiGianDen = vx.IdChuyenXeNavigation.ThoiGianDen,
+            //            TuyenDuongVM = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation == null
+            //                ? null
+            //                : new TuyenDuongVM
+            //                {
+            //                    IdTuyenDuong = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.IdTuyenDuong,
+            //                    NoiKhoiHanh = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.NoiKhoiHanhNavigation.IdTinhThanhNavigation.TenTinhThanh,
+            //                    KhoangCach = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.KhoangCach,
+            //                    NoiDen = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.NoiDenNavigation.IdTinhThanhNavigation.TenTinhThanh,
+            //                    GiaVe = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.GiaVe,
+            //                    TenBenXeDi = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.NoiKhoiHanhNavigation.TenBenXe,
+            //                    TenBenXeDen = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.NoiDenNavigation.TenBenXe,
+            //                    TrangThai = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.TrangThai
+            //                },
+
+            //        }
+            //}).ToList();
 
             return veXe;
         }
