@@ -8,23 +8,12 @@ public class UnitOfWork : IUnitOfWork
 
     private readonly BookingBusContext _context;
  
-
-    public UnitOfWork(BookingBusContext context, 
-                                  IBenXeRepository benxe, 
-                                  ITinhRepository tinh, 
-                                  IVitriRepository vitri,
-                                  IVexeRepository vexe, 
-                                  IUserRepository userRepository, 
-                                  IOrderRepository orderRepository, 
-                                  ILoaiXeRepository loaiXeRepository, 
-                                  IXeRepository xeRepository, 
-                                  IAccountRepository accountRepository,
-                                  ITuyenDuongRepository tuyenDuongRepository,
-                                  IChuyenXeRepository chuyenXeRepository
-        ){
+    public UnitOfWork(BookingBusContext context, IBenXeRepository benxe, ITinhRepository tinh, IVexeRepository vexe,
+        IUserRepository userRepository, IOrderRepository orderRepository, ILoaiXeRepository loaiXeRepository, IXeRepository xeRepository,
+        IAccountRepository accountRepository, IChuyenXeRepository chuyenXeRepository, ITuyenDuongRepository tuyenDuongRepository)
+    {
         _context = context;
         this.benXes = benxe;
-        this.vitris = vitri;
         this.tinhs = tinh;
         this.vexes = vexe;
         this.userRepository = userRepository;
@@ -38,7 +27,6 @@ public class UnitOfWork : IUnitOfWork
     }
     public IBenXeRepository benXes { get; set; }
     public ITinhRepository tinhs { get; set; }
-    public IVitriRepository vitris { get; set; }
     public IVexeRepository vexes { get; set; }
 
     public IUserRepository userRepository {get; private set; }

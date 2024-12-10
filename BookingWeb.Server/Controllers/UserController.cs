@@ -30,7 +30,7 @@ namespace BookingWeb.Server.Controllers
             if (idAccount == -1) return BadRequest();
             var user = await _userService.GetUserByIdAccount(idAccount);
             Console.WriteLine("day la user" + user);
-            return Ok(new { userInfo = user});
+            return Ok(new { userInfo = user, idAccount = idAccount });
         }
 
         [HttpGet]
