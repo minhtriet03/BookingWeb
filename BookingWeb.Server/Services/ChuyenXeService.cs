@@ -1,4 +1,5 @@
-﻿using BookingWeb.Server.Interfaces;
+﻿using BookingWeb.Server.Dto;
+using BookingWeb.Server.Interfaces;
 using BookingWeb.Server.Models;
 using BookingWeb.Server.ViewModels;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -20,6 +21,32 @@ namespace BookingWeb.Server.Services
             {
                 var data = await _unitOfWork.chuyenXeRepository.GetAllChuyenXeVM();
 
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<List<Chuyenxe>> GetAllChuyenXeByTuyenDuong(int TDId)
+        {
+            try
+            {
+               var data = await _unitOfWork.chuyenXeRepository.GetByConditionAsync(cx => cx.IdTuyenDuong == TDId);
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<List<ChuyenxeDetailDto>> GetAllChuyenXeByTinh(string noidi, string noiden, DateOnly date)
+        {
+            try
+            {
+                var data = await _unitOfWork.chuyenXeRepository.GetChuyenXeTheoTenTinhAsync(noidi, noiden, date);
                 return data;
             }
             catch (Exception ex)

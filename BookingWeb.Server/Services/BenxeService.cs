@@ -85,7 +85,8 @@ namespace BookingWeb.Server.Services
         {
             try
             {
-                return await _unitOfWork.benXes.deleteBenxe(id);
+                await _unitOfWork.benXes.deleteBenxe(id);
+                return await _unitOfWork.SaveChangesAsync() > 0;
             }
             catch (Exception ex)
             {

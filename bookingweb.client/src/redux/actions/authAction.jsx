@@ -14,15 +14,21 @@ export const loginUser = createAsyncThunk(
 );
 
 export const logout = createAsyncThunk(
-  "auth/logout",
-  async (_, thunkAPI) => {
-      try {
-          await axiosInstance.post('/api/Account/logout', {}, { withCredentials: true });
-          return "Logout successful"; // Trả về thông báo cụ thể
-      } catch (error) {
-          console.error("Logout failed:", error);
-          return thunkAPI.rejectWithValue("Logout failed");
-      }
-  }
-);
+    "auth/logout",
+    async (_, thunkAPI) => {
+        try {
+            // Gửi request logout tới server
+            await axiosInstance.post('/api/Account/logout', {}, { withCredentials: true });
 
+            // Trả về kết quả nếu thành công
+            return "Logout successful";
+        } catch (error) {
+            console.error("Logout failed:", error);
+
+            // Xử lý lỗi chi tiết hơn
+            return thunkAPI.rejectWithValue(
+                error.response?.data?.message || "Logout failed"
+            );
+        }
+    }
+);
