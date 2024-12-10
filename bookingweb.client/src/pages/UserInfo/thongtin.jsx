@@ -13,12 +13,13 @@ const UserInfo = () => {
 
     const [errors, setErrors] = useState({});
     const [formData, setFormData] = useState({
-        id: userred.userInfo.idUser,
-        fullName: userred.userInfo.hoTen,
-        phoneNumber: userred.userInfo.phone,
-        email: userred.userInfo.email,
-        address: userred.userInfo.diaChi,
-        status: userred.userInfo.trangThai,
+        id: userred.userInfo.userInfo.idUser,
+        fullName: userred.userInfo.userInfo.hoTen,
+        phoneNumber: userred.userInfo.userInfo.phone,
+        email: userred.userInfo.userInfo.email,
+        address: userred.userInfo.userInfo.diaChi,
+        status: userred.userInfo.userInfo.trangThai,
+        idaccount: userred.userInfo.idAccount
     });
     const [isEditing, setIsEditing] = useState(false);
 
@@ -67,15 +68,15 @@ const UserInfo = () => {
     e.preventDefault();
     if (validate()) {
         const userData = {
-            IdUser: userred.userInfo.idUser,
+            IdUser: userred.userInfo.userInfo.idUser,
             HoTen: formData.fullName,
             DiaChi: formData.address,
             email: formData.email,
             Phone: formData.phoneNumber,   
-            TrangThai: userred.userInfo.trangThai,
-            IdAccount: userred.userInfo.$id
+            TrangThai: userred.userInfo.userInfo.trangThai,
+            idAccount: userred.userInfo.idAccount
         };
-
+        console.log(userData);
         try {
             await updateUser(userData);
             toast.success('Update thành công');
@@ -111,7 +112,7 @@ const UserInfo = () => {
                 <p>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
                 <div
                     className="p-4 shadow rounded justify-content-center align-items-center"
-                    style={{ height: "56vh", margin: "auto", backgroundColor: "#fff" }}
+                    style={{ height: "53vh", margin: "auto", backgroundColor: "#fff" }}
                 >
                     <Form className="w-100" onSubmit={handleSave}>
 

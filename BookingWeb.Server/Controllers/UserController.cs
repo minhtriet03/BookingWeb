@@ -30,7 +30,7 @@ namespace BookingWeb.Server.Controllers
             if (idAccount == -1) return BadRequest();
             var user = await _userService.GetUserByIdAccount(idAccount);
             Console.WriteLine("day la user" + user);
-            return Ok(new { userInfo = user});
+            return Ok(new { userInfo = user,idAccount = idAccount});
         }
 
         [HttpGet]
@@ -88,6 +88,13 @@ namespace BookingWeb.Server.Controllers
             try
             {
                 var result = await _userService.UpdateUserAsync(user);
+                Console.WriteLine(user.IdUser);
+                Console.WriteLine(user.HoTen);
+                Console.WriteLine(user.Phone);
+                Console.WriteLine(user.DiaChi);
+                Console.WriteLine(user.Email);
+                Console.WriteLine(user.TrangThai);
+                Console.WriteLine(user.IdAccount);
 
                 if (result)
                     return Ok("Cập nhật thành công");

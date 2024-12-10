@@ -14,10 +14,7 @@ function Header () {
   const handleClick = () => {
     navigate('/dang-nhap'); 
     };
-<<<<<<< HEAD
 
-=======
->>>>>>> 35d812ffe9eedbf4753bd9855622388b6880697a
 
     const handleClickLogout = async () => {
         const result = await dispatch(logout());

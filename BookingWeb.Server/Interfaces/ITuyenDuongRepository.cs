@@ -7,7 +7,6 @@ namespace BookingWeb.Server.Interfaces
         Task<List<Tuyenduong>> GetPagedAsync(int skip, int take);
 
         Task<List<Tuyenduong>> GetAllTuyenDuongVMAsync();
-        
 
         Task<List<ChuyenxeDetailDto>> GetLichtrinhAsync(int skip, int take);
 

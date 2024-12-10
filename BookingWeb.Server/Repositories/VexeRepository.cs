@@ -1,10 +1,11 @@
 ﻿using BookingWeb.Server.Interfaces;
 using BookingWeb.Server.Models;
+using BookingWeb.Server.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookingWeb.Server.Repositories
 {
-    public class VexeRepository : GenericRepository<Vexe>,IVexeRepository
+    public class VexeRepository : GenericRepository<Vexe>, IVexeRepository
     {
 
         public VexeRepository(BookingBusContext dbContext) : base(dbContext)
@@ -17,7 +18,19 @@ namespace BookingWeb.Server.Repositories
             return await _dbContext.Vexes.ToListAsync();
         }
 
-       
+        public async Task<List<Vexe>> GetByIdPhieuAsync(int idPhieu)
+        {
+            return await _dbContext.Vexes
+             .Include(v => v.IdChuyenXeNavigation) // Include Chuyenxe
+                 .ThenInclude(cx => cx.IdTuyenDuongNavigation) // Include Tuyenduong
+                     .ThenInclude(td => td.NoiKhoiHanhNavigation) // Include NoiKhoiHanh (Bến xe nơi khởi hành)
+             .Include(v => v.IdChuyenXeNavigation)
+                 .ThenInclude(cx => cx.IdTuyenDuongNavigation) // Include Tuyenduong
+                     .ThenInclude(td => td.NoiDenNavigation) // Include NoiDen (Bến xe nơi đến)
+             .Where(v => v.IdPhieu == idPhieu)
+             .ToListAsync();
+        } 
+
         public async Task<List<Vexe>> GetByPageAsync(int pageNumber, int pageSize)
         {
             if (pageNumber <= 0 || pageSize <= 0)

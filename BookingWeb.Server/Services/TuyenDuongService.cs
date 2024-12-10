@@ -28,6 +28,20 @@ namespace BookingWeb.Server.Services
             }
         }
 
+        public async Task<Tuyenduong?> GetTuyenDuongByIdChuyen(int id)
+        {
+            try
+            {
+                var tuyenduong = await _unitOfWork.tuyenDuongRepository.GetByIdChuyen(id);
+
+                return tuyenduong;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         //Toàn sửa cái IEnumable thành List rồi nha Híu, do Toàn chạy thấy nó bị lỗi mà đổi sang List thì không lôỗi
         public async Task<List<Tuyenduong>> GetAllTuyenDuong()
         {
