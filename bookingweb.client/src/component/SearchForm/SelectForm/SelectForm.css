@@ -1,0 +1,32 @@
+﻿/* Tạo kiểu cho danh sách các tỉnh thành */
+.tinh-thanh-list {
+    max-height: 300px; /* Giới hạn chiều cao của danh sách */
+    overflow-y: auto; /* Thêm thanh cuộn khi có quá nhiều tỉnh thành */
+    margin-top: 10px;
+    padding: 0;
+}
+
+/* Tạo kiểu cho mỗi mục trong danh sách */
+.tinh-thanh-item {
+    padding: 10px;
+    cursor: pointer; /* Con trỏ chuột khi di chuột vào để cho biết có thể nhấn */
+    border-bottom: 1px solid #ddd; /* Thêm đường viền dưới cho mỗi mục */
+    transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu nền khi hover */
+}
+
+    /* Khi hover vào mục, thay đổi màu nền */
+    .tinh-thanh-item:hover {
+        background-color: #f0f0f0;
+        color: #007bff; /* Thay đổi màu chữ khi hover */
+    }
+
+    /* Khi mục được chọn, thêm một lớp active */
+    .tinh-thanh-item.active {
+        background-color: #007bff;
+        color: white;
+    }
+
+    /* Đảm bảo không có gạch chân cho văn bản */
+    .tinh-thanh-item a {
+        text-decoration: none;
+    }

@@ -45,7 +45,7 @@ function BookingMain({ handleDisplay }) {
     return (
         <>
             <div className="d-flex flex-column flex-xl-row gap-4 pt-xl-5">
-                <div className="header-sticky d-none d-xxl-inline-block">
+                <div className="header-sticky d-none d-xxl-inline-block " style={{zIndex:-99} }>
                     <Card className="shadow-sm w-100" style={{ maxWidth: '360px', minWidth: '360px', backgroundColor: 'white', fontSize: '15px', fontWeight: '500' }}>
 
                         {/* Header */}
@@ -100,7 +100,7 @@ function BookingMain({ handleDisplay }) {
                     </Card>
                 </div>
 
-                <Container fluid className="d-flex flex-column w-100">
+                <Container fluid className="d-flex flex-column w-100" style={{ zIndex: -99 }}>
 
                 <header className="sticky-top">
                         <Row className="d-none d-lg-flex">
@@ -126,7 +126,7 @@ function BookingMain({ handleDisplay }) {
                                 onClick={() => handleSelected(index)}
                             >
                                 <Card.Body>
-                                    <Row className="d-flex justify-content-around">
+                                    <Row className="d-flex justify-content-around" >
                                         <Col xs={7} className="d-flex align-items-center">
                                             <h5 className="font-weight-bold">{chuyenXe.tgkh}</h5>
                                             <div className="d-flex align-items-center justify-content-center flex-grow-1 mx-3">
