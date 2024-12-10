@@ -28,8 +28,9 @@
                 <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Tên bến xe</th>
+                    <th>Bến xe đi</th>
                     <th>Nơi bắt đâu</th>
+                    <th>Bến xe đến</th>
                     <th>Nơi kết thúc</th>
                     <th>Khoảng cách</th>
                     <th>Giá vé</th>
@@ -42,14 +43,15 @@
                 {
                     <tr>
                         <td>@td.IdTuyenDuong</td>
-                        <td>@td.TenBenXe</td>
+                        <td>@td.TenBenXeDi </td>
                         <td>@td.NoiKhoiHanh</td>
+                        <td>@td.TenBenXeDen</td>
                         <td>@td.NoiDen</td>
                         <td>@td.KhoangCach</td>
                         <td>@td.GiaVe</td>
                         <td>@(td.TrangThai == true ? "Hoạt động" : "Không hoạt động")</td>
                         <td>
-                            <a href="@Url.Action("Details", "Xe", new { id = td.IdTuyenDuong })" class="btn btn-info">Chi tiết</a>
+                            <a href="@Url.Action("Detail", "TuyenDuongAdmin", new { idTuyenDuong = td.IdTuyenDuong })" class="btn btn-info">Chi tiết</a>
                             @if (@td.TrangThai == true)
                             {
                                 <button type="submit" class="btn btn-danger" onclick="confirmDeactivate(@td.IdTuyenDuong)">Khóa</button>
@@ -85,18 +87,59 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Thêm loại xe mới</h5>
+                <h5 class="modal-title">Thêm tuyến đường mới</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="addLoaiXeForm" asp-action="AddLoaiXe" method="post">
+                <form id="addLoaiXeForm" asp-action="AddTuyenDuong" method="post">
                     <div class="mb-3">
-                        <label for="tenLoai" class="form-label">Tên loại xe</label>
-                        <input type="text" class="form-control" id="tenLoai" name="tenLoai" required>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="tenLoai" class="form-label">Điểm đi</label>
+                                <select class="form-control" id="tinhThanhDi"  >
+                                    <option value="" selected disabled>Chọn điểm đi</option>
+                                    @foreach (var tt in ViewBag.TinhThanhList)
+                                    {
+                                        <option value="@tt.IdTinhThanh">@tt.TenTinhThanh</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="tenLoai" class="form-label">Bến xe</label>
+                                <select class="form-control" id="benXeDi" name="IdDiemDi" required>
+                                    <option value="" selected disabled>Chọn bến xe</option>
+                                </select>
+                            </div>
+                        </div>
+                        
                     </div>
                     <div class="mb-3">
-                        <label for="soGhe" class="form-label">Số ghế</label>
-                        <input type="number" min="1" max="32" class="form-control" id="soGhe" name="soGhe" required>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="tenLoai" class="form-label">Điểm đến</label>
+                                <select class="form-control" id="tinhThanhDen" >
+                                    <option value="" selected disabled>Chọn điểm đến</option>
+                                    @foreach (var tt in ViewBag.TinhThanhList)
+                                    {
+                                        <option value="@tt.IdTinhThanh">@tt.TenTinhThanh</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="tenLoai" class="form-label">Bến xe</label>
+                                <select class="form-control" id="benXeDen" name="IdDiemDen" required>
+                                    <option value="" selected disabled>Chọn bến xe</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tenLoai" class="form-label">Khoảng cách</label>
+                        <input type="text" class="form-control" name="KhoangCach">
+                    </div>
+                    <div class="mb-3">
+                        <label for="tenLoai" class="form-label">Giá vé</label>
+                        <input type="text" class="form-control" name="GiaVe">
                     </div>
                     <button type="submit" class="btn btn-primary">Thêm</button>
                 </form>
@@ -109,3 +152,169 @@
 
 
 <script src="~/js/admin/tuyenduong.js"></script>
+<script>
+    $(document).ready(function () {
+        
+        $('#tinhThanhDi, #tinhThanhDen').change(function() {
+            var tinhThanhDi = $('#tinhThanhDi').val();
+            var tinhThanhDen = $('#tinhThanhDen').val();
+            
+            if (tinhThanhDi && tinhThanhDen && tinhThanhDi === tinhThanhDen) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: 'Điểm đi và điểm đến không được trùng nhau!'
+                });
+
+                // Reset select điểm đến
+                $('#tinhThanhDen').val('');
+            }
+        });
+        
+        $('#benXeDi, #benXeDen ').change(function () {
+            var benXeDi = $('#benXeDi').val();
+            var benXeDen = $('#benXeDen').val();
+            console.log(benXeDi);
+            console.log(benXeDen);
+            
+            if (benXeDi && benXeDen ) {
+                $.ajax({
+                    url : '/api/TuyenDuong/GetByConditional',
+                    type : 'GET',
+                    data : {
+                        idDiemDi : benXeDi,
+                        idDiemDen : benXeDen
+                    },
+                    success: function (response) {
+                        // Kiểm tra cấu trúc response
+                        if (response.$values) {
+                            // Kiểm tra mảng có phần tử không
+                            if (response.$values.length > 0) {
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Cảnh báo',
+                                    text: 'Tuyến đường này đã tồn tại!'
+                                });
+
+                                // Optional: Reset select
+                                $('#benXeDen').val('');
+                            }
+                        } else if (response.idTuyenDuong) {
+                            // Trường hợp trả về object duy nhất
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Cảnh báo',
+                                text: 'Tuyến đường này đã tồn tại!'
+                            });
+
+                            // Optional: Reset select
+                            $('#benXeDen').val('');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Lỗi kiểm tra tuyến đường:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi',
+                            text: 'Có lỗi xảy ra khi kiểm tra tuyến đường'
+                        });
+                    }
+                })
+            }
+        })
+        
+        
+        $('#tinhThanhDi').change(function() {
+            var tinhThanhId = $(this).val();
+
+            if(tinhThanhId) {
+                $.ajax({
+                    url: '/api/Benxe/BenXeByTinhThanh',
+                    type: 'GET',
+                    data: { idTinhThanh: tinhThanhId },
+                    dataType: 'json', // Thêm dòng này
+                    success: function(data) {
+                        $('#benXeDi').empty();
+                        $('#benXeDi').append('<option value="">Chọn bến xe</option>');
+
+                        
+                        console.log(data);
+                        
+                        if (data.$values.length == 0 ) {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Thông báo',
+                                text: 'Hiện tại chưa có bến xe ở tỉnh này!'
+                            });
+
+                            $('#tinhThanhDi').val('');
+                        }
+                        // Kiểm tra cấu trúc dữ liệu
+                        if (data.$values) {
+                            $.each(data.$values, function(index, item){
+                                $('#benXeDi').append(
+                                    '<option value="' + item.idBenXe + '">' +
+                                    item.tenBenXe +
+                                    '</option>'
+                                );
+                            });
+                        } else {
+                            console.log('Dữ liệu không đúng định dạng', data);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.log('Lỗi AJAX:', status, error);
+                        console.log('Chi tiết lỗi:', xhr.responseText);
+                    }
+                });
+            } else {
+                $('#benXeDi').empty();
+                $('#benXeDi').append('<option value="">Chọn bến xe</option>');
+            }
+        });
+        $('#tinhThanhDen').change(function() {
+            var tinhThanhId = $(this).val();
+            if (tinhThanhId) {
+                $.ajax({
+                    url: '/api/Benxe/BenXeByTinhThanh',
+                    type: 'GET',
+                    data: { idTinhThanh: tinhThanhId },
+                    dataType: 'json',
+                    success: function(data) {
+                        $('#benXeDen').empty();
+                        $('#benXeDen').append('<option value="">Chọn bến xe</option>');
+
+                        
+                        
+                        if (data.$values.length == 0 ) {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Thông báo',
+                                text: 'Hiện tại chưa có bến xe ở tỉnh này!'
+                            });
+
+                            $('#tinhThanhDen').val('');
+                        }
+                        
+                        // Kiểm tra cấu trúc dữ liệu
+                        if (data.$values) {
+                            $.each(data.$values, function(index, item){
+                                $('#benXeDen').append(
+                                    '<option value="' + item.idBenXe + '">' +
+                                    item.tenBenXe +
+                                    '</option>'
+                                );
+                            });
+                        } else {
+                            console.log('Dữ liệu không đúng định dạng', data);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.log('Lỗi AJAX:', status, error);
+                        console.log('Chi tiết lỗi:', xhr.responseText);
+                    }
+                })
+            }
+        })
+    });
+</script>

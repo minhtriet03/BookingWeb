@@ -88,8 +88,6 @@ namespace BookingWeb.Server.Services
         {
             var data = await _unitOfWork.loaiXeRepository.GetByIdAsync(id);
             
-            Console.WriteLine($"Trạng thái hiện tại của lx.TrangThai: {data.TrangThai}");
-            
             var result = await _unitOfWork.loaiXeRepository.DeactivateAsync(
                 id,
                 lx => lx.TrangThai == false || lx.TrangThai == true,

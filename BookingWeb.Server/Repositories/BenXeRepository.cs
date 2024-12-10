@@ -19,16 +19,12 @@ namespace BookingWeb.Server.Repositories
             return await _dbContext.Set<Benxe>().FirstOrDefaultAsync(u => u.TenBenXe == name);
         }
 
-        public async Task<List<Benxe>> GetByPageAsync(int pageNumber, int pageSize)
+        public async Task<List<Benxe>> GetByPageAsync(int skip, int take)
         {
-            if (pageNumber <= 0 || pageSize <= 0)
-            {
-                throw new ArgumentException("Page number and page size must be greater than zero.");
-            }
-
-            return await _dbSet
-                .Skip((pageNumber - 1) * pageSize) 
-                .Take(pageSize)                  
+            return await _dbContext.Benxes
+                .Include(bx => bx.IdTinhThanhNavigation)
+                .Skip(skip) 
+                .Take(take)                  
                 .ToListAsync();                   
         }
 

@@ -82,7 +82,7 @@ ViewData["Title"] = "Tuyến đường";
                     }
                 </ul>
                 <div>
-                    <a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addChuyenXe">Thêm mới</a>
+                    <a class="btn btn-success" id="btnThemMoiTuyenDuong" data-bs-toggle="modal" data-bs-target="#addChuyenXe">Thêm mới</a>
                 </div>
             </nav>
         </div>
@@ -98,10 +98,11 @@ ViewData["Title"] = "Tuyến đường";
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form asp-action="AddChuyenXe" asp-controller="ChuyenXeAdmin" method="post">
+                <form id="addChuyenXeForm" asp-action="AddChuyenXe" asp-controller="ChuyenXeAdmin" method="post">
                     <div class="form-group">
                         <label for="TenLoai">Tên Xe</label>
-                        <select name="XeVM.IdXe" class="form-control" required>
+                        <select name="XeVM.IdXe" class="form-control" id="tenXe" required>
+                            <option value="" selected>Chọn xe</option>
                             @foreach (var xe in ViewBag.XeList)
                             {
                                 <option value="@xe.IdXe">@xe.BienSo</option>
@@ -109,11 +110,15 @@ ViewData["Title"] = "Tuyến đường";
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="TenLoai">Tên tuyến đường</label>
-                        <select name="TuyenDuongVM.IdTuyenDuong" class="form-control" required>
+                        <label for="TenLoai" >Tên tuyến đường</label>
+                        <select name="TuyenDuongVM.IdTuyenDuong" id="tuyenDuong" class="form-control" required>
+                            <option value="" selected>Chọn tuyến đường</option>
                             @foreach (var tuyenduong in ViewBag.TuyenDuongList)
                             {
-                                <option value="@tuyenduong.IdTuyenDuong">@tuyenduong.NoiKhoiHanhNavigation?.IdTinhThanhNavigation?.TenTinhThanh - @tuyenduong.NoiDenNavigation?.IdTinhThanhNavigation?.TenTinhThanh</option>
+                                if (@tuyenduong.TrangThai == true)
+                                {
+                                    <option value="@tuyenduong.IdTuyenDuong">@tuyenduong.NoiKhoiHanhNavigation?.IdTinhThanhNavigation?.TenTinhThanh - @tuyenduong.NoiDenNavigation?.IdTinhThanhNavigation?.TenTinhThanh</option>
+                                }
                             }
                         </select>
                     </div>
@@ -134,3 +139,61 @@ ViewData["Title"] = "Tuyến đường";
 
 
 <script src="~/js/admin/search.js"></script>
+
+<script>
+    
+    
+    $(document).ready(function () {
+        
+        $("#addChuyenXeForm").on('submit', function(e) {
+            e.preventDefault();
+            var timeStart = $('#thoiGianKH').val();
+            var timeEnd = $('#thoiGianKT').val();
+            var  idTuyenDuong = $('#tuyenDuong option:selected').val();
+            var idXeCheck = $('#tenXe option:selected').val();
+
+            console.log(timeStart);
+            console.log(timeEnd);
+            console.log(idTuyenDuong);
+            console.log("Id xe check " +  idXeCheck);
+
+            $.ajax({
+                url: '/api/ChuyenXe/GetByTime',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    timeStart: timeStart,
+                    timeEnd: timeEnd,
+                    idTuyenDuong: idTuyenDuong
+                },
+                success: function (response) {
+                    
+                    // Truy cập vào mảng $values
+                    const data = response.$values;
+
+                    // Kiểm tra nếu data là mảng
+                    if (Array.isArray(data)) {
+                        // Sử dụng .some() trên mảng data
+                        const hasChuyenXe = data.some(function(item) {
+                            return item.xeVM.idXe == idXeCheck; 
+                        });
+                        if (hasChuyenXe) {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Cảnh báo',
+                                text: 'Xe đã được sử dụng',
+                            });
+                        } else {
+                            e.target.submit();
+                        }
+                    } else {
+                        console.error('Dữ liệu không hợp lệ:', response);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Lỗi API:', error);
+                }
+            });
+        })
+    });
+</script>

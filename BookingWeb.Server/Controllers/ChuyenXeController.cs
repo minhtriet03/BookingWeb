@@ -1,5 +1,6 @@
 ﻿using BookingWeb.Server.Models;
 using BookingWeb.Server.Services;
+using BookingWeb.Server.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookingWeb.Server.Controllers
@@ -75,6 +76,21 @@ namespace BookingWeb.Server.Controllers
             {
                 return StatusCode(500, ex.Message);
             }
+        }
+
+        
+        //Cai nay cua Toan nha
+        [HttpGet("GetByTime")]
+        public async Task<ActionResult<List<ChuyenXeVM>>> GetByTime([FromQuery]string timeStart,[FromQuery] string timeEnd,[FromQuery] int IdTuyenDuong)
+        {
+            var data = await chuyenXeService.GetByTime(timeStart, timeEnd, IdTuyenDuong);
+
+            if (data == null)
+            {
+                return null;
+            }
+
+            return Ok(data);
         }
     } 
 }

@@ -1,4 +1,4 @@
-﻿@model BookingWeb.Server.ViewModels.PagedTuyenDuongVM
+﻿@model BookingWeb.Server.ViewModels.PagedList<BookingWeb.Server.ViewModels.BenXeVM>
 
 @{
 	ViewData["Title"] = "Tuyến đường";
@@ -29,35 +29,26 @@
                 <tr>
                     <th>ID</th>
                     <th>Tên bến xe</th>
-                    <th>Nơi bắt đâu</th>
-                    <th>Nơi kết thúc</th>
-                    <th>Khoảng cách</th>
-                    <th>Giá vé</th>
+                    <th>Tên tỉnh thành</th>
                     <th>Trạng thái</th>
                     <th>Chức Năng</th>
                 </tr>
                 </thead>
                 <tbody id="tuyenDuongTable">
-                @foreach (var td in Model.TuyenDuongs)
+                @foreach (var bx in Model.Items)
                 {
                     <tr>
-                        <td>@td.IdTuyenDuong</td>
-                        <td>@td.TenBenXe</td>
-                        <td>@td.NoiKhoiHanh</td>
-                        <td>@td.NoiDen</td>
-                        <td>@td.KhoangCach</td>
-                        <td>@td.GiaVe</td>
-                        <td>@(td.TrangThai == true ? "Hoạt động" : "Không hoạt động")</td>
+                        <td>@bx.IdBenXe</td>
+                        <td>@bx.TenBenXe</td>
+                        <td>@bx.TinhThanhVM.TenTinhThanh</td>
+                        <td>@(bx.TrangThai == true ? "Hoạt động" : "Không hoạt động")</td>
                         <td>
-                            <a href="@Url.Action("Details", "Xe", new { id = td.IdTuyenDuong })" class="btn btn-info">Chi tiết</a>
-                            @if (@td.TrangThai == true)
-                            {
-                                <button type="submit" class="btn btn-danger" onclick="confirmDeactivate(@td.IdTuyenDuong)">Khóa</button>
-                            }
-                            else if (@td.TrangThai == false)
-                            {
-                                <button type="submit" class="btn btn-success" onclick="confirmDeactivate(@td.IdTuyenDuong)">Mở khóa</button>
-                            }
+                            <a href="@Url.Action("Detail", "BenXeAdmin", new { id = bx.IdBenXe })" class="btn btn-info">Chi tiết</a>
+                            <form asp-action="Deactivate" asp-controller="BenXeAdmin" asp-route-id="@bx.IdBenXe" method="post" style="display: inline;">
+                                <button type="submit" class="btn @(bx.TrangThai == true ? "btn-danger" : "btn-success")">
+                                    @(bx.TrangThai == true ? "Khóa" : "Mở khóa")
+                                </button>
+                            </form>
                         </td>
                     </tr>
                 }
@@ -73,7 +64,7 @@
                     }
                 </ul>
                 <div>
-                    <a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addLoaiXeModal">Thêm mới</a>
+                    <a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addBenXeModal">Thêm mới</a>
                 </div>
             </nav>
         </div>
@@ -81,22 +72,29 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="addLoaiXeModal">
+<div class="modal fade" id="addBenXeModal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Thêm loại xe mới</h5>
+                <h5 class="modal-title">Thêm bến xe mới</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="addLoaiXeForm" asp-action="AddLoaiXe" method="post">
+                <form id="addBenXeForm" asp-action="AddBenXe" method="post">
                     <div class="mb-3">
-                        <label for="tenLoai" class="form-label">Tên loại xe</label>
-                        <input type="text" class="form-control" id="tenLoai" name="tenLoai" required>
+                        <label for="tenBenXe" class="form-label">Tên bến xe</label>
+                        <input type="text" class="form-control" id="tenBenXe" name="tenBenXe" required>
                     </div>
                     <div class="mb-3">
-                        <label for="soGhe" class="form-label">Số ghế</label>
-                        <input type="number" min="1" max="32" class="form-control" id="soGhe" name="soGhe" required>
+                        <label for="tinhThanh" class="form-label">Tỉnh thành</label>
+                        <select  name="IdTinhThanh" id="tinhThanh" class="form-control" required>
+                            <option value="">Chọn tỉnh thành</option>
+                            
+                            @foreach (var tt in ViewBag.TinhThanhList)
+                            {
+                                <option value="@tt.IdTinhThanh">@tt.TenTinhThanh</option>
+                            }
+                        </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Thêm</button>
                 </form>
@@ -108,4 +106,3 @@
 
 
 
-<script src="~/js/admin/tuyenduong.js"></script>

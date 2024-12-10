@@ -8,7 +8,19 @@ public class UnitOfWork : IUnitOfWork
 
     private readonly BookingBusContext _context;
  
-    public UnitOfWork(BookingBusContext context, IBenXeRepository benxe, ITinhRepository tinh, IVitriRepository vitri, IVexeRepository vexe, IUserRepository userRepository, IOrderRepository orderRepository, ILoaiXeRepository loaiXeRepository, IXeRepository xeRepository, IAccountRepository accountRepository)
+    public UnitOfWork(BookingBusContext context, 
+                                  IBenXeRepository benxe, 
+                                  ITinhRepository tinh, 
+                                  IVitriRepository vitri,
+                                  IVexeRepository vexe, 
+                                  IUserRepository userRepository, 
+                                  IOrderRepository orderRepository, 
+                                  ILoaiXeRepository loaiXeRepository, 
+                                  IXeRepository xeRepository, 
+                                  IAccountRepository accountRepository,
+                                  ITuyenDuongRepository tuyenDuongRepository,
+                                IChuyenXeRepository chuyenXeRepository
+        )
     {
         _context = context;
         this.benXes = benxe;
@@ -20,6 +32,8 @@ public class UnitOfWork : IUnitOfWork
         this.accountRepository = accountRepository;
         this.loaiXeRepository = loaiXeRepository;
         this.xeRepository = xeRepository;
+        this.tuyenDuongRepository = tuyenDuongRepository;
+        this.chuyenXeRepository = chuyenXeRepository;
     }
     public IBenXeRepository benXes { get; set; }
     public ITinhRepository tinhs { get; set; }
@@ -35,12 +49,9 @@ public class UnitOfWork : IUnitOfWork
 
     public IXeRepository xeRepository {get; private set; }
 
-
     public IChuyenXeRepository chuyenXeRepository { get; private set; }
 
     public ITuyenDuongRepository tuyenDuongRepository { get; private set; }
-
-
     
     public void Dispose()
     {
