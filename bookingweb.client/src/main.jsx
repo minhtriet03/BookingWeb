@@ -4,9 +4,9 @@ import App from './App.jsx'
 import { Provider } from 'react-redux'
 import 'bootstrap/dist/css/bootstrap.css';
 import store from './redux/store/store.jsx';
-import { setupInterceptors } from './utils/axiosInstance.js';
+//import { setupInterceptors } from './utils/axiosInstance.js';
 
-setupInterceptors(store);
+//setupInterceptors(store);
 
 
 createRoot(document.getElementById('root')).render(

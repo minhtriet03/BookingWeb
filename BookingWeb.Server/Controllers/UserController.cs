@@ -80,18 +80,13 @@ namespace BookingWeb.Server.Controllers
                 throw;
             }
         }
-        
+
 
         [HttpPut]
-        public async Task<IActionResult> UpdateUser([FromQuery] int id, [FromBody] Nguoidung user)
+        public async Task<IActionResult> UpdateUser([FromBody] Nguoidung user)
         {
             try
             {
-                if (id != user.IdUser)
-                {
-                    return BadRequest("Id không khớp");
-                }
-
                 var result = await _userService.UpdateUserAsync(user);
 
                 if (result)

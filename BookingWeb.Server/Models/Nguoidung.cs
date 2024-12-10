@@ -19,7 +19,7 @@ public partial class Nguoidung
 
     public int IdAccount { get; set; }
 
-    public virtual Taikhoan IdAccountNavigation { get; set; } = null!;
+    public virtual Taikhoan? IdAccountNavigation { get; set; } = null!;
 
     public virtual ICollection<Phieudat> Phieudats { get; set; } = new List<Phieudat>();
 }

@@ -18,6 +18,11 @@ namespace BookingWeb.Server.Services
             return await _unitOfWork.vexes.GetAllAsync();
         }
 
+        //public async Task<List<Vexe>> getByIdUser(int id)
+        //{
+        //    var data = await _unitOfWork.
+        //}
+
         public async Task<List<Vexe>> getByPage(int page)
         {
             return await _unitOfWork.vexes.GetByPageAsync(page, 10);
