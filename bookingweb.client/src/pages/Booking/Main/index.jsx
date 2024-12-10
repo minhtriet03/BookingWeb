@@ -9,7 +9,7 @@ import { useState } from 'react';
 import locationImage from '@/assets/image/location.svg';
 
 
-function BookingMain() {
+function BookingMain({ handleDisplay }) { 
   
     const dispatch = useDispatch();
     const [selectedIndex, setSelectedIndex] = useState(); 
@@ -18,6 +18,10 @@ function BookingMain() {
     const noidi = queryParams.get("noidi"); 
     const noiden = queryParams.get("noiden");
     const chuyenXeList = useSelector((state) => state.chuyenxe);
+
+    const handleRoute = () => {
+        handleDisplay();
+    }
 
 
     useEffect(() => {
@@ -108,7 +112,7 @@ function BookingMain() {
                 </header>
 
 
-                    <Row className="mb-3">
+                    <Row className="mb-3" onClick={handleRoute}>
                         {chuyenXeData.map((chuyenXe, index) => (
                             <Card
                                 key={index}

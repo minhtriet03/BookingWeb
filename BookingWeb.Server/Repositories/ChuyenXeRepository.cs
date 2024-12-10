@@ -57,8 +57,8 @@ namespace BookingWeb.Server.Repositories
 
             return chuyenXeList.Select(cx => new ChuyenxeDetailDto
             {
-                NoiKhoiHanhTinhThanh = cx.IdTuyenDuongNavigation.NoiKhoiHanhNavigation.IdTinhThanhNavigation.TenTinhThanh,
-                NoiDenTinhThanh = cx.IdTuyenDuongNavigation.NoiDenNavigation.IdTinhThanhNavigation.TenTinhThanh,
+                NoiKhoiHanhTinhThanh = cx.IdTuyenDuongNavigation.NoiKhoiHanhNavigation.TenBenXe,
+                NoiDenTinhThanh = cx.IdTuyenDuongNavigation.NoiDenNavigation.TenBenXe,
                 GiaVe = cx.IdTuyenDuongNavigation.GiaVe ?? 0, // Lấy giá vé từ Tuyenduong
                 KhoangCach = cx.IdTuyenDuongNavigation.KhoangCach ?? 0,
                 TrangThai = cx.TrangThai,
