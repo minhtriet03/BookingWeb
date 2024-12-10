@@ -57,6 +57,19 @@ namespace BookingWeb.Server.Controllers
 
             }
         }
+
+        [HttpGet("BenXeByTinhThanh")]
+        public async Task<IActionResult> GetBenXeByTinhThanh([FromQuery] int idTinhThanh)
+        {
+            var data = await _benxeService.GetBenXeByTinhThanhAsync(idTinhThanh);
+            if (data == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(data);
+        }
+        
         [HttpPost]
         public async Task<ActionResult<Benxe>> addBenxe(Benxe benxe)
         {

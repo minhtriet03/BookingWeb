@@ -11,4 +11,6 @@ public class OrderVM
     public decimal? TongTien { get; set; }
 
     public bool? TrangThai { get; set; }
+    
+    public UserVM? UserVM { get; set; }
 }

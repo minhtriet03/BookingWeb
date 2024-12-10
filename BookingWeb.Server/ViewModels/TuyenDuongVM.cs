@@ -5,11 +5,23 @@ public class TuyenDuongVM
     public int IdTuyenDuong { get; set; }
     
     public string? TenBenXe { get; set; }
-    public string NoiKhoiHanh { get; set; } = string.Empty;
+    
+    public int IdDiemDen { get; set; }
+    
+    public int IdDiemDi { get; set; }
+    
+    public int IdBenXeDi { get; set; }
+    
+    public string TenBenXeDi { get; set; } = string.Empty;
+    public int IdBenXeDen { get; set; }
+    
+    public string TenBenXeDen { get; set; } = string.Empty;
+    
+    public string  NoiKhoiHanh { get; set; } = string.Empty;
     public string NoiDen { get; set; } = string.Empty;
     public decimal? KhoangCach { get; set; }
     public decimal? GiaVe { get; set; }
-    public bool? TrangThai { get; set; }
+    public bool TrangThai { get; set; }
 }
 public class PagedTuyenDuongVM
 {

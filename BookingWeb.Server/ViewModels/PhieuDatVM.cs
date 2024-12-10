@@ -11,4 +11,6 @@ public class PhieuDatVM
     public decimal TongTien { get; set; }
 
     public string? TrangThai { get; set; }
+    
+    
 }
