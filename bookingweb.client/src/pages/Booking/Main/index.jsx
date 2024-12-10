@@ -7,9 +7,10 @@ import { useEffect } from 'react';
 import { GetChuyenXe } from '@/redux/actions/ChuyenXeAction';
 import { useState } from 'react';
 import locationImage from '@/assets/image/location.svg';
+import { setChuyenXe } from '@/redux/slices/ChuyenXeSlice';
 
 
-function BookingMain({ handleDisplay }) {
+function BookingMain({ handleDisplay }) { 
   
     const dispatch = useDispatch();
     const [selectedIndex, setSelectedIndex] = useState(); 
@@ -18,16 +19,25 @@ function BookingMain({ handleDisplay }) {
     const noidi = queryParams.get("noidi"); 
     const noiden = queryParams.get("noiden");
     const chuyenXeList = useSelector((state) => state.chuyenxe);
+    const ngaydi = queryParams.get("ngaydi");
+    const idcxRedux = useSelector((state) => state.chuyenxe.idcx);
+
 
     const handleRoute = () => {
         handleDisplay();
     }
 
+    const handleCX = (idcx) => {
+        dispatch(setChuyenXe(idcx)); // Lưu idcx vào Redux
+        console.log("ID chuyến xe được chọn:", idcx);
+    }
+
+
     useEffect(() => {
-        if (noidi && noiden) {
-            dispatch(GetChuyenXe({ noidi, noiden }));
+        if (noidi && noiden && ngaydi) {
+            dispatch(GetChuyenXe({ noidi, noiden, ngaydi }));
         }
-    }, [dispatch, noidi, noiden]);
+    }, [dispatch, noidi, noiden, ngaydi]);
 
 
     const chuyenXeData = chuyenXeList?.cxInfo?.$values || [];
@@ -36,10 +46,15 @@ function BookingMain({ handleDisplay }) {
         console.log("selectedIndex", selectedIndex);
         setSelectedIndex(index); 
     };
+
+
+
+    console.log("chuyenxe", chuyenXeList)
+ 
     return (
         <>
             <div className="d-flex flex-column flex-xl-row gap-4 pt-xl-5">
-                <div className="header-sticky d-none d-xxl-inline-block">
+                <div className="header-sticky d-none d-xxl-inline-block " style={{zIndex:0} }>
                     <Card className="shadow-sm w-100" style={{ maxWidth: '360px', minWidth: '360px', backgroundColor: 'white', fontSize: '15px', fontWeight: '500' }}>
 
                         {/* Header */}
@@ -59,10 +74,19 @@ function BookingMain({ handleDisplay }) {
                             <Form.Group>
                                 <Form.Label>Giờ đi</Form.Label>
                                 <div className="checkbox-group-custom mt-2">
-                                    <Form.Check type="checkbox" label="Sáng sớm 00:00 - 06:00 (0)" className="mb-2" />
-                                    <Form.Check type="checkbox" label="Buổi sáng 06:00 - 12:00 (3)" className="mb-2" />
-                                    <Form.Check type="checkbox" label="Buổi chiều 12:00 - 18:00 (13)" className="mb-2" />
-                                    <Form.Check type="checkbox" label="Buổi tối 18:00 - 24:00 (9)" className="mb-2" />
+                                    {[
+                                        { label: 'Sáng sớm 00:00 - 06:00', value: 'early' },
+                                        { label: 'Buổi sáng 06:00 - 12:00', value: 'morning' },
+                                        { label: 'Buổi chiều 12:00 - 18:00', value: 'afternoon' },
+                                        { label: 'Buổi tối 18:00 - 24:00', value: 'evening' },
+                                    ].map((timeOption) => (
+                                        <Form.Check
+                                            key={timeOption.value}
+                                            type="checkbox"
+                                            label={timeOption.label}
+                                            className="mb-2"
+                                        />
+                                    ))}
                                 </div>
                             </Form.Group>
                         </Card.Body>
@@ -82,42 +106,10 @@ function BookingMain({ handleDisplay }) {
                                 </div>
                             </Form.Group>
                         </Card.Body>
-
-                        <hr />
-
-                        {/* Hàng ghế */}
-                        <Card.Body className="p-3">
-                            <Form.Group>
-                                <Form.Label>Hàng ghế</Form.Label>
-                                <div className="d-flex flex-wrap gap-2 mt-2">
-                                    {["Hàng đầu", "Hàng giữa", "Hàng cuối"].map((row) => (
-                                        <Button variant="outline-secondary" className="py-1 px-3" key={row}>
-                                            {row}
-                                        </Button>
-                                    ))}
-                                </div>
-                            </Form.Group>
-                        </Card.Body>
-
-                        <hr />
-
-                        {/* Tầng */}
-                        <Card.Body className="p-3 pb-4">
-                            <Form.Group>
-                                <Form.Label>Tầng</Form.Label>
-                                <div className="d-flex flex-wrap gap-2 mt-2">
-                                    {["Tầng trên", "Tầng dưới"].map((floor) => (
-                                        <Button variant="outline-secondary" className="py-1 px-3" key={floor}>
-                                            {floor}
-                                        </Button>
-                                    ))}
-                                </div>
-                            </Form.Group>
-                        </Card.Body>
                     </Card>
                 </div>
 
-                <Container fluid className="d-flex flex-column w-100">
+                <Container fluid className="d-flex flex-column w-100" style={{ zIndex: 0 }}>
 
                 <header className="sticky-top">
                         <Row className="d-none d-lg-flex">
@@ -140,12 +132,12 @@ function BookingMain({ handleDisplay }) {
                                     border: selectedIndex === index ? '2px solid #F2744E' : '1px solid #ddd',
                                     boxShadow: selectedIndex === index ? '0 0 10px 0 #F2744E' : 'none',
                                 }}
-                                onClick={() => handleSelected(index)}
+                                onClick={() => handleSelected(index), handleCX(chuyenXe.$id) }
                             >
                                 <Card.Body>
-                                    <Row className="d-flex justify-content-around">
+                                    <Row className="d-flex justify-content-around" >
                                         <Col xs={7} className="d-flex align-items-center">
-                                            <h5 className="font-weight-bold">{chuyenXe.tgkh}:00</h5>
+                                            <h5 className="font-weight-bold">{chuyenXe.tgkh}</h5>
                                             <div className="d-flex align-items-center justify-content-center flex-grow-1 mx-3">
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -168,7 +160,7 @@ function BookingMain({ handleDisplay }) {
                                                     height={19}
                                                 />
                                             </div>
-                                            <h5 className="font-weight-bold">{chuyenXe.tgkt}:00</h5>
+                                            <h5 className="font-weight-bold">{chuyenXe.tgkt}</h5>
                                         </Col>
 
                                         <Col xs={4} className="mt-2 d-flex flex-column justify-content-end">

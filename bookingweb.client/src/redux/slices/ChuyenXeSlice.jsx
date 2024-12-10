@@ -5,8 +5,14 @@ const ChuyenXeSlice = createSlice({
     name: "ChuyenXe",
     initialState: {
         cxInfo: null,
+        idcx: null,
     },
-    reducers: {},
+    reducers: {
+        setChuyenXe: (state, action) => {
+            console.log("setChuyenXe", action.payload);
+            state.idcx = action.payload
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(GetChuyenXe.fulfilled, (state, action) => {
@@ -16,7 +22,9 @@ const ChuyenXeSlice = createSlice({
                 state.cxInfo = null;
             });
     },
-});
+    });
+
+export const { setChuyenXe } = ChuyenXeSlice.actions;
 
 export default ChuyenXeSlice.reducer;
 
