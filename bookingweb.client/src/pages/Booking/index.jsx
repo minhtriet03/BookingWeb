@@ -14,17 +14,17 @@ function Booking() {
 
     return (
         <>
-            <main className="mainContainer">
+         
                 <Container style={{
-                    maxWidth: '1150px',
-                    width: '100%',
-                    padding: '15px',
+                    maxWidth: '1100px',  // Hoặc kích thước bạn muốn
+                    width: '100%',        // Chiếm toàn bộ chiều rộng
+                    padding: '15px',      // Padding tùy chỉnh
                     fontFamily: 'Arial'
                 }}>
                     {display ? <><SearchForm />
                         <BookingMain handleDisplay={handleDisplay} /></> : <DatGhe handleDisplay={handleDisplay} />}
                 </Container>
-            </main>
+            
         </>
     );
 }

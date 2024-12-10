@@ -40,7 +40,7 @@ const PopularRoutes = () => {
           <Col xs={12} md={4} className="mb-4" key={index}>
             <Card className="popular-route-card card-box-shadow cursor-pointer">
               <Image src={route.image} alt="" width="360" height="140" fluid />
-              <Card.ImgOverlay className="text-white" style={{ left: '16px', top: '64px' }}>
+              <Card.ImgOverlay className="text-white py-2" style={{ left: '16px', top: '64px' }}>
                 <Card.Title className="text-[15px]">Tuyến xe từ</Card.Title>
                 <Card.Text className="text-xl font-semibold">{route.from}</Card.Text>
               </Card.ImgOverlay>
