@@ -8,7 +8,7 @@ const axiosInstance = axios.create({
     withCredentials: true,
 });
 
-const publicURLs = ["/login", "/register"];
+//const publicURLs = ["/login", "/register"];
 
 //const setupInterceptors = (store) => {
 //    axiosInstance.interceptors.request.use(
@@ -57,9 +57,6 @@ const publicURLs = ["/login", "/register"];
 //        }
 //    );
 //};
-
-
-
 export { axiosInstance };
 
 
