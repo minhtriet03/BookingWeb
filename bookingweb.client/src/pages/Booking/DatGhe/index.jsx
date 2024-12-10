@@ -17,6 +17,11 @@ function DatGhe({ handleDisplay }) {
     const [selectedSeatCount, setSelectedSeatCount] = useState(0);
     const [showLimitAlert, setShowLimitAlert] = useState(false);
 
+    const chuyenXeList = useSelector((state) => state.chuyenxe);
+
+    console.log("cxl",chuyenXeList);
+
+
     const handleBack = () => {
         handleDisplay();
     }

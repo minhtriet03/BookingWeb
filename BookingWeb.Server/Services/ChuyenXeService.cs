@@ -41,11 +41,11 @@ namespace BookingWeb.Server.Services
             }
         }
 
-        public async Task<List<ChuyenxeDetailDto>> GetAllChuyenXeByTinh(string noidi, string noiden)
+        public async Task<List<ChuyenxeDetailDto>> GetAllChuyenXeByTinh(string noidi, string noiden, DateOnly date)
         {
             try
             {
-                var data = await _unitOfWork.chuyenXeRepository.GetChuyenXeTheoTenTinhAsync(noidi, noiden);
+                var data = await _unitOfWork.chuyenXeRepository.GetChuyenXeTheoTenTinhAsync(noidi, noiden, date);
                 return data;
             }
             catch (Exception ex)

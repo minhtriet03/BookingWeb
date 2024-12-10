@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { GetChuyenXe } from '@/redux/actions/ChuyenXeAction';
 import { useState } from 'react';
 import locationImage from '@/assets/image/location.svg';
+import { setChuyenXe } from '@/redux/slices/ChuyenXeSlice';
 
 
 function BookingMain({ handleDisplay }) { 
@@ -18,17 +19,25 @@ function BookingMain({ handleDisplay }) {
     const noidi = queryParams.get("noidi"); 
     const noiden = queryParams.get("noiden");
     const chuyenXeList = useSelector((state) => state.chuyenxe);
+    const ngaydi = queryParams.get("ngaydi");
+    const idcxRedux = useSelector((state) => state.chuyenxe.idcx);
+
 
     const handleRoute = () => {
         handleDisplay();
     }
 
+    const handleCX = (idcx) => {
+        dispatch(setChuyenXe(idcx)); // Lưu idcx vào Redux
+        console.log("ID chuyến xe được chọn:", idcx);
+    }
+
 
     useEffect(() => {
-        if (noidi && noiden) {
-            dispatch(GetChuyenXe({ noidi, noiden }));
+        if (noidi && noiden && ngaydi) {
+            dispatch(GetChuyenXe({ noidi, noiden, ngaydi }));
         }
-    }, [dispatch, noidi, noiden]);
+    }, [dispatch, noidi, noiden, ngaydi]);
 
 
     const chuyenXeData = chuyenXeList?.cxInfo?.$values || [];
@@ -45,7 +54,7 @@ function BookingMain({ handleDisplay }) {
     return (
         <>
             <div className="d-flex flex-column flex-xl-row gap-4 pt-xl-5">
-                <div className="header-sticky d-none d-xxl-inline-block " style={{zIndex:-99} }>
+                <div className="header-sticky d-none d-xxl-inline-block " style={{zIndex:0} }>
                     <Card className="shadow-sm w-100" style={{ maxWidth: '360px', minWidth: '360px', backgroundColor: 'white', fontSize: '15px', fontWeight: '500' }}>
 
                         {/* Header */}
@@ -100,7 +109,7 @@ function BookingMain({ handleDisplay }) {
                     </Card>
                 </div>
 
-                <Container fluid className="d-flex flex-column w-100" style={{ zIndex: -99 }}>
+                <Container fluid className="d-flex flex-column w-100" style={{ zIndex: 0 }}>
 
                 <header className="sticky-top">
                         <Row className="d-none d-lg-flex">
@@ -123,7 +132,7 @@ function BookingMain({ handleDisplay }) {
                                     border: selectedIndex === index ? '2px solid #F2744E' : '1px solid #ddd',
                                     boxShadow: selectedIndex === index ? '0 0 10px 0 #F2744E' : 'none',
                                 }}
-                                onClick={() => handleSelected(index)}
+                                onClick={() => handleSelected(index), handleCX(chuyenXe.$id) }
                             >
                                 <Card.Body>
                                     <Row className="d-flex justify-content-around" >
