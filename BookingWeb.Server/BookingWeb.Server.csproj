@@ -47,9 +47,4 @@
     <None Include="D:\BookingWeb\BookingWeb.Server\Controllers\.editorconfig" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Areas\Admin\Views\QuanLyChuyenDi\" />
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
 </Project>

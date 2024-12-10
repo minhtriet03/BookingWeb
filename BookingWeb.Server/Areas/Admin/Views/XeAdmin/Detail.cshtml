@@ -25,15 +25,13 @@
                             <option value="@loai.IdLoai">@loai.TenLoai</option>
                         }
                     }
-
-                    
-                    @*@if (Model.IdLoaiNavigation.TrangThai == false)
+                    else
                     {
                         @foreach (var loai in ViewBag.LoaiXeList)
                         {
-                            @if (Model.IdLoai != @loai.IdLoai)
+                            @if (Model.IdLoai == @loai.IdLoai)
                             {
-                                <option value="@Model.IdLoai" selected>@Model.IdLoaiNavigation.TenLoai</option>
+                                <option value="@loai.IdLoai" selected>@loai.TenLoai</option>
                             }
                             else
                             {
@@ -41,19 +39,6 @@
                             }
                         }
                     }
-                    else
-                    {*@
-                    @*@foreach (var loai in ViewBag.LoaiXeList)
-                {
-                    @if (Model.IdLoai == @loai.IdLoai)
-                    {
-                        <option value="@Model.IdLoai" selected>@Model.IdLoaiNavigation.TenLoai</option>
-                    }
-                    else
-                    {
-                        <option value="@loai.IdLoai">@loai.TenLoai</option>
-                    }
-                }*@
                 </select>
             </div>
             <div class="mb-3">

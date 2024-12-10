@@ -13,7 +13,7 @@
     <hr class="sidebar-divider my-0">
 
     <!-- Nav Item - Dashboard -->
-    <li class="nav-item active">
+    <li class="nav-item">
         <a class="nav-link" asp-area="Admin" asp-controller="Home" asp-action="Index">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span>
@@ -46,11 +46,36 @@
                 <h6 class="collapse-header">Các lựa chọn:</h6>
                 <a class="collapse-item" asp-action="Index" asp-controller="XeAdmin">Xe</a>
                 <a class="collapse-item" asp-action="Index" asp-controller="LoaiXeAdmin">Loại xe</a>
-                <a class="collapse-item" asp-action="Index" asp-controller="ChuyenXeAdmin">Lịch trình</a>
-                <a class="collapse-item" asp-action="Index" asp-controller="TuyenDuongAdmin">Tuyến đường</a>
+                <a class="collapse-item" asp-action="Index" asp-controller="ChuyenXeAdmin">Chuyến xe</a>
+                <a class="collapse-item" asp-action="Index" asp-controller="TuyenDuongAdmin">Lịch trình</a>
+                <a class="collapse-item" asp-action="Index" asp-controller="BenXeAdmin">Bến xe</a>
                 <a class="collapse-item" href="utilities-other.html">Thống kê vé</a>
             </div>
         </div>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseVe"
+           aria-expanded="true" aria-controls="collapseVe">
+            <i class="fas fa-fw fa-wrench"></i>
+            <span>Vé</span>
+        </a>
+        <div id="collapseVe" class="collapse" aria-labelledby="headingUtilities"
+             data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Các lựa chọn:</h6>
+                <a class="collapse-item" asp-action="Index" asp-controller="PhieuDatAdmin">Phiếu đặt</a>
+                <a class="collapse-item" asp-action="Index" asp-controller="VeXeAdmin">VeXe</a>
+            </div>
+        </div>
+    </li>
+
+
+    <!-- Nav Item - Tai Khoan  -->
+    <li class="nav-item">
+        <a class="nav-link" asp-area="Admin" asp-controller="TaiKhoanAdmin" asp-action="Index">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Tài khoản</span>
+        </a>
     </li>
 
     <!-- Divider -->

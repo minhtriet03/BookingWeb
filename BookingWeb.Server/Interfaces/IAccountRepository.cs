@@ -10,4 +10,5 @@ public interface IAccountRepository : IGenericRepository<Taikhoan>
     Task<bool> Login(string userName, string password);
     Task<bool> UpdatePassword(int id, string oldPassword, string newPassword);
 
+    Task<List<Taikhoan>> GetByPageAsync(int skip, int pageSize);
 }

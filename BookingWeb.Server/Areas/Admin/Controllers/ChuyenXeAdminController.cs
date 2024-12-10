@@ -27,7 +27,7 @@ public class ChuyenXeAdminController : Controller
         var xeList = await _xeService.GetTrangThaiByConditionAsync();
         var tuyenDuongList = await _tuyenDuong.GetAllTuyenDuongAsync();
 
-        ViewBag.XeList = xeList;
+        ViewBag.XeList = xeList;    
         ViewBag.TuyenDuongList = tuyenDuongList;
 
         if(viewModel == null)
@@ -43,6 +43,8 @@ public class ChuyenXeAdminController : Controller
     {
         try
         {
+            
+            TempData["PreviousUrl"] = Request.Headers["Referer"].ToString();
             var chuyenXe = await _chuyenXeService.GetChuyenXeByID(id);
 
             if (chuyenXe == null)
@@ -51,6 +53,9 @@ public class ChuyenXeAdminController : Controller
                 TempData["AlertType"] = "warning";
                 return RedirectToAction("Index");
             }
+            
+            Console.WriteLine("Trang Thái: " + chuyenXe.TrangThai);
+
 
             var xeList = await _xeService.GetAllXes();
             var tuyenDuongList = await _tuyenDuong.GetAllTuyenDuongAsync();
@@ -66,15 +71,25 @@ public class ChuyenXeAdminController : Controller
         }
     }
 
-    [HttpPut]
+    [HttpPost("Edit")]
     public async Task<IActionResult> UpdateChuyenXe([FromForm] ChuyenXeVM model)
     {
-        if (!ModelState.IsValid)
+        
+        Console.WriteLine("==============================");
+        Console.WriteLine("IdChuyenXe: " + model.IdChuyenXe);
+        Console.WriteLine("IdXe: " + model.XeVM.IdXe);
+        Console.WriteLine("IdTuyenDuong:" + model.TuyenDuongVM.IdTuyenDuong);
+        Console.WriteLine("ThoiGianKh: " + model.ThoiGianKh);
+        Console.WriteLine("ThoiGianDen: " + model.ThoiGianDen);
+        Console.WriteLine("Trang Thái: " + model.TrangThai);
+        Console.WriteLine("==============================");
+        
+        /*if (!ModelState.IsValid)
         {
             TempData["AlertMessage"] = "Dữ liệu không hợp lệ";
             TempData["AlertType"] = "warning";
-            return RedirectToAction("Detail");
-        }
+            return RedirectToAction("Index");
+        }*/
 
         try
         {
@@ -82,14 +97,19 @@ public class ChuyenXeAdminController : Controller
             {
                 TempData["AlertMessage"] = "Không nhận được tuyến đường hoặc xe";
                 TempData["AlertType"] = "danger";
+                {
+                    // Chuyển hướng đến URL trước đó
+                    return Redirect(TempData["PreviousUrl"].ToString());
+                }
                 return RedirectToAction("Index");
             }
 
             var data = new Chuyenxe
             {
+                IdChuyenXe = model.IdChuyenXe,
                 ThoiGianKh = model.ThoiGianKh,
                 ThoiGianDen = model.ThoiGianDen,
-                TrangThai = true,
+                TrangThai = model.TrangThai,
                 IdXe = model.XeVM.IdXe,
                 IdTuyenDuong = model.TuyenDuongVM.IdTuyenDuong,
             };
@@ -97,8 +117,14 @@ public class ChuyenXeAdminController : Controller
             var result = await _chuyenXeService.UpdateChuyenXe(data);
             if (result)
             {
-                TempData["AlertMessage"] = "Thêm thành công";
+                TempData["AlertMessage"] = "Cập nhật thành công";
                 TempData["AlertType"] = "success";
+                if (TempData["PreviousUrl"] != null)
+                {
+                    // Chuyển hướng đến URL trước đó
+                    return Redirect(TempData["PreviousUrl"].ToString());
+                }
+                
                 return RedirectToAction("Index");
             }
 
@@ -116,12 +142,25 @@ public class ChuyenXeAdminController : Controller
     [HttpPost]
     public async Task<IActionResult> AddChuyenXeAsync([FromForm] ChuyenXeVM model)
     {
+
+        Console.WriteLine("==============================");
+        Console.WriteLine(model.ThoiGianKh);
+        Console.WriteLine(model.ThoiGianDen);
+        Console.WriteLine(model.XeVM.IdXe);
+        Console.WriteLine(model.TuyenDuongVM.IdTuyenDuong);
+        Console.WriteLine("==============================");
+        
+        
+            
+        
+        /*
         if (!ModelState.IsValid)
         {
             TempData["AlertMessage"] = "Dữ liệu không hợp lệ";
             TempData["AlertType"] = "warning";
             return RedirectToAction("Index");
         }
+        */
 
         try
         {

@@ -21,5 +21,4 @@ public partial class Vexe
 
     public virtual Phieudat? IdPhieuNavigation { get; set; } = null!;
 
-    
 }

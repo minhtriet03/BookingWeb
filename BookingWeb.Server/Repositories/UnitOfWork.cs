@@ -21,8 +21,9 @@ public class UnitOfWork : IUnitOfWork
         this.accountRepository = accountRepository;
         this.loaiXeRepository = loaiXeRepository;
         this.xeRepository = xeRepository;
-        this.chuyenXeRepository = chuyenXeRepository;
         this.tuyenDuongRepository = tuyenDuongRepository;
+        this.chuyenXeRepository = chuyenXeRepository;
+
     }
     public IBenXeRepository benXes { get; set; }
     public ITinhRepository tinhs { get; set; }
@@ -37,12 +38,9 @@ public class UnitOfWork : IUnitOfWork
 
     public IXeRepository xeRepository {get; private set; }
 
-
     public IChuyenXeRepository chuyenXeRepository { get; private set; }
 
     public ITuyenDuongRepository tuyenDuongRepository { get; private set; }
-
-
     
     public void Dispose()
     {

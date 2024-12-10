@@ -57,6 +57,19 @@ namespace BookingWeb.Server.Controllers
 
             }
         }
+
+        [HttpGet("BenXeByTinhThanh")]
+        public async Task<IActionResult> GetBenXeByTinhThanh([FromQuery] int idTinhThanh)
+        {
+            var data = await _benxeService.GetBenXeByTinhThanhAsync(idTinhThanh);
+            if (data == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(data);
+        }
+        
         [HttpPost]
         public async Task<ActionResult<Benxe>> addBenxe(Benxe benxe)
         {
@@ -85,26 +98,6 @@ namespace BookingWeb.Server.Controllers
             }
         }
 
-        //[HttpDelete("{id}")]
-        //public async Task<ActionResult<Vitri>> delBenxe(int id)
-        //{
-        //    try
-        //    {
-        //        // Gọi service để thêm Vitri
-        //        var delVitri = await _benxeService.deleteBenXe(id);
-        //        if (delVitri == null)
-        //        {
-        //            return BadRequest("Failed to del Vitri.");
-        //        }
-        //        else
-        //        {
-        //            return Ok(delVitri);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, ex.Message);
-        //    }
-        //}
+
     }
 }

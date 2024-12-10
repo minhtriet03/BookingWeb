@@ -1,5 +1,6 @@
 ﻿using BookingWeb.Server.Models;
 using BookingWeb.Server.Services;
+using BookingWeb.Server.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookingWeb.Server.Controllers
@@ -44,6 +45,21 @@ namespace BookingWeb.Server.Controllers
 
             }
         }
+        
+        [HttpGet("Date")]
+        public async Task<ActionResult<List<VeXeVM>>> GetByDate(string startDate, string endDate)
+        {
+            try
+            {
+                var data = await _vexeService.GetByDate(startDate, endDate);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        
         [HttpPost]
         public async Task<ActionResult<bool>> addVexe(Vexe vexe)
         {

@@ -48,15 +48,22 @@ namespace BookingWeb.Server.Services
             var skip = (pageNumber - 1) * pageSize;
 
             var totalRecords = await _unitOfWork.tuyenDuongRepository.CountAsync();
-
+            
+            Console.WriteLine(totalRecords);
+            
             var tuyenDuongs = await _unitOfWork.tuyenDuongRepository.GetPagedAsync(skip, pageSize);
 
             var data = tuyenDuongs.Select(td => new TuyenDuongVM
             {
                 IdTuyenDuong = td.IdTuyenDuong,
-                TenBenXe = td.NoiKhoiHanhNavigation?.TenBenXe,
-                NoiDen = td.NoiDenNavigation?.IdTinhThanhNavigation?.TenTinhThanh,
-                NoiKhoiHanh = td.NoiKhoiHanhNavigation?.IdTinhThanhNavigation?.TenTinhThanh,
+                IdDiemDen = td.NoiDenNavigation.IdTinhThanh,
+                IdDiemDi = td.NoiKhoiHanhNavigation.IdTinhThanh,
+                IdBenXeDi = td.NoiKhoiHanh,
+                IdBenXeDen = td.NoiDen,
+                TenBenXeDi = td.NoiKhoiHanhNavigation.TenBenXe,
+                TenBenXeDen = td.NoiDenNavigation.TenBenXe,
+                NoiDen = td.NoiDenNavigation.IdTinhThanhNavigation.TenTinhThanh,
+                NoiKhoiHanh = td.NoiKhoiHanhNavigation.IdTinhThanhNavigation.TenTinhThanh,
                 KhoangCach = td.KhoangCach,
                 GiaVe = td.GiaVe,
                 TrangThai = td.TrangThai
@@ -71,12 +78,57 @@ namespace BookingWeb.Server.Services
         }
 
 
-        public async Task<Tuyenduong> GetTuyenDuongById(int id)
+        public async Task<TuyenDuongVM> GetTuyenDuongById(int id)
         {
             try
             {
-                var tuyenDuong = await _unitOfWork.tuyenDuongRepository.GetByIdAsync(id);
-                return tuyenDuong;
+                var tuyenDuong = await _unitOfWork.tuyenDuongRepository.GetByIdAsync(td => td.IdTuyenDuong == id,
+                                        td => td.NoiDenNavigation, 
+                                                                    td=> td.NoiKhoiHanhNavigation);
+                
+                var tuyenDuongVM = new TuyenDuongVM
+                {
+                    IdTuyenDuong = tuyenDuong.IdTuyenDuong,
+                    IdDiemDen = tuyenDuong.NoiDen,
+                    IdDiemDi = tuyenDuong.NoiKhoiHanh,
+                    IdBenXeDen = tuyenDuong.NoiDenNavigation.IdBenXe,
+                    IdBenXeDi = tuyenDuong.NoiKhoiHanhNavigation.IdBenXe,
+                    NoiDen = tuyenDuong.NoiDenNavigation?.IdTinhThanhNavigation?.TenTinhThanh,
+                    NoiKhoiHanh = tuyenDuong.NoiKhoiHanhNavigation?.IdTinhThanhNavigation?.TenTinhThanh,
+                    KhoangCach = tuyenDuong.KhoangCach,
+                    GiaVe = tuyenDuong.GiaVe,
+                    TrangThai = tuyenDuong.TrangThai
+                };
+                
+                return tuyenDuongVM;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<TuyenDuongVM> GetTuyenDuongByConditionAsync(int idNoiDi, int idNoiDen)
+        {
+            try
+            {
+                var data = await _unitOfWork.tuyenDuongRepository.GetByConditionAsync(td => td.NoiDen == idNoiDen && td.NoiKhoiHanh == idNoiDi);
+                if (data == null)
+                {
+                    return null;
+                }
+
+                var tuyenDuongVM =  data.Select(td => new TuyenDuongVM
+                {
+                    IdTuyenDuong = td.IdTuyenDuong,
+                    IdDiemDen = td.NoiDen,
+                    IdDiemDi = td.NoiKhoiHanh,
+                    KhoangCach = td.KhoangCach,
+                    GiaVe = td.GiaVe,
+                    TrangThai = td.TrangThai
+                }).FirstOrDefault();;
+
+                return tuyenDuongVM;
             }
             catch (Exception ex)
             {
@@ -98,13 +150,20 @@ namespace BookingWeb.Server.Services
             }
         }
 
-        public async Task<int> UpdateTuyenDuong(Tuyenduong tuyenduong)
+        public async Task<bool> UpdateTuyenDuong(Tuyenduong tuyenduong)
         {
             try
             {
-                await _unitOfWork.tuyenDuongRepository.UpdateAsync(tuyenduong);
+                var result =  await _unitOfWork.tuyenDuongRepository.UpdateAsync(tuyenduong);
 
-                return await _unitOfWork.SaveChangesAsync();
+                if (!result)
+                {
+                    return false;
+                }
+
+                await _unitOfWork.SaveChangesAsync();
+
+                return true;
 
             }
             catch (Exception ex)
