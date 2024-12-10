@@ -2,16 +2,24 @@ import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 import './header.css'; // Đường dẫn tới file CSS của bạn
 import homeBanner from '@/assets/image/homeBanner.png';
 import { useNavigate } from 'react-router-dom';
-
-
-
+import { useDispatch } from 'react-redux';
+import { SetUser } from '@/redux/actions/UserAction';
+import { logout } from '@/redux/actions/authAction';
 function Header () {
-  const navigate = useNavigate(); 
+    const navigate = useNavigate(); 
+  const dispatch = useDispatch();
 
   const handleClick = () => {
     navigate('/dang-nhap'); 
-  };
+    };
 
+    const handleClickLogout = async () => {
+        const result = await dispatch(logout());
+        if (logout.fulfilled.match(result)) {
+            await dispatch(SetUser());
+            navigate("/dang-nhap");
+        }
+    };
   return (
     <>
           <div className="top-zero" style={{ backgroundImage: `url(${homeBanner})`, minHeight: '200px' }}>
@@ -32,6 +40,9 @@ function Header () {
               <Nav>
                 <Button variant="outline-light" className="d-flex align-items-center" onClick={handleClick}>
                   <span className="mx-2">Đăng nhập/Đăng ký</span>
+                              </Button>
+                              <Button variant="outline-light" className="d-flex align-items-center" onClick={handleClickLogout}>
+                  <span className="mx-2">logout</span>
                 </Button>
               </Nav>
             </Navbar.Collapse>

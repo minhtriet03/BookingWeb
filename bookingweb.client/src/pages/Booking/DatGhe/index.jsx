@@ -1,10 +1,11 @@
 ﻿import { Container, Row, Col, Alert, Button } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import './datghe.css';
+import { useSelector } from 'react-redux';
 import RenderSeats from './renderSeats';
 import { useNavigate } from 'react-router-dom';
-function DatGhe({ handleDisplay, infoTuyenDuong }) {
-
+function DatGhe({ handleDisplay }) {
+    const userData = useSelector((state) => state.user);
     const navigate = useNavigate();
     const legend = [
         { color: "#D5D9DD", label: "Đã đặt" }, // Đã đặt
@@ -92,14 +93,20 @@ function DatGhe({ handleDisplay, infoTuyenDuong }) {
                     </Col>
                     <Col>
                         <Row className="border bg-white rounded-4 p-3 mb-1">
-                            <h5 className="my-3 ">Thông tin khách hàng</h5>
+                            <Row className="d-flex justify-content-between my-3">
+                                <Col xs={9}>
+                                    <h5  className=" ">Thông tin khách hàng</h5>
+                                </Col>
+                                <Col>
+                                    <a href="/thong-tin-ca-nhan">Chỉnh sửa</a>
+                                </Col>
+                            </Row>
                             <Row className="d-flex justify-content-between">
                                 <Col xs={4} className="text-gray">
                                     Họ và tên:
                                 </Col>
                                 <Col xs={8} className="text-end text-black">
-                                    Phạm Trung Hiếu
-                                    {/*{Noi_KhoiHanh || ''} - {Noi_Den || ''}*/}
+                                    {userData.userInfo.hoTen ? userData.userInfo.hoTen : "--"}
                                 </Col>
                             </Row>
                             <Row className="mt-2 d-flex justify-content-between">
@@ -107,15 +114,15 @@ function DatGhe({ handleDisplay, infoTuyenDuong }) {
                                     Số điện thoại:
                                 </Col>
                                 <Col xs={7} className="text-end text-black">
-                                    0337518038 {/*{Noi_KhoiHanh || ''} - {Noi_Den || ''}*/}
+                                    {userData.userInfo.phone ? userData.userInfo.phone : "--"}
                                 </Col>
                             </Row>
                             <Row className="mt-2 d-flex justify-content-between">
                                 <Col xs={5} className="text-gray">
-                                    Email
+                                    Email:
                                 </Col>
                                 <Col xs={7} className="text-end text-black">
-                                    ailahieu123@gmail.com {/*{Noi_KhoiHanh || ''} - {Noi_Den || ''}*/}
+                                    {userData.userInfo.email ? userData.userInfo.email: "--"}
                                 </Col>
                             </Row>
                         </Row>
