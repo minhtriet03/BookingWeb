@@ -4,8 +4,15 @@ import './datghe.css';
 import { useSelector } from 'react-redux';
 import RenderSeats from './renderSeats';
 import { useNavigate } from 'react-router-dom';
-function DatGhe({ handleDisplay }) {
+function DatGhe({ handleDisplay, id_cx, ngayxb }) {
+    const ngayXuatBen = ngayxb;
+    const id_chuyenxe = id_cx;
     const userData = useSelector((state) => state.user);
+    const cxReduxState = useSelector((state) => state.chuyenxe);
+    const chuyenXeList = cxReduxState?.cxInfo?.$values || [];
+    console.log(chuyenXeList);
+    const chuyenXeData = chuyenXeList.find((id_chuyenxe) => id_chuyenxe === cxReduxState?.selectedId);
+    console.log(chuyenXeData);
     const navigate = useNavigate();
     const legend = [
         { color: "#D5D9DD", label: "Đã đặt" }, // Đã đặt
@@ -16,7 +23,6 @@ function DatGhe({ handleDisplay }) {
     const [bookedSeats, setBookedSeats] = useState({});
     const [selectedSeatCount, setSelectedSeatCount] = useState(0);
     const [showLimitAlert, setShowLimitAlert] = useState(false);
-
     const handleBack = () => {
         handleDisplay();
     }
@@ -130,11 +136,10 @@ function DatGhe({ handleDisplay }) {
                             <h5 className="my-3">Thông tin lượt đi</h5>
                             <Row className="d-flex justify-content-between">
                                 <Col xs={4} className="text-gray">
-                                    Tuyến xe:
+                                    Tuyến đường:
                                 </Col>
                                 <Col xs={8} className="text-end text-black">
-                                    Long Xuyên - Miền Tây
-                                    {/*{Noi_KhoiHanh || ''} - {Noi_Den || ''}*/}
+                                    {chuyenXeData.noiKhoiHanhTinhThanh - chuyenXeData.noiDenTinhThanh}
                                 </Col>
                             </Row>
                             <Row className="mt-2 d-flex justify-content-between">
@@ -142,7 +147,7 @@ function DatGhe({ handleDisplay }) {
                                     Thời gian xuất bến:
                                 </Col>
                                 <Col xs={7} className="text-end text-black">
-                                    00:00 01/01/2024 {/*{Noi_KhoiHanh || ''} - {Noi_Den || ''}*/}
+                                    {chuyenXeData.tgkh - ngayXuatBen}
                                 </Col>
                             </Row>
                             <Row className="mt-2 d-flex justify-content-between">
