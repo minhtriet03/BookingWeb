@@ -49,6 +49,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Views\QuanLyChuyenDi\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

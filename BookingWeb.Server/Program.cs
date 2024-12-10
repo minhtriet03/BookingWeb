@@ -86,10 +86,6 @@ builder.Services.AddScoped<IGenericRepository<Taikhoan>, GenericRepository<Taikh
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<OrderService>();
 
-//Vitri
-builder.Services.AddScoped<IVitriRepository, VitriRepository>();
-builder.Services.AddScoped<IGenericRepository<Vitri>, GenericRepository<Vitri>>();
-builder.Services.AddScoped<VitriService>();
 
 //Tinh
 builder.Services.AddScoped<ITinhRepository, TinhRepository>();
@@ -131,12 +127,6 @@ builder.Services.AddScoped<VnPayService>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 var app = builder.Build();
-
-using (var scope = app.Services.CreateScope())
-{
-    var vitriService = scope.ServiceProvider.GetRequiredService<VitriService>();
-    await vitriService.InitAsync();
-}
 
 app.UseDefaultFiles();
 app.UseStaticFiles();

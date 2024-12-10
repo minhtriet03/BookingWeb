@@ -37,8 +37,6 @@ public partial class BookingBusContext : DbContext
 
     public virtual DbSet<Vexe> Vexes { get; set; }
 
-    public virtual DbSet<Vitri> Vitris { get; set; }
-
     public virtual DbSet<Xe> Xes { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -260,7 +258,7 @@ public partial class BookingBusContext : DbContext
             entity.Property(e => e.IdVe).HasColumnName("ID_Ve");
             entity.Property(e => e.IdChuyenXe).HasColumnName("ID_ChuyenXe");
             entity.Property(e => e.IdPhieu).HasColumnName("ID_Phieu");
-            entity.Property(e => e.IdViTriGhe).HasColumnName("ID_ViTriGhe");
+            entity.Property(e => e.ViTriGhe).HasColumnName("ViTriGhe");
 
             entity.HasOne(d => d.IdChuyenXeNavigation).WithMany(p => p.Vexes)
                 .HasForeignKey(d => d.IdChuyenXe)
@@ -271,24 +269,6 @@ public partial class BookingBusContext : DbContext
                 .HasForeignKey(d => d.IdPhieu)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_vexe_phieudat");
-
-            entity.HasOne(d => d.IdViTriGheNavigation).WithMany(p => p.Vexes)
-                .HasForeignKey(d => d.IdViTriGhe)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_vexe_vitri");
-        });
-
-        modelBuilder.Entity<Vitri>(entity =>
-        {
-            entity.HasKey(e => e.IdViTriGhe).HasName("PK__vitri__F0FA263AAC450897");
-
-            entity.ToTable("vitri");
-
-            entity.Property(e => e.IdViTriGhe).HasColumnName("ID_ViTriGhe");
-            entity.Property(e => e.ViTri1)
-                .HasMaxLength(50)
-                .HasDefaultValueSql("(NULL)")
-                .HasColumnName("ViTri");
         });
 
         modelBuilder.Entity<Xe>(entity =>

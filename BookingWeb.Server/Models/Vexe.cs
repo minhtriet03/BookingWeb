@@ -9,7 +9,7 @@ public partial class Vexe
 
     public int? IdPhieu { get; set; }
 
-    public int IdViTriGhe { get; set; }
+    public string ViTriGhe { get; set; }
 
     public int IdChuyenXe { get; set; }
 
@@ -21,5 +21,5 @@ public partial class Vexe
 
     public virtual Phieudat? IdPhieuNavigation { get; set; } = null!;
 
-    public virtual Vitri IdViTriGheNavigation { get; set; } = null!;
+    
 }
