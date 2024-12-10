@@ -39,7 +39,7 @@ namespace BookingWeb.Server.Repositories
                 .ToListAsync();
         }
 
-        public async Task<List<ChuyenxeDetailDto>> GetChuyenXeTheoTenTinhAsync(string tenTinhKhoiHanh, string tenTinhDen)
+        public async Task<List<ChuyenxeDetailDto>> GetChuyenXeTheoTenTinhAsync(string tenTinhKhoiHanh, string tenTinhDen, DateOnly date)
         {
             var chuyenXeList = await _dbContext.Chuyenxes
          .Include(cx => cx.IdTuyenDuongNavigation)
@@ -50,23 +50,25 @@ namespace BookingWeb.Server.Repositories
                  .ThenInclude(bx => bx.IdTinhThanhNavigation)
          .Include(cx => cx.IdXeNavigation)
              .ThenInclude(xe => xe.IdLoaiNavigation)
-         .Include(cx => cx.Vexes) // Include bảng Vexe để đếm số lượng vé
+         .Include(cx => cx.Vexes)
          .Where(cx => cx.IdTuyenDuongNavigation.NoiKhoiHanhNavigation.IdTinhThanhNavigation.TenTinhThanh == tenTinhKhoiHanh &&
-                      cx.IdTuyenDuongNavigation.NoiDenNavigation.IdTinhThanhNavigation.TenTinhThanh == tenTinhDen)
+                      cx.IdTuyenDuongNavigation.NoiDenNavigation.IdTinhThanhNavigation.TenTinhThanh == tenTinhDen && 
+                      cx.Vexes.Any(vx => vx.NgayKhoiHanh == date)
+                      )
          .ToListAsync();
 
             return chuyenXeList.Select(cx => new ChuyenxeDetailDto
             {
-                NoiKhoiHanhTinhThanh = cx.IdTuyenDuongNavigation.NoiKhoiHanhNavigation.IdTinhThanhNavigation.TenTinhThanh,
-                NoiDenTinhThanh = cx.IdTuyenDuongNavigation.NoiDenNavigation.IdTinhThanhNavigation.TenTinhThanh,
+                NoiKhoiHanhTinhThanh = cx.IdTuyenDuongNavigation.NoiKhoiHanhNavigation.TenBenXe,
+                NoiDenTinhThanh = cx.IdTuyenDuongNavigation.NoiDenNavigation.TenBenXe,
                 GiaVe = cx.IdTuyenDuongNavigation.GiaVe ?? 0, // Lấy giá vé từ Tuyenduong
                 KhoangCach = cx.IdTuyenDuongNavigation.KhoangCach ?? 0,
                 TrangThai = cx.TrangThai,
-                SoLuongVeDaDat = cx.Vexes.Count, // Đếm số lượng vé từ bảng Vexe
+                SoLuongVeDaDat = cx.Vexes.Count(vx => vx.NgayKhoiHanh == date),
                 LoaiXe = cx.IdXeNavigation?.IdLoaiNavigation?.TenLoai ?? "Không xác định",
-                TongThoiGian = GetFormattedDuration(cx.ThoiGianKh, cx.ThoiGianDen), 
+                TongThoiGian = GetFormattedDuration(cx.ThoiGianKh, cx.ThoiGianDen),
                 TGKH = cx.ThoiGianKh,
-                TGKT = cx.ThoiGianDen
+                TGKT = cx.ThoiGianDen,
             }).ToList();
         }
 
@@ -82,7 +84,11 @@ namespace BookingWeb.Server.Repositories
                 }
 
                 var duration = endTime - startTime;
-                return $"{(int)duration.TotalHours} : {duration.Minutes}";
+
+                if (duration.Minutes == 0) 
+                return $"{(int)duration.TotalHours} giờ";
+                else
+                return $"{(int)duration.TotalHours} giờ {duration.Minutes} phút";
             }
             return "Không hợp lệ";
         }

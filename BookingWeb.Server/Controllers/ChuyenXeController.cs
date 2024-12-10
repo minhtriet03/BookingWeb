@@ -65,12 +65,12 @@ namespace BookingWeb.Server.Controllers
 
 
         //get chuyen xe by tinh
-        [HttpGet("tinh/{noidi}/{noiden}")]
-        public async Task<ActionResult<List<ChuyenxeDetailDto>>> GetChuyenXeByTinh(string noidi, string noiden)
+        [HttpGet("tinh/{noidi}/{noiden}/{date}")]
+        public async Task<ActionResult<List<ChuyenxeDetailDto>>> GetChuyenXeByTinh(string noidi, string noiden, DateOnly date)
         {
             try
             {
-                var data = await chuyenXeService.GetAllChuyenXeByTinh(noidi, noiden);
+                var data = await chuyenXeService.GetAllChuyenXeByTinh(noidi, noiden, date);
                 return Ok(data);
             }
             catch (Exception ex)
