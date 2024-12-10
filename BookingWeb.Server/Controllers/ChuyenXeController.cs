@@ -1,4 +1,5 @@
-﻿using BookingWeb.Server.Models;
+﻿using BookingWeb.Server.Dto;
+using BookingWeb.Server.Models;
 using BookingWeb.Server.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -46,6 +47,39 @@ namespace BookingWeb.Server.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        //get chuyen xe by tuyen duong
+        [HttpGet("tuyenduong/{id}")]
+        public async Task<ActionResult<List<Chuyenxe>>> GetChuyenXeByTuyenDuong(int id)
+        {
+            try
+            {
+                var data = await chuyenXeService.GetAllChuyenXeByTuyenDuong(id);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+
+        //get chuyen xe by tinh
+        [HttpGet("tinh/{noidi}/{noiden}/{date}")]
+        public async Task<ActionResult<List<ChuyenxeDetailDto>>> GetChuyenXeByTinh(string noidi, string noiden, DateOnly date)
+        {
+            try
+            {
+                var data = await chuyenXeService.GetAllChuyenXeByTinh(noidi, noiden, date);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+
         [HttpPost]
         public async Task<ActionResult<Chuyenxe>> AddChuyenXe(Chuyenxe newChuyenXe)
         {

@@ -125,6 +125,9 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<UnitOfWork>();
 builder.Services.AddScoped<AccountService>();
 
+// đăng ký vpnay
+builder.Services.AddScoped<VnPayService>();
+
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 var app = builder.Build();

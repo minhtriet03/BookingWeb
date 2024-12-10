@@ -1,4 +1,5 @@
-﻿using BookingWeb.Server.Interfaces;
+﻿using BookingWeb.Server.Dto;
+using BookingWeb.Server.Interfaces;
 using BookingWeb.Server.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,6 +37,60 @@ namespace BookingWeb.Server.Repositories
                 .Skip(skip)
                 .Take(take)
                 .ToListAsync();
+        }
+
+        public async Task<List<ChuyenxeDetailDto>> GetChuyenXeTheoTenTinhAsync(string tenTinhKhoiHanh, string tenTinhDen, DateOnly date)
+        {
+            var chuyenXeList = await _dbContext.Chuyenxes
+         .Include(cx => cx.IdTuyenDuongNavigation)
+             .ThenInclude(td => td.NoiKhoiHanhNavigation)
+                 .ThenInclude(bx => bx.IdTinhThanhNavigation)
+         .Include(cx => cx.IdTuyenDuongNavigation)
+             .ThenInclude(td => td.NoiDenNavigation)
+                 .ThenInclude(bx => bx.IdTinhThanhNavigation)
+         .Include(cx => cx.IdXeNavigation)
+             .ThenInclude(xe => xe.IdLoaiNavigation)
+         .Include(cx => cx.Vexes)
+         .Where(cx => cx.IdTuyenDuongNavigation.NoiKhoiHanhNavigation.IdTinhThanhNavigation.TenTinhThanh == tenTinhKhoiHanh &&
+                      cx.IdTuyenDuongNavigation.NoiDenNavigation.IdTinhThanhNavigation.TenTinhThanh == tenTinhDen && 
+                      cx.Vexes.Any(vx => vx.NgayKhoiHanh == date)
+                      )
+         .ToListAsync();
+
+            return chuyenXeList.Select(cx => new ChuyenxeDetailDto
+            {
+                NoiKhoiHanhTinhThanh = cx.IdTuyenDuongNavigation.NoiKhoiHanhNavigation.TenBenXe,
+                NoiDenTinhThanh = cx.IdTuyenDuongNavigation.NoiDenNavigation.TenBenXe,
+                GiaVe = cx.IdTuyenDuongNavigation.GiaVe ?? 0, // Lấy giá vé từ Tuyenduong
+                KhoangCach = cx.IdTuyenDuongNavigation.KhoangCach ?? 0,
+                TrangThai = cx.TrangThai,
+                SoLuongVeDaDat = cx.Vexes.Count(vx => vx.NgayKhoiHanh == date),
+                LoaiXe = cx.IdXeNavigation?.IdLoaiNavigation?.TenLoai ?? "Không xác định",
+                TongThoiGian = GetFormattedDuration(cx.ThoiGianKh, cx.ThoiGianDen),
+                TGKH = cx.ThoiGianKh,
+                TGKT = cx.ThoiGianDen,
+            }).ToList();
+        }
+
+        private string GetFormattedDuration(string startTimeString, string endTimeString)
+        {
+            if (DateTime.TryParse(startTimeString, out var startTime) &&
+                DateTime.TryParse(endTimeString, out var endTime))
+            {
+                // Nếu thời gian kết thúc nhỏ hơn thời gian bắt đầu, thêm 1 ngày vào thời gian kết thúc
+                if (endTime < startTime)
+                {
+                    endTime = endTime.AddDays(1);
+                }
+
+                var duration = endTime - startTime;
+
+                if (duration.Minutes == 0) 
+                return $"{(int)duration.TotalHours} giờ";
+                else
+                return $"{(int)duration.TotalHours} giờ {duration.Minutes} phút";
+            }
+            return "Không hợp lệ";
         }
     }
 }

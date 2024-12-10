@@ -1,68 +1,10 @@
 ﻿import './Main.css';
 import { Button } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types'; // Import PropTypes
 
-function ScheduleMain() {
-    const [data, setData] = useState({}); // State để lưu dữ liệu đã nhóm
-    const [loading, setLoading] = useState(true); // State để hiển thị trạng thái loading
-    const [error, setError] = useState(null); // State để xử lý lỗi
-
-    // Hàm fetch dữ liệu từ API
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch('http://localhost:5108/api/tuyenduong/lichtrinh');
-                if (!response.ok) {
-                    throw new Error('Lỗi khi tải dữ liệu!');
-                }
-
-                const result = await response.json();
-                console.log("Dữ liệu từ API:", result);
-
-                // Kiểm tra xem dữ liệu có thuộc tính $values không
-                if (result && Array.isArray(result.$values)) {
-                    const dataArray = result.$values; // Trích xuất mảng từ $values
-
-                    // Nhóm dữ liệu theo 'noiDenTinhThanh' (Nơi đến)
-                    const grouped = dataArray.reduce((acc, item) => {
-                        const destination = item.noiDenTinhThanh; // Nơi đến
-                        if (!acc[destination]) {
-                            acc[destination] = [];
-                        }
-                        acc[destination].push(item);
-                        return acc;
-                    }, {});
-
-                    console.log("Dữ liệu đã nhóm theo nơi đến:", grouped); // In dữ liệu sau khi nhóm
-                    setData(grouped);
-                } else {
-                    throw new Error('Dữ liệu không phải là mảng');
-                }
-            } catch (err) {
-                console.error("Lỗi khi gọi API:", err);
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchData();
-    }, []);
-
-
-
-    // Hiển thị trạng thái loading hoặc lỗi
-    if (loading) {
-        return <div>Đang tải dữ liệu...</div>;
-    }
-
-    if (error) {
-        return <div>Lỗi: {error}</div>;
-    }
-
+function Main({ data }) {
     return (
         <div className="mt-5 w-100 d-flex flex-column g-4 overflow-auto">
-            {/* Tiêu đề bảng */}
             <div className="row mx-2 schedule-card">
                 <div className="text-header fw-medium col-3">Tuyến xe</div>
                 <div className="text-header fw-medium col-1">Loại xe</div>
@@ -71,7 +13,6 @@ function ScheduleMain() {
                 <div className="text-header fw-medium col-1">Giá vé</div>
             </div>
 
-            {/* Hiển thị dữ liệu nhóm theo nơi đến */}
             {Object.entries(data).map(([destination, items], groupIndex) => (
                 <div className="mx-2 my-3 schedule-card" key={groupIndex}>
                     <div className="row my-2">
@@ -97,4 +38,9 @@ function ScheduleMain() {
     );
 }
 
-export default ScheduleMain;
+// Khai báo PropTypes
+Main.propTypes = {
+    data: PropTypes.object.isRequired, // Yêu cầu prop data phải là object
+};
+
+export default Main;

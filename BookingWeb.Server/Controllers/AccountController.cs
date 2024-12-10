@@ -169,7 +169,7 @@ namespace BookingWeb.Server.Controllers
         [HttpPost("logout")]
         public IActionResult Logout()
         {
-            Response.Cookies.Delete("access_token");
+            Response.Cookies.Delete("jwt");
             return Ok("Đăng xuất thành công");
         }
 

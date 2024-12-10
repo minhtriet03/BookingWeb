@@ -7,6 +7,7 @@ export const registerUser = async (userData) => {
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message || "An unexpected error occurred.";
+<<<<<<< HEAD
     }   
 };
 
@@ -31,3 +32,7 @@ export const changePass = async (data) => {
         throw error.response?.data || error.message || "An unexpected error occurred.";
     }
 };
+=======
+  }
+};
+>>>>>>> 35d812ffe9eedbf4753bd9855622388b6880697a

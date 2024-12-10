@@ -20,7 +20,11 @@ const axiosInstance = axios.create({
 
 //                const token = document.cookie
 //                    .split("; ")
+<<<<<<< HEAD
 //                    .find((row) => row.startsWith("jwt_token="))
+=======
+//                    .find((row) => row.startsWith("jwt="))
+>>>>>>> 35d812ffe9eedbf4753bd9855622388b6880697a
 //                    ?.split("=")[1];
 
 //                    if (!token) {
@@ -57,9 +61,12 @@ const axiosInstance = axios.create({
 //        }
 //    );
 //};
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> 35d812ffe9eedbf4753bd9855622388b6880697a
 export { axiosInstance };
 
 

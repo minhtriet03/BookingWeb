@@ -4,7 +4,6 @@ import Auth from './pages/Auth';
 import Schedule from './pages/Schedule';
 import '@/assets/root.css';
 import Booking from './pages/Booking';
-import ThanhToan from './pages/Booking/ThanhToan';
 import Footer from "./component/Footer/index";
 import Header from "./component/Header/index";
 
@@ -12,11 +11,16 @@ import UserInfo from "./pages/UserInfo/thongtin";
 import History from "./pages/UserInfo/history";
 import Password from "./pages/UserInfo/password";
 
+import CheckoutPage from "./pages/Booking/ThanhToan/CheckoutPage";
+import PaymentSuccess from "./pages/Booking/ThanhToan/PaymentSuccess";
+
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { SetUser } from "./redux/actions/UserAction";
 import { useState } from "react";
+import Spinner from 'react-bootstrap/Spinner';
 
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 
@@ -34,7 +38,12 @@ function App() {
     };
 
     if (loading) {
-        return <p> dang load....</p>;
+        return (
+            <div className="d-flex justify-content-center align-items-center vh-100">
+                <Spinner animation="border" variant="warning" className="spinner-border-lg" />
+                <div>Loading...</div>
+            </div>
+        );
     }
 
 
@@ -47,10 +56,11 @@ return (
             <Route path="/dang-nhap"  element={<Auth />} />
             <Route path="/lich-trinh" element={<Schedule />} />
             <Route path="/dat-ve" element={<Booking />} />
-            <Route path="/thanh-toan" element={<ThanhToan />} />
             <Route path="/user-info" element={<UserInfo />} />
             <Route path="/history" element={<History />} />
             <Route path="/changepass" element={<Password />} />
+            <Route path="/thanh-toan" element={<CheckoutPage />} />
+            <Route path="/payment-success" element={<PaymentSuccess />} />
         </Routes>
         <Footer />
     </Router>

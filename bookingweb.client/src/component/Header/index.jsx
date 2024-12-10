@@ -2,17 +2,32 @@ import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 import './header.css'; // Đường dẫn tới file CSS của bạn
 import homeBanner from '@/assets/image/homeBanner.png';
 import { useNavigate } from 'react-router-dom';
-
-
-
+import { useDispatch } from 'react-redux';
+import { SetUser } from '@/redux/actions/UserAction';
+import { logout } from '@/redux/actions/authAction';
+import { useSelector } from 'react-redux';
 function Header () {
-  const navigate = useNavigate(); 
+    const navigate = useNavigate(); 
+    const dispatch = useDispatch();
+    
 
   const handleClick = () => {
     navigate('/dang-nhap'); 
     };
+<<<<<<< HEAD
 
+=======
+>>>>>>> 35d812ffe9eedbf4753bd9855622388b6880697a
 
+    const handleClickLogout = async () => {
+        const result = await dispatch(logout());
+        if (logout.fulfilled.match(result)) {
+            await dispatch(SetUser());
+            navigate("/dang-nhap");
+        }
+    };
+
+    const isLogin = useSelector((state) => state.auth.isAuthenticated);
   return (
     <>
           <div className="top-zero" style={{ backgroundImage: `url(${homeBanner})`, minHeight: '200px' }}>
@@ -31,9 +46,15 @@ function Header () {
 
             <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
               <Nav>
+                              { !isLogin ? (
                 <Button variant="outline-light" className="d-flex align-items-center" onClick={handleClick}>
                   <span className="mx-2">Đăng nhập/Đăng ký</span>
-                </Button>
+                 </Button>
+                 ) : (
+                 <Button variant="outline-light" className="d-flex align-items-center" onClick={handleClickLogout}>
+                  <span className="mx-2">Đăng xuất</span>
+                                  </Button>
+                )}
               </Nav>
             </Navbar.Collapse>
           </Container>
