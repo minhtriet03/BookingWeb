@@ -2,6 +2,7 @@
 using BookingWeb.Server.Interfaces;
 using BookingWeb.Server.Models;
 using BookingWeb.Server.ViewModels;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace BookingWeb.Server.Services
 {
@@ -160,12 +161,14 @@ namespace BookingWeb.Server.Services
 
         public async Task<PagedList<ChuyenXeVM>> GetByPageAsync(int pageNumber, int pageSize)
         {
+            
+            /*var chuyenXe =await _unitOfWork.chuyenXeRepository.GetAllAsync();*/
             var skip = (pageNumber - 1) * pageSize;
-
             var totalRecords = await _unitOfWork.chuyenXeRepository.CountAsync();
-
+            
             var chuyenXes = await _unitOfWork.chuyenXeRepository.GetPagedAsync(skip, pageSize);
 
+            
             var data = chuyenXes.Select(cx => new ChuyenXeVM
             {
                 IdChuyenXe = cx.IdChuyenXe,
@@ -178,10 +181,10 @@ namespace BookingWeb.Server.Services
                     BienSo = cx.IdXeNavigation?.BienSo,
                     TinhTrang = cx.IdXeNavigation.TinhTrang,
 
-                    LoaiXeVM = cx.IdXeNavigation?.IdLoaiNavigation == null ? null : new LoaiXeVM
+                    LoaiXeVM = cx.IdXeNavigation.IdLoaiNavigation == null ? null : new LoaiXeVM
                     {
-                        TenLoai = cx.IdXeNavigation?.IdLoaiNavigation?.TenLoai,
-                        SoGhe = cx.IdXeNavigation?.IdLoaiNavigation?.SoGhe
+                        TenLoai = cx.IdXeNavigation.IdLoaiNavigation.TenLoai,
+                        SoGhe = cx.IdXeNavigation.IdLoaiNavigation.SoGhe
                     }
                 },
 
@@ -194,6 +197,9 @@ namespace BookingWeb.Server.Services
                     GiaVe = cx.IdTuyenDuongNavigation?.GiaVe
                 }
             }).ToList();
+            
+
+            
             return new PagedList<ChuyenXeVM>
             {
                 Items = data,
@@ -202,6 +208,40 @@ namespace BookingWeb.Server.Services
             };
 
             /*return new PagedList<ChuyenXeVM>(data, pageNumber, (int)Math.Ceiling((double)totalRecords / pageSize));*/
+        }
+
+        public async Task<List<ChuyenXeVM>> GetByTime(string startTIme, string endTime, int IdTuyenDuong)
+        {
+            try
+            {
+                var chuyenXe = await _unitOfWork.chuyenXeRepository.GetChuyenXeByTime(startTIme, endTime, IdTuyenDuong);
+                if (chuyenXe == null)
+                {
+                    return null;
+                }
+
+                var data = chuyenXe.Select(cx => new ChuyenXeVM
+                {
+                    IdChuyenXe = cx.IdChuyenXe,
+                    ThoiGianKh = cx.ThoiGianKh,
+                    ThoiGianDen = cx.ThoiGianDen,
+                    TrangThai = cx.TrangThai,
+                    XeVM = cx.IdXeNavigation == null
+                        ? null
+                        : new XeVM
+                        {
+                            IdXe = cx.IdXeNavigation.IdXe,
+                            BienSo = cx.IdXeNavigation.BienSo,
+                            TinhTrang = cx.IdXeNavigation.TinhTrang
+                        },
+                }).ToList();
+
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public async Task<bool> AddChuyenXe(Chuyenxe chuyenxe)

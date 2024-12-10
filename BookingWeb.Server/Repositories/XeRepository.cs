@@ -76,6 +76,11 @@ namespace BookingWeb.Server.Repositories
         {
             return await _context.Xes.FindAsync(id);
         }
+        public Task<Xe> GetByIdAsync(Expression<Func<Xe, bool>> predicate, params Expression<Func<Xe, object>>[] includes)
+        {
+            throw new NotImplementedException();
+        }
+
 
         // Triển khai phương thức AddAsync
         public async Task<bool> AddAsync(Xe entity)
@@ -103,6 +108,11 @@ namespace BookingWeb.Server.Repositories
         }
         
         public Task<bool> DeactivateAsync(int id, Func<Xe, bool> condition, Action<Xe> change)
+        {
+            throw new NotImplementedException();
+        }
+        
+        public Task<Xe> GetByIdAsync(int id, params Expression<Func<Xe, object>>[] includes)
         {
             throw new NotImplementedException();
         }

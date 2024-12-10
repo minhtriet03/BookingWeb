@@ -3,6 +3,7 @@ using BookingWeb.Server.Services;
 using BookingWeb.Server.Models;
 using BookingWeb.Server.Repositories;
 using BookingWeb.Server.Interfaces;
+using BookingWeb.Server.ViewModels;
 
 namespace BookingWeb.Server.Controllers
 {
@@ -71,10 +72,20 @@ namespace BookingWeb.Server.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateTuyenDuong(Tuyenduong updateTuyenDuong)
+        public async Task<IActionResult> UpdateTuyenDuong([FromBody] TuyenDuongVM  model)
         {
             try
             {
+                
+                var updateTuyenDuong = new Tuyenduong
+                {
+                    IdTuyenDuong = model.IdTuyenDuong, 
+                    NoiKhoiHanh = model.IdBenXeDi,
+                    NoiDen = model.IdBenXeDen,
+                    KhoangCach = model.KhoangCach,
+                    GiaVe = model.GiaVe
+                };
+                
                 //var check = await _tuyenDuongService.GetTuyenDuongById(updateTuyenDuong.IdTuyenDuong);
                 //if (check == null)
                 //{
@@ -104,5 +115,35 @@ namespace BookingWeb.Server.Controllers
 
             }
         }
+
+        #region ToànLD
+
+        [HttpGet("GetAlll")]
+        public async Task<ActionResult<List<Tuyenduong>>> GetAlll()
+        {
+            var data = await _tuyenDuongService.GetAllTuyenDuongAsync();
+            return Ok(data);
+        }
+
+        [HttpGet("GetByConditional")]
+        public async Task<ActionResult<List<TuyenDuongVM>>> GetByConditional([FromQuery] int idDiemDi, [FromQuery] int idDiemDen)
+        {
+            try
+            {
+                var data = await _tuyenDuongService.GetTuyenDuongByConditionAsync(idDiemDi, idDiemDen);
+                if (data == null)
+                {
+                    return new List<TuyenDuongVM>();
+                }
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        
+
+        #endregion
     }
 }

@@ -8,10 +8,20 @@ public class UnitOfWork : IUnitOfWork
 
     private readonly BookingBusContext _context;
  
-    public UnitOfWork(BookingBusContext context, IBenXeRepository benxe, ITinhRepository tinh, IVitriRepository vitri, IVexeRepository vexe,
-        IUserRepository userRepository, IOrderRepository orderRepository, ILoaiXeRepository loaiXeRepository, IXeRepository xeRepository,
-        IAccountRepository accountRepository, IChuyenXeRepository chuyenXeRepository, ITuyenDuongRepository tuyenDuongRepository)
-    {
+
+    public UnitOfWork(BookingBusContext context, 
+                                  IBenXeRepository benxe, 
+                                  ITinhRepository tinh, 
+                                  IVitriRepository vitri,
+                                  IVexeRepository vexe, 
+                                  IUserRepository userRepository, 
+                                  IOrderRepository orderRepository, 
+                                  ILoaiXeRepository loaiXeRepository, 
+                                  IXeRepository xeRepository, 
+                                  IAccountRepository accountRepository,
+                                  ITuyenDuongRepository tuyenDuongRepository,
+                                  IChuyenXeRepository chuyenXeRepository
+        ){
         _context = context;
         this.benXes = benxe;
         this.vitris = vitri;
@@ -22,8 +32,9 @@ public class UnitOfWork : IUnitOfWork
         this.accountRepository = accountRepository;
         this.loaiXeRepository = loaiXeRepository;
         this.xeRepository = xeRepository;
-        this.chuyenXeRepository = chuyenXeRepository;
         this.tuyenDuongRepository = tuyenDuongRepository;
+        this.chuyenXeRepository = chuyenXeRepository;
+
     }
     public IBenXeRepository benXes { get; set; }
     public ITinhRepository tinhs { get; set; }
@@ -39,12 +50,9 @@ public class UnitOfWork : IUnitOfWork
 
     public IXeRepository xeRepository {get; private set; }
 
-
     public IChuyenXeRepository chuyenXeRepository { get; private set; }
 
     public ITuyenDuongRepository tuyenDuongRepository { get; private set; }
-
-
     
     public void Dispose()
     {

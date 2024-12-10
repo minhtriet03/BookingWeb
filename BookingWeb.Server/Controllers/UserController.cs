@@ -83,15 +83,26 @@ namespace BookingWeb.Server.Controllers
         
 
         [HttpPut]
-        public async Task<IActionResult> UpdateUser([FromQuery] int id, [FromBody] Nguoidung user)
+        public async Task<IActionResult> UpdateUser([FromBody] Nguoidung user)
         {
             try
             {
-                if (id != user.IdUser)
-                {
-                    return BadRequest("Id không khớp");
-                }
+                
+                //Cái này mày làm mày tự bỏ ra nha
+                /*int userId = MiddleWare.GetUserIdFromCookie(Request);*/
 
+                int userId = 6;
+                
+                user.IdUser = userId;
+                
+                Console.WriteLine(user.HoTen);
+                Console.WriteLine(user.Email);
+                Console.WriteLine(user.Phone);
+                Console.WriteLine(user.IdUser);
+                Console.WriteLine(user.IdAccount);
+                Console.WriteLine(user.TrangThai);
+                
+                
                 var result = await _userService.UpdateUserAsync(user);
 
                 if (result)

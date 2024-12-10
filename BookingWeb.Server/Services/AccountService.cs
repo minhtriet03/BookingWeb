@@ -1,6 +1,8 @@
-﻿using BookingWeb.Server.Interfaces;
+using BookingWeb.Server.Interfaces;
 using BookingWeb.Server.Models;
+using BookingWeb.Server.ViewModels;
 using Microsoft.AspNetCore.Identity;
+
 
 namespace BookingWeb.Server.Services
 {
@@ -154,5 +156,48 @@ namespace BookingWeb.Server.Services
 
 
 
+        public async Task<PagedList<TaiKhoanVM>> GetByPageAsync(int pageNumber, int pageSize)
+        {
+            var skip = (pageNumber - 1) * pageSize;
+            var totalRecords = await _unitOfWork.accountRepository.CountAsync();
+            
+            var accounts = await _unitOfWork.accountRepository.GetByPageAsync(skip, pageSize);
+
+            var data = accounts.Select(tk => new TaiKhoanVM
+            {
+                IdAccount = tk.IdAccount,
+                UserName = tk.UserName,
+                TrangThai = tk.TrangThai
+            }).ToList();
+
+            return new PagedList<TaiKhoanVM>
+            {
+                Items = data,
+                CurrentPage = pageNumber,
+                TotalPages = (int)Math.Ceiling((double)totalRecords/pageSize)
+            };
+        }
+        public async Task<bool> DeactivateAsync(int id)
+        {
+            try
+            {
+                var tk = await _unitOfWork.accountRepository.GetByIdAsync(id);
+                if (tk == null)
+                {
+                    throw new InvalidOperationException("Id không tồn tại");
+                }
+
+                tk.TrangThai = !tk.TrangThai;
+
+                await _unitOfWork.accountRepository.UpdateAsync(tk);
+                await _unitOfWork.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi: " + ex.Message);
+            }
+        }
     }
 }

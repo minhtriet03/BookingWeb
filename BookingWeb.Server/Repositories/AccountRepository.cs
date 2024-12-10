@@ -141,5 +141,12 @@ namespace BookingWeb.Server.Repositories
             }
             return false;
         }
+        public async Task<List<Taikhoan>> GetByPageAsync(int skip, int pageSize)
+        {
+            return await _dbContext.Taikhoans
+                .Skip(skip)
+                .Take(pageSize)
+                .ToListAsync();
+        }
     }
 }
