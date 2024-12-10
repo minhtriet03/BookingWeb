@@ -36,8 +36,6 @@ function Auth() {
                     email: formData.email, 
                     password: formData.password 
                 }));
-
-                console.log(actionResult);
     
                 if (actionResult.type === 'auth/login/fulfilled') {
                     await dispatch(SetUser());

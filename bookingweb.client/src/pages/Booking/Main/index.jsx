@@ -32,9 +32,6 @@ function BookingMain() {
         console.log("selectedIndex", selectedIndex);
         setSelectedIndex(index); 
     };
-
-
- 
     return (
         <>
             <div className="d-flex flex-column flex-xl-row gap-4 pt-xl-5">
