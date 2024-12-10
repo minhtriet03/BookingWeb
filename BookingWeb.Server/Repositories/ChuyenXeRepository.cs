@@ -64,7 +64,7 @@ namespace BookingWeb.Server.Repositories
                 TrangThai = cx.TrangThai,
                 SoLuongVeDaDat = cx.Vexes.Count, // Đếm số lượng vé từ bảng Vexe
                 LoaiXe = cx.IdXeNavigation?.IdLoaiNavigation?.TenLoai ?? "Không xác định",
-                TongThoiGian = GetFormattedDuration(cx.ThoiGianKh, cx.ThoiGianDen), 
+                TongThoiGian = GetFormattedDuration(cx.ThoiGianKh, cx.ThoiGianDen),
                 TGKH = cx.ThoiGianKh,
                 TGKT = cx.ThoiGianDen
             }).ToList();
@@ -82,7 +82,11 @@ namespace BookingWeb.Server.Repositories
                 }
 
                 var duration = endTime - startTime;
-                return $"{(int)duration.TotalHours} : {duration.Minutes}";
+
+                if (duration.Minutes == 0) 
+                return $"{(int)duration.TotalHours} giờ";
+                else
+                return $"{(int)duration.TotalHours} giờ {duration.Minutes} phút";
             }
             return "Không hợp lệ";
         }

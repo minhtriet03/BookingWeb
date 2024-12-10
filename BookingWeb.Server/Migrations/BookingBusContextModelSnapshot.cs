@@ -388,7 +388,7 @@ namespace BookingWeb.Server.Migrations
                         .HasColumnType("int")
                         .HasColumnName("ID_ChuyenXe");
 
-                    b.Property<int>("IdPhieu")
+                    b.Property<int?>("IdPhieu")
                         .HasColumnType("int")
                         .HasColumnName("ID_Phieu");
 
@@ -576,7 +576,6 @@ namespace BookingWeb.Server.Migrations
                     b.HasOne("BookingWeb.Server.Models.Phieudat", "IdPhieuNavigation")
                         .WithMany("Vexes")
                         .HasForeignKey("IdPhieu")
-                        .IsRequired()
                         .HasConstraintName("FK_vexe_phieudat");
 
                     b.HasOne("BookingWeb.Server.Models.Vitri", "IdViTriGheNavigation")

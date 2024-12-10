@@ -45,7 +45,7 @@ namespace BookingWeb.Server.Services
         {
             try
             {
-                var data = await _unitOfWork.chuyenXeRepository.GetChuyenXeTheoTenTinhAsync(noidi,noiden);
+                var data = await _unitOfWork.chuyenXeRepository.GetChuyenXeTheoTenTinhAsync(noidi, noiden);
                 return data;
             }
             catch (Exception ex)

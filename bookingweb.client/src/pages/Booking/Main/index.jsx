@@ -19,6 +19,7 @@ function BookingMain() {
     const noiden = queryParams.get("noiden");
     const chuyenXeList = useSelector((state) => state.chuyenxe);
 
+
     useEffect(() => {
         if (noidi && noiden) {
             dispatch(GetChuyenXe({ noidi, noiden }));
@@ -34,6 +35,8 @@ function BookingMain() {
     };
 
 
+
+    console.log("chuyenxe", chuyenXeList)
  
     return (
         <>
@@ -58,10 +61,19 @@ function BookingMain() {
                             <Form.Group>
                                 <Form.Label>Giờ đi</Form.Label>
                                 <div className="checkbox-group-custom mt-2">
-                                    <Form.Check type="checkbox" label="Sáng sớm 00:00 - 06:00 (0)" className="mb-2" />
-                                    <Form.Check type="checkbox" label="Buổi sáng 06:00 - 12:00 (3)" className="mb-2" />
-                                    <Form.Check type="checkbox" label="Buổi chiều 12:00 - 18:00 (13)" className="mb-2" />
-                                    <Form.Check type="checkbox" label="Buổi tối 18:00 - 24:00 (9)" className="mb-2" />
+                                    {[
+                                        { label: 'Sáng sớm 00:00 - 06:00', value: 'early' },
+                                        { label: 'Buổi sáng 06:00 - 12:00', value: 'morning' },
+                                        { label: 'Buổi chiều 12:00 - 18:00', value: 'afternoon' },
+                                        { label: 'Buổi tối 18:00 - 24:00', value: 'evening' },
+                                    ].map((timeOption) => (
+                                        <Form.Check
+                                            key={timeOption.value}
+                                            type="checkbox"
+                                            label={timeOption.label}
+                                            className="mb-2"
+                                        />
+                                    ))}
                                 </div>
                             </Form.Group>
                         </Card.Body>
@@ -76,38 +88,6 @@ function BookingMain() {
                                     {["Ghế", "Giường", "Limousine"].map((type) => (
                                         <Button variant="outline-secondary" className="py-1 px-3" key={type}>
                                             {type}
-                                        </Button>
-                                    ))}
-                                </div>
-                            </Form.Group>
-                        </Card.Body>
-
-                        <hr />
-
-                        {/* Hàng ghế */}
-                        <Card.Body className="p-3">
-                            <Form.Group>
-                                <Form.Label>Hàng ghế</Form.Label>
-                                <div className="d-flex flex-wrap gap-2 mt-2">
-                                    {["Hàng đầu", "Hàng giữa", "Hàng cuối"].map((row) => (
-                                        <Button variant="outline-secondary" className="py-1 px-3" key={row}>
-                                            {row}
-                                        </Button>
-                                    ))}
-                                </div>
-                            </Form.Group>
-                        </Card.Body>
-
-                        <hr />
-
-                        {/* Tầng */}
-                        <Card.Body className="p-3 pb-4">
-                            <Form.Group>
-                                <Form.Label>Tầng</Form.Label>
-                                <div className="d-flex flex-wrap gap-2 mt-2">
-                                    {["Tầng trên", "Tầng dưới"].map((floor) => (
-                                        <Button variant="outline-secondary" className="py-1 px-3" key={floor}>
-                                            {floor}
                                         </Button>
                                     ))}
                                 </div>
@@ -144,7 +124,7 @@ function BookingMain() {
                                 <Card.Body>
                                     <Row className="d-flex justify-content-around">
                                         <Col xs={7} className="d-flex align-items-center">
-                                            <h5 className="font-weight-bold">{chuyenXe.tgkh}:00</h5>
+                                            <h5 className="font-weight-bold">{chuyenXe.tgkh}</h5>
                                             <div className="d-flex align-items-center justify-content-center flex-grow-1 mx-3">
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -167,7 +147,7 @@ function BookingMain() {
                                                     height={19}
                                                 />
                                             </div>
-                                            <h5 className="font-weight-bold">{chuyenXe.tgkt}:00</h5>
+                                            <h5 className="font-weight-bold">{chuyenXe.tgkt}</h5>
                                         </Col>
 
                                         <Col xs={4} className="mt-2 d-flex flex-column justify-content-end">

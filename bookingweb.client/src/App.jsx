@@ -12,6 +12,9 @@ import UserInfo from "./pages/UserInfo/thongtin";
 import History from "./pages/UserInfo/history";
 import Password from "./pages/UserInfo/password";
 
+import CheckoutPage from "./component/CheckoutPage";
+import PaymentSuccess from "./component/PaymentSuccess";
+
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { SetUser } from "./redux/actions/UserAction";
@@ -51,6 +54,8 @@ return (
             <Route path="/user-info" element={<UserInfo />} />
             <Route path="/history" element={<History />} />
             <Route path="/changepass" element={<Password />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/payment-success" element={<PaymentSuccess />} />
         </Routes>
         <Footer />
     </Router>
