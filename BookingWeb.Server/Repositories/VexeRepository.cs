@@ -112,6 +112,7 @@ namespace BookingWeb.Server.Repositories
         }
 
 
+
         public async Task<Vexe> GetByIdAsync(int id)
         {
             try
@@ -160,9 +161,6 @@ namespace BookingWeb.Server.Repositories
                 return false;
             }
         }
-      
-    }
-
         public async Task<List<int>> GetAllIDChuyenXeInVeXe()
         {
             return await _dbContext.Vexes
@@ -170,4 +168,5 @@ namespace BookingWeb.Server.Repositories
                 .Distinct()
                 .ToListAsync();
         }
+    }
 }
