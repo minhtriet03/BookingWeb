@@ -70,7 +70,26 @@ public class OrderService
         return orderVMs;
     }
 
-    public async Task<bool> AddOrderAsync(OrderVM order)
+    public async Task<List<OrderVM>> GetByIdUser(int id)
+    {
+        var data = await _unitOfWork.orderRepository.GetByIdUser(id);
+        var orderVMs = data.Select(order => new OrderVM
+        {
+            IdPhieu = order.IdPhieu,
+            IdUser = order.IdUser,
+            NgayLap = order.NgayLap,
+            TongTien = order.TongTien,
+            TrangThai = order.TrangThai
+        }).ToList();
+
+        return orderVMs;
+    }
+
+    public async Task<bool> AddOrderAsync(int userId
+            ,decimal giaTien
+            , decimal soLuong
+            , Phieudat order
+        )
     {
         try
         {

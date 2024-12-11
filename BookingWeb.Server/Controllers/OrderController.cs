@@ -30,6 +30,20 @@ namespace BookingWeb.Server.Controllers
             }
         }
 
+        [HttpPost("user={id}")]
+        public async Task<ActionResult<List<OrderVM>>> GetByIdUser(int id)
+        {
+            try
+            {
+                var data = await _orderService.GetByIdUser(id);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddOrder([FromForm] OrderVM order
         )
