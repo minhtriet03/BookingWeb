@@ -45,10 +45,7 @@ namespace BookingWeb.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddOrder(int userId
-            , [FromForm] decimal giaTien
-            , [FromForm] decimal soLuong
-            , [FromForm] Phieudat order
+        public async Task<IActionResult> AddOrder([FromForm] OrderVM order
         )
         {
             if (order == null)
@@ -58,10 +55,10 @@ namespace BookingWeb.Server.Controllers
 
             try
             {
-                bool result = await _orderService.AddOrderAsync(userId, giaTien, soLuong, order);
+                bool result = await _orderService.AddOrderAsync(order);
                 if (result)
                 {
-                    return Ok("Đặt vé thành công");
+                    return Ok("Tạo phiếu đặt thành công");
                 }
                 else
                 {

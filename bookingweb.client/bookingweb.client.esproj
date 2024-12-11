@@ -8,9 +8,6 @@
     <!-- Folder where production build objects will be placed -->
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="src\redux\" />
-  </ItemGroup>
   <Import Project="..\packages\Microsoft.AspNetCore.SpaProxy.8.0.10\build\Microsoft.AspNetCore.SpaProxy.targets" Condition="Exists('..\packages\Microsoft.AspNetCore.SpaProxy.8.0.10\build\Microsoft.AspNetCore.SpaProxy.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
