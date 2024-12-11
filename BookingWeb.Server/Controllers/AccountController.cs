@@ -173,6 +173,19 @@ namespace BookingWeb.Server.Controllers
             return Ok("Đăng xuất thành công");
         }
 
-
+        [HttpPost("changePass")]
+        public async Task<ActionResult<bool>> ChangePass([FromBody] changePass request)
+        {
+            try
+            {
+               
+                return await _accountService.UpdatePassword(request.Id, request.OldPassword, request.NewPassword);
+            }
+            catch (Exception ex)
+            {
+                
+                return false;
+            }
+        }
     }
 }

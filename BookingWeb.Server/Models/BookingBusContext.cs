@@ -37,7 +37,6 @@ public partial class BookingBusContext : DbContext
 
     public virtual DbSet<Vexe> Vexes { get; set; }
 
-
     public virtual DbSet<Xe> Xes { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)

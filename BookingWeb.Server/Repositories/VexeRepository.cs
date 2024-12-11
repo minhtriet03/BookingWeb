@@ -1,5 +1,6 @@
 ﻿using BookingWeb.Server.Interfaces;
 using BookingWeb.Server.Models;
+using BookingWeb.Server.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookingWeb.Server.Repositories
@@ -18,6 +19,65 @@ namespace BookingWeb.Server.Repositories
         }
 
 
+        public async Task<List<Vexe>> GetByIdPhieuAsync(int idPhieu)
+        {
+            var vexeList = await _dbContext.Vexes
+                .Where(v => v.IdPhieu == idPhieu)
+                .Include(v => v.IdChuyenXeNavigation) // Chuyến xe mà vé thuộc về
+                    .ThenInclude(c => c.IdTuyenDuongNavigation) // Tuyến đường của chuyến xe
+                        .ThenInclude(t => t.NoiKhoiHanhNavigation) // Địa điểm khởi hành
+                    .Include(v => v.IdChuyenXeNavigation)
+                        .ThenInclude(c => c.IdTuyenDuongNavigation)
+                        .ThenInclude(t => t.NoiDenNavigation) // Địa điểm đến
+                    .Include(v => v.IdChuyenXeNavigation)
+                        .ThenInclude(c => c.IdXeNavigation) // Xe của chuyến xe
+                .ToListAsync();
+
+            return vexeList;
+        }
+
+        public async Task CreateTickketByChuyen(int idChuyen)
+        {
+            // Lấy thông tin chuyến xe theo idChuyen
+            var chuyenxe = await _dbContext.Chuyenxes
+                .FirstOrDefaultAsync(c => c.IdChuyenXe == idChuyen);
+
+            if (chuyenxe == null)
+            {
+                throw new Exception("Chuyến xe không tồn tại.");
+            }
+
+
+            var viTriGhe = GenerateTicketPositions();
+
+
+            foreach (var pos in viTriGhe)
+            {
+                var newVexe = new Vexe
+                {
+                    IdChuyenXe = chuyenxe.IdChuyenXe, 
+                    ViTriGhe = pos, 
+                    TrangThai = true  
+                };
+
+                _dbContext.Vexes.Add(newVexe);  
+            }
+
+            await _dbContext.SaveChangesAsync();
+        }
+
+        private List<string> GenerateTicketPositions()
+        {
+            var positions = new List<string>();
+
+            for (int i = 1; i <= 17; i++)
+            {
+                positions.Add($"A{i}");
+                positions.Add($"B{i}");
+            }
+
+            return positions;
+        }
         public async Task<List<Vexe>> GetByPageAsync(int pageNumber, int pageSize)
         {
             if (pageNumber <= 0 || pageSize <= 0)
@@ -81,6 +141,7 @@ namespace BookingWeb.Server.Repositories
         }
 
 
+      
         public async Task<bool> deleteVexe(int id)
         {
             try
@@ -99,6 +160,8 @@ namespace BookingWeb.Server.Repositories
                 return false;
             }
         }
+      
+    }
 
         public async Task<List<int>> GetAllIDChuyenXeInVeXe()
         {
@@ -107,5 +170,4 @@ namespace BookingWeb.Server.Repositories
                 .Distinct()
                 .ToListAsync();
         }
-}
 }

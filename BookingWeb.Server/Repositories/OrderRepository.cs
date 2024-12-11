@@ -11,4 +11,19 @@ public class OrderRepository : GenericRepository<Phieudat>, IOrderRepository
     {
         
     }
+    public async Task<List<Phieudat>> GetByIdUser(int id)
+    {
+        try
+        {
+            var phieudats = await _dbContext.Phieudats
+                                    .Where(p => p.IdUser == id)
+                                    .ToListAsync();
+
+            return phieudats;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
 }
