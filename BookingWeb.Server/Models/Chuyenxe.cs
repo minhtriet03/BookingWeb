@@ -14,6 +14,7 @@ public partial class Chuyenxe
     public string? ThoiGianKh { get; set; }
 
     public string? ThoiGianDen { get; set; }
+    public DateOnly NgayKhoiHanh { get; set; }
 
     public bool TrangThai { get; set; }
 

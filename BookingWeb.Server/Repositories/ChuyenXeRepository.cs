@@ -91,8 +91,9 @@ namespace BookingWeb.Server.Repositories
              .ThenInclude(xe => xe.IdLoaiNavigation)
          .Include(cx => cx.Vexes)
          .Where(cx => cx.IdTuyenDuongNavigation.NoiKhoiHanhNavigation.IdTinhThanhNavigation.TenTinhThanh == tenTinhKhoiHanh &&
-                      cx.IdTuyenDuongNavigation.NoiDenNavigation.IdTinhThanhNavigation.TenTinhThanh == tenTinhDen &&
-                      cx.Vexes.Any(vx => vx.NgayKhoiHanh == date)
+                      cx.IdTuyenDuongNavigation.NoiDenNavigation.IdTinhThanhNavigation.TenTinhThanh == tenTinhDen
+                      //&&
+                      //cx.Vexes.Any(vx => vx.NgayKhoiHanh == date)
                       )
          .ToListAsync();
 
@@ -103,7 +104,7 @@ namespace BookingWeb.Server.Repositories
                 GiaVe = cx.IdTuyenDuongNavigation.GiaVe ?? 0, // Lấy giá vé từ Tuyenduong
                 KhoangCach = cx.IdTuyenDuongNavigation.KhoangCach ?? 0,
                 TrangThai = cx.TrangThai,
-                SoLuongVeDaDat = cx.Vexes.Count(vx => vx.NgayKhoiHanh == date),
+                //SoLuongVeDaDat = cx.Vexes.Count(vx => vx.NgayKhoiHanh == date),
                 LoaiXe = cx.IdXeNavigation?.IdLoaiNavigation?.TenLoai ?? "Không xác định",
                 TongThoiGian = GetFormattedDuration(cx.ThoiGianKh, cx.ThoiGianDen),
                 TGKH = cx.ThoiGianKh,

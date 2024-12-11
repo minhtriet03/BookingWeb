@@ -69,6 +69,9 @@ namespace BookingWeb.Server.Migrations
                         .HasColumnType("int")
                         .HasColumnName("ID_Xe");
 
+                    b.Property<DateOnly>("NgayKhoiHanh")
+                        .HasColumnType("date");
+
                     b.Property<string>("ThoiGianDen")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(50)
@@ -392,16 +395,16 @@ namespace BookingWeb.Server.Migrations
                         .HasColumnType("int")
                         .HasColumnName("ID_Phieu");
 
-                    b.Property<DateOnly>("NgayKhoiHanh")
-                        .HasColumnType("date");
-
                     b.Property<bool>("TrangThai")
                         .HasColumnType("bit");
 
                     b.Property<string>("ViTriGhe")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("ViTriGhe");
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("ViTriGhe")
+                        .HasDefaultValueSql("(NULL)");
 
                     b.HasKey("IdVe")
                         .HasName("PK__vexe__8B63A19CBA40D288");
