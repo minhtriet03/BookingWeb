@@ -21,6 +21,7 @@ import { useState } from "react";
 import Spinner from 'react-bootstrap/Spinner';
 
 import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
 
@@ -48,7 +49,21 @@ function App() {
 
 
 
-return (
+    return (
+        <>
+            <ToastContainer
+                position="bottom-left"
+                autoClose={1200}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+                transition: Bounce
+/>
     <Router>
         <Header />
         <Routes>
@@ -64,6 +79,7 @@ return (
         </Routes>
         <Footer />
     </Router>
+</>
     );
 }
 
