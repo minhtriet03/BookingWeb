@@ -112,7 +112,7 @@ const UserInfo = () => {
                 <p>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
                 <div
                     className="p-4 shadow rounded justify-content-center align-items-center"
-                    style={{ height: "53vh", margin: "auto", backgroundColor: "#fff" }}
+                    style={{ height: "56vh", margin: "auto", backgroundColor: "#fff" }}
                 >
                     <Form className="w-100" onSubmit={handleSave}>
 

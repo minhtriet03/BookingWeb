@@ -13,8 +13,8 @@ import { Button } from 'react-bootstrap';
 import { getVeXeUser } from '@/apis/index';
 
 const columns = [
-    { id: 'mave', label: 'Mã Vé', minWidth: 170 },
-    { id: 'maphieu', label: 'Mã Phiếu', minWidth: 170 },
+    { id: 'mave', label: 'Mã Vé', minWidth: 100},
+    { id: 'maphieu', label: 'Mã Phiếu', minWidth: 100 },
     { id: 'xe', label: 'Xe', minWidth: 200 },
     { id: 'tuyenduong', label: 'Tuyến Đường', minWidth: 300 },
     { id: 'ngaydi', label: 'Ngày Đi', minWidth: 170 },

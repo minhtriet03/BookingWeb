@@ -19,9 +19,10 @@ namespace BookingWeb.Server.Controllers
             _vexeService = vexeService;
             _orderService = orderService;
         }
-         
+
         [HttpGet("user={id}")]
-        public async Task<ActionResult<List<vxVM>>> GetVeXeByPhieu(int id) {
+        public async Task<ActionResult<List<vxVM>>> GetVeXeByPhieu(int id)
+        {
             var phieus = await _orderService.GetByIdUser(id);
             if (phieus == null || !phieus.Any())
             {
@@ -48,7 +49,9 @@ namespace BookingWeb.Server.Controllers
                     Console.WriteLine(noiDen);
                     var diaDiem = $"{noiKhoiHanh} - {noiDen}";
 
-                
+                    // Lấy ngày khởi hành từ Chuyenxe (không phải từ Vexe nữa)
+                    var ngayKhoiHanh = v.IdChuyenXeNavigation?.NgayKhoiHanh ?? throw new Exception("Ngày khởi hành không xác định.");
+
                     var xe = v.IdChuyenXeNavigation?.IdXeNavigation?.BienSo ?? "Không xác định";
 
                     var vexeVm = new vxVM
@@ -59,7 +62,7 @@ namespace BookingWeb.Server.Controllers
                         GiaVe = tuyenduong.GiaVe,
                         tuyenduong = diaDiem,
                         Xe = xe,
-                        NgayKhoiHanh = v.NgayKhoiHanh,
+                        NgayKhoiHanh = ngayKhoiHanh, 
                         TrangThai = v.TrangThai
                     };
 
