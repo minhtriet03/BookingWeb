@@ -9,9 +9,12 @@ namespace BookingWeb.Server.Interfaces
         Task<List<Chuyenxe>> GetAllChuyenXeVM();
         Task<List<Chuyenxe>> GetPagedAsync(int skip, int take);
 
-        Task<List<Chuyenxe>> GetChuyenXeByTime(string timeStart, string timeEnd, int IdTuyenDuong);
+        Task<List<Chuyenxe>> GetChuyenXeByTime(int idXe ,string timeStart, string timeEnd, int IdTuyenDuong, DateOnly date);
 
         Task<List<ChuyenxeDetailDto>> GetChuyenXeTheoTenTinhAsync(string idTinhKhoiHanh, string idTinhDen, DateOnly date);
 
+        Task AddRangeAsync(IEnumerable<Chuyenxe> chuyenXeList);
+        Task<List<Chuyenxe>> LayChuyenXeCoNgayLonNhat();
+        Task<List<int>> GetAllIDChuyenXe();
     }
 }
