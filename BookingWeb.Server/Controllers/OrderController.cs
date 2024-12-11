@@ -2,6 +2,7 @@
 using BookingWeb.Server.Services;
 using BookingWeb.Server.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections;
 
 namespace BookingWeb.Server.Controllers
 {
@@ -96,6 +97,18 @@ namespace BookingWeb.Server.Controllers
             {
                 throw new Exception(ex.Message);
             }
+        }
+        
+        [HttpGet("ThongKe")]
+        public async Task<IActionResult> LayThongKePhieuDat()
+        {
+            var thongKe = await _orderService.ThongKePhieuDatTheoThang();
+    
+            // Tạo dữ liệu cho biểu đồ
+            var labels = thongKe.Select(x => $"Tháng {x.Thang}/{x.Nam}").ToList();
+            var data = thongKe.Select(x => x.TongTien).ToList();
+
+            return Ok(new IList[] { labels, data });
         }
     }
 }

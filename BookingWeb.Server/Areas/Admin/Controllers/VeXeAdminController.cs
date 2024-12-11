@@ -14,19 +14,9 @@ namespace BookingWeb.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string startDate, string endDate)
+        public async Task<IActionResult> Index()
         {
-            if (string.IsNullOrEmpty(startDate))
-            {
-                startDate = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
-            }
-            
-            if (string.IsNullOrEmpty(endDate))
-            {
-                endDate = DateTime.Now.ToString("yyyy-MM-dd");
-            }
-            
-            var viewModel = await _veXeService.GetByDate(startDate, endDate);
+            var viewModel = await _veXeService.GetByDate();
             return View(viewModel);
         }
         

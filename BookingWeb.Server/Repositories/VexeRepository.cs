@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookingWeb.Server.Repositories
 {
-    public class VexeRepository : GenericRepository<Vexe>,IVexeRepository
+    public class VexeRepository : GenericRepository<Vexe>, IVexeRepository
     {
 
         public VexeRepository(BookingBusContext dbContext) : base(dbContext)
@@ -17,7 +17,7 @@ namespace BookingWeb.Server.Repositories
             return await _dbContext.Vexes.ToListAsync();
         }
 
-       
+
         public async Task<List<Vexe>> GetByPageAsync(int pageNumber, int pageSize)
         {
             if (pageNumber <= 0 || pageSize <= 0)
@@ -30,10 +30,10 @@ namespace BookingWeb.Server.Repositories
                 .Take(pageSize)
                 .ToListAsync();
         }
-        public async Task<List<Vexe>> GetByDateAsync(DateOnly startDate, DateOnly endDate)
+        public async Task<List<Vexe>> GetByDateAsync()
         {
             var data = await _dbContext.Vexes
-                .Where(vx => vx.NgayKhoiHanh >= startDate && vx.NgayKhoiHanh <= endDate)
+                .AsNoTracking()
                 .Include(vx => vx.IdChuyenXeNavigation)
                     .ThenInclude(cx => cx.IdTuyenDuongNavigation)
                         .ThenInclude(td => td.NoiDenNavigation)
@@ -42,8 +42,12 @@ namespace BookingWeb.Server.Repositories
                     .ThenInclude(cx => cx.IdTuyenDuongNavigation)
                         .ThenInclude(td => td.NoiKhoiHanhNavigation)
                             .ThenInclude(bx => bx.IdTinhThanhNavigation)
+                .Include(vx => vx.IdChuyenXeNavigation)
+                .ThenInclude(cx => cx.IdXeNavigation)
+                .OrderByDescending(vx => vx.IdVe)
+
                 .ToListAsync();
-            
+
             return data;
         }
 
@@ -53,7 +57,7 @@ namespace BookingWeb.Server.Repositories
             try
             {
                 return await _dbContext.Vexes
-                    .FirstOrDefaultAsync(v => v.IdVe == id); 
+                    .FirstOrDefaultAsync(v => v.IdVe == id);
             }
             catch
             {
@@ -65,8 +69,8 @@ namespace BookingWeb.Server.Repositories
             try
             {
                 var data = await _dbContext.Vexes
-                .Where(v => v.TrangThai == Status)
-                .ToListAsync();
+                    .Where(v => v.TrangThai == Status)
+                    .ToListAsync();
 
                 return data;
             }
@@ -75,8 +79,8 @@ namespace BookingWeb.Server.Repositories
                 throw;
             }
         }
-        
-      
+
+
         public async Task<bool> deleteVexe(int id)
         {
             try
@@ -95,5 +99,13 @@ namespace BookingWeb.Server.Repositories
                 return false;
             }
         }
-    }
+
+        public async Task<List<int>> GetAllIDChuyenXeInVeXe()
+        {
+            return await _dbContext.Vexes
+                .Select(vx => vx.IdChuyenXe)
+                .Distinct()
+                .ToListAsync();
+        }
+}
 }

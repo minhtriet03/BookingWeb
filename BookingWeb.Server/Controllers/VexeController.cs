@@ -45,18 +45,13 @@ namespace BookingWeb.Server.Controllers
 
             }
         }
-        
+
         [HttpGet("Date")]
-        public async Task<ActionResult<List<VeXeVM>>> GetByDate(string startDate, string endDate)
+        public async Task<ActionResult<List<VeXeVM>>> GetByDate()
         {
             try
             {
-                
-                Console.WriteLine("Start date: " + startDate);
-                Console.WriteLine("End date: " + endDate);
-                
-                
-                var data = await _vexeService.GetByDate(startDate, endDate);
+                var data = await _vexeService.GetByDate();
                 return Ok(data);
             }
             catch (Exception ex)
@@ -64,7 +59,7 @@ namespace BookingWeb.Server.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        
+
         [HttpPost]
         public async Task<ActionResult<bool>> addVexe(Vexe vexe)
         {
@@ -90,6 +85,35 @@ namespace BookingWeb.Server.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet("GetIDChuyenXe")]
+        public async Task<IActionResult> GetIDChuyenXe()
+        {
+            try
+            {
+                var data = await _vexeService.LayIDChuyenXeChuaCoVe();
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        
+        [HttpPost("CreateVeXe")]
+        public async Task<IActionResult> TaoVeChoChuyenChuaCoVe()
+        {
+            var ketQua = await _vexeService.CreateVeXe();
+    
+            if (ketQua)
+            {
+                return Ok(ketQua);
+            }
+            else
+            {
+                return BadRequest("Có lỗi xảy ra khi tạo vé");
             }
         }
     }

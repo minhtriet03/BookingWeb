@@ -22,6 +22,7 @@ namespace BookingWeb.Server.Repositories
                         .ThenInclude(nkh => nkh.IdTinhThanhNavigation) // Nạp thông tin Tỉnh Thành (Nơi Khởi Hành)
                 .Include(cx => cx.IdTuyenDuongNavigation.NoiDenNavigation) // Nạp thông tin Nơi Đến
                     .ThenInclude(nd => nd.IdTinhThanhNavigation) // Nạp thông tin Tỉnh Thành (Nơi Đến)
+                .OrderByDescending(cx => cx.IdChuyenXe)
                 .ToListAsync();
         }
 
@@ -37,36 +38,40 @@ namespace BookingWeb.Server.Repositories
                 .ThenInclude(nd => nd.IdTinhThanhNavigation) // Nạp thông tin Tỉnh Thành (Nơi Đến)
                 .Skip(skip)
                 .Take(take)
+                .OrderByDescending(cx => cx.IdChuyenXe)
                 .ToListAsync();
         }
 
-        public async Task<List<Chuyenxe>> GetChuyenXeByTime(string timeStart, string timeEnd, int IdTuyenDuong)
+        public async Task<List<Chuyenxe>> GetChuyenXeByTime(int iDXe ,string timeStart, string timeEnd, int IdTuyenDuong, DateOnly date)
             {
 
                 if (string.Compare(timeStart, timeEnd) >= 0)
                 {
                     var data = await _dbContext.Chuyenxes
                         .Where(cx => cx.IdTuyenDuong == IdTuyenDuong &&
-                                     (string.Compare(cx.ThoiGianKh, timeStart) >= 0 && string.Compare(cx.ThoiGianKh, timeEnd) <= 0) ||
-                                     (string.Compare(cx.ThoiGianKh, timeStart) >= 0 && string.Compare(cx.ThoiGianKh, timeEnd) >= 0) ||
-                                     (string.Compare(cx.ThoiGianDen, timeStart) >= 0 && string.Compare(cx.ThoiGianDen, timeEnd) <= 0) ||
-                                     (string.Compare(cx.ThoiGianKh, timeStart) <= 0 && string.Compare(cx.ThoiGianDen, timeEnd) >= 0)
-
+                                     (
+                                         (string.Compare(cx.ThoiGianKh, timeStart) >= 0 && string.Compare(cx.ThoiGianKh, timeEnd) <= 0) ||
+                                         (string.Compare(cx.ThoiGianKh, timeStart) >= 0 && string.Compare(cx.ThoiGianKh, timeEnd) >= 0) ||
+                                         (string.Compare(cx.ThoiGianDen, timeStart) >= 0 && string.Compare(cx.ThoiGianDen, timeEnd) <= 0) ||
+                                         (string.Compare(cx.ThoiGianKh, timeStart) <= 0 && string.Compare(cx.ThoiGianDen, timeEnd) >= 0)
+                                     )
+                                     && cx.NgayKhoiHanh == date && cx.IdXe == iDXe && cx.TrangThai == true
                         )
                         .Include(cx => cx.IdXeNavigation)
                         .Include(cx => cx.IdTuyenDuongNavigation)
                         .ToListAsync();
-
                     return data;
                 }
                 else
                 {
                     var data = await _dbContext.Chuyenxes
                         .Where(cx => cx.IdTuyenDuong == IdTuyenDuong &&
-                                     (string.Compare(cx.ThoiGianKh, timeStart) >= 0 && string.Compare(cx.ThoiGianKh, timeEnd) <= 0) ||
-                                     (string.Compare(cx.ThoiGianDen, timeStart) >= 0 && string.Compare(cx.ThoiGianDen, timeEnd) <= 0) ||
-                                     (string.Compare(cx.ThoiGianKh, timeStart) <= 0 && string.Compare(cx.ThoiGianDen, timeEnd) >= 0)
-
+                                     (
+                                         (string.Compare(cx.ThoiGianKh, timeStart) >= 0 && string.Compare(cx.ThoiGianKh, timeEnd) <= 0) ||
+                                         (string.Compare(cx.ThoiGianDen, timeStart) >= 0 && string.Compare(cx.ThoiGianDen, timeEnd) <= 0) ||
+                                         (string.Compare(cx.ThoiGianKh, timeStart) <= 0 && string.Compare(cx.ThoiGianDen, timeEnd) >= 0)
+                                    )
+                                    && cx.NgayKhoiHanh == date && cx.IdXe == iDXe && cx.TrangThai == true
                         )
                         .Include(cx => cx.IdXeNavigation)
                         .Include(cx => cx.IdTuyenDuongNavigation)
@@ -111,6 +116,11 @@ namespace BookingWeb.Server.Repositories
                 TGKT = cx.ThoiGianDen,
             }).ToList();
         }
+        public async Task AddRangeAsync(IEnumerable<Chuyenxe> chuyenXeList)
+        {
+            await  _dbContext.Chuyenxes.AddRangeAsync(chuyenXeList);
+            await _dbContext.SaveChangesAsync();
+        }
 
         public string GetFormattedDuration(string startTimeString, string endTimeString)
         {
@@ -132,7 +142,25 @@ namespace BookingWeb.Server.Repositories
             }
             return null;
           }
+        
+        public async Task<List<Chuyenxe>> LayChuyenXeCoNgayLonNhat()
+        {
+            var result = _dbContext.Chuyenxes
+                .Where(cx => cx.TrangThai == true  && cx.IdXeNavigation.TinhTrang == true && cx.IdTuyenDuongNavigation.TrangThai == true)
+                .GroupBy(cx => new { cx.IdXe, cx.IdTuyenDuong })
+                .Select(g => g.OrderByDescending(cx => cx.NgayKhoiHanh).FirstOrDefault())
+                .ToList();
 
+            return result;
+        }
+        
+        public async Task<List<int>> GetAllIDChuyenXe()
+        {
+            return await _dbContext.Chuyenxes
+                .Where(cx => cx.TrangThai == true)
+                .Select(cx => cx.IdChuyenXe)
+                .ToListAsync();
+        }
     }
 }
 

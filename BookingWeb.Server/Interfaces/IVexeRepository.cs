@@ -7,7 +7,7 @@ namespace BookingWeb.Server.Interfaces
         Task<bool> deleteVexe(int id);
         Task<List<Vexe>> GetByPageAsync(int skip, int take);
 
-        Task<List<Vexe>> GetByDateAsync(DateOnly startDate, DateOnly endDate);
-        
+        Task<List<Vexe>> GetByDateAsync();
+        Task<List<int>> GetAllIDChuyenXeInVeXe();
     }
 }

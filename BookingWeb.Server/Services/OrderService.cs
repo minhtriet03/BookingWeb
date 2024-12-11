@@ -137,4 +137,28 @@ public class OrderService
 
         }
     }
+    
+    
+    public async Task<List<ThongKeVM>> ThongKePhieuDatTheoThang()
+    {
+        // Lấy dữ liệu từ Repository
+        var thongKe  = await _unitOfWork.orderRepository.GetAllAsync();
+
+        return thongKe
+            .GroupBy(p => new 
+            { 
+                Thang = p.NgayLap.Value.Month, 
+                Nam = p.NgayLap.Value.Year 
+            })
+            .Select(g => new ThongKeVM
+            {
+                Thang = g.Key.Thang,
+                Nam = g.Key.Nam,
+                SoLuongPhieu = g.Count(),
+                TongTien = g.Sum(p => p.TongTien ?? 0)
+            })
+            .OrderBy(tk => tk.Nam)
+            .ThenBy(tk => tk.Thang)
+            .ToList();
+    }
 }

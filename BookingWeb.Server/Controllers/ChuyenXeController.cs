@@ -115,9 +115,12 @@ namespace BookingWeb.Server.Controllers
         
         //Cai nay cua Toan nha
         [HttpGet("GetByTime")]
-        public async Task<ActionResult<List<ChuyenXeVM>>> GetByTime([FromQuery]string timeStart,[FromQuery] string timeEnd,[FromQuery] int IdTuyenDuong)
+        public async Task<ActionResult<List<ChuyenXeVM>>> GetByTime([FromQuery] int idXe ,[FromQuery]string timeStart,[FromQuery] string timeEnd,[FromQuery] int IdTuyenDuong, [FromQuery] DateTime ngayKhoiHanh)
         {
-            var data = await chuyenXeService.GetByTime(timeStart, timeEnd, IdTuyenDuong);
+            
+            DateOnly ngayKhoiHanhOnly = DateOnly.FromDateTime(ngayKhoiHanh);
+            
+            var data = await chuyenXeService.GetByTime(idXe ,timeStart, timeEnd, IdTuyenDuong, ngayKhoiHanhOnly);
 
             if (data == null)
             {
@@ -125,6 +128,30 @@ namespace BookingWeb.Server.Controllers
             }
 
             return Ok(data);
+        }
+        
+        [HttpGet("NgayLonNhat")]
+        public async Task<IActionResult> LayTheoNgayLonNhat()
+        {
+            var data = await chuyenXeService.GetChuyenXeTheoNgayLonNhat();
+            if (data != null)
+            {
+                return Ok(data);
+            }
+            
+            return null;
+        }
+
+        [HttpPost("AddChuyenXeTheoNgay")]
+        public async Task<IActionResult> AddChuyenXeTheoNgay()
+        {
+            var data = await chuyenXeService.AddChuyenXeTheoNgay();
+            if (data)
+            {
+                return Ok(data);
+            }
+            
+            return BadRequest();
         }
     } 
 }

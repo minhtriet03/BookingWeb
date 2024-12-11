@@ -5,5 +5,5 @@ namespace BookingWeb.Server.Interfaces;
 
 public interface IOrderRepository : IGenericRepository<Phieudat>
 {
-    
+
 }

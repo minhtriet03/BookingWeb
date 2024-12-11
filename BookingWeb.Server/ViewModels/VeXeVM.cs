@@ -17,7 +17,5 @@
         public  ChuyenXeVM? IdChuyenXeNavigation { get; set; } = null!;
 
         public  PhieuDatVM? IdPhieuNavigation { get; set; } = null!;
-
-        public  ViTriVM? IdViTriGheNavigation { get; set; } = null!;
     }
 }
