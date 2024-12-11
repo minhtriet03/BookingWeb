@@ -130,6 +130,8 @@ namespace BookingWeb.Server.Repositories
                     return $"{(int)duration.TotalHours} giờ {duration.Minutes} phút";
             }
             return null;
-        }
+          }
+
     }
 }
+
