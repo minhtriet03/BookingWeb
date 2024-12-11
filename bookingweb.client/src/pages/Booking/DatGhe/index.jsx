@@ -3,7 +3,7 @@ import { useState, useEffect,useMemo } from 'react';
 import './datghe.css';
 import { GetVeXeSelected } from "@/redux/actions/VeXeAction";
 import { setVeXeOrder } from "@/redux/slices/VeXeSlice";
-import { createOrder } from '@/apis';
+//import { createOrder } from '@/apis';
 import { useSelector } from 'react-redux';
 import RenderSeats from './renderSeats';
 import { useNavigate } from 'react-router-dom';
@@ -34,7 +34,6 @@ function DatGhe({ handleDisplay }) {
 
     const vexedata = useSelector((state) => state.vexe);
     const vexeselectedList = vexedata?.vexeSelected?.$values||[];
-
 
     const ngayXuatBen = queryParams.get("ngaydi");
     const [bookedSeats, setBookedSeats] = useState([]);
@@ -68,7 +67,7 @@ function DatGhe({ handleDisplay }) {
                 tongTien: tongTien,
                 trangThai: false,
         }
-        createOrder(orderData)
+        //createOrder(orderData);
         dispatch(setVeXeOrder(selectedSeatIds));
         navigate("/thanh-toan");
     };

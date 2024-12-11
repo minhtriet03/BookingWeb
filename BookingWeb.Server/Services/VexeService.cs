@@ -30,7 +30,7 @@ namespace BookingWeb.Server.Services
         }
         public async Task<List<Vexe>> getByChuyenXe(int id_chuyenxe)
         {
-            return await _unitOfWork.vexes.GetByConditionAsync(vx => vx.IdChuyenXe == id_chuyenxe);
+            return await _unitOfWork.vexes.GetByConditionAsync(vx => vx.IdChuyenXe == id_chuyenxe && vx.IdPhieu != null);
         }
         public async Task<bool> addVeXe(Vexe vexe)
         {
