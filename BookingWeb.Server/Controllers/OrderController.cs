@@ -31,7 +31,7 @@ namespace BookingWeb.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddOrder( Phieudat order)
+        public async Task<IActionResult> AddOrder(Phieudat order)
         {
             if (order == null)
             {
