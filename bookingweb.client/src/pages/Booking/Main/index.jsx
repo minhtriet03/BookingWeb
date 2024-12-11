@@ -22,6 +22,13 @@ function BookingMain({ handleDisplay }) {
     const ngaydi = queryParams.get("ngaydi");
     const idcxRedux = useSelector((state) => state.chuyenxe.idcx);
 
+    const [filters, setFilters] = useState({
+        time: [],
+        vehicleType: [],
+    });
+
+
+
 
     const handleRoute = () => {
         handleDisplay();
@@ -46,6 +53,38 @@ function BookingMain({ handleDisplay }) {
         console.log("selectedIndex", selectedIndex);
         setSelectedIndex(index); 
     };
+
+    const handleTimeFilterChange = (time) => {
+        setFilters((prev) => ({
+            ...prev,
+            time: prev.time.includes(time)
+                ? prev.time.filter((t) => t !== time)
+                : [...prev.time, time],
+        }));
+    };
+
+    const handleVehicleTypeFilterChange = (type) => {
+        setFilters((prev) => ({
+            ...prev,
+            vehicleType: prev.vehicleType.includes(type)
+                ? prev.vehicleType.filter((t) => t !== type)
+                : [...prev.vehicleType, type],
+        }));
+    };
+
+    const filteredChuyenXeData = chuyenXeData.filter((chuyenXe) => {
+        const matchesTime = !filters.time.length || filters.time.some((time) => {
+            const startTime = parseInt(chuyenXe.tgkh.split(':')[0]);
+            if (time === 'early') return startTime >= 0 && startTime < 6;
+            if (time === 'morning') return startTime >= 6 && startTime < 12;
+            if (time === 'afternoon') return startTime >= 12 && startTime < 18;
+            if (time === 'evening') return startTime >= 18 && startTime < 24;
+        });
+
+        const matchesVehicleType = !filters.vehicleType.length || filters.vehicleType.includes(chuyenXe.loaiXe);
+
+        return matchesTime && matchesVehicleType;
+    });
 
 
 
@@ -85,6 +124,7 @@ function BookingMain({ handleDisplay }) {
                                             type="checkbox"
                                             label={timeOption.label}
                                             className="mb-2"
+                                            onChange={() => handleTimeFilterChange(timeOption.value)}
                                         />
                                     ))}
                                 </div>
@@ -99,7 +139,12 @@ function BookingMain({ handleDisplay }) {
                                 <Form.Label>Loại xe</Form.Label>
                                 <div className="d-flex flex-wrap gap-2 mt-2">
                                     {["Ghế", "Giường", "Limousine"].map((type) => (
-                                        <Button variant="outline-secondary" className="py-1 px-3" key={type}>
+                                        <Button
+                                            variant="outline-secondary"
+                                            className={`py-1 px-3 ${filters.vehicleType.includes(type) ? 'active' : ''}`}
+                                            key={type}
+                                            onClick={() => handleVehicleTypeFilterChange(type)}
+                                        >
                                             {type}
                                         </Button>
                                     ))}
@@ -122,7 +167,7 @@ function BookingMain({ handleDisplay }) {
 
 
                     <Row className="mb-3" onClick={handleRoute}>
-                        {chuyenXeData.map((chuyenXe, index) => (
+                        {filteredChuyenXeData.map((chuyenXe, index) => (
                             <Card
                                 key={index}
                                 className="mb-3 w-100 shadow-light"
