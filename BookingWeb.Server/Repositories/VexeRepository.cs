@@ -95,8 +95,7 @@ namespace BookingWeb.Server.Repositories
         {
             try
             {
-                return await _dbContext.Vexes
-                    .FirstOrDefaultAsync(v => v.IdVe == id); 
+                return await _dbContext.Vexes.FirstOrDefaultAsync(v => v.IdVe == id); 
             }
             catch
             {
