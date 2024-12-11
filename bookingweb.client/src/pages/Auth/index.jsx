@@ -7,7 +7,7 @@ import { registerUser } from '@/apis';
 import { SetUser } from '@/redux/actions/UserAction';
 import { useSelector } from 'react-redux';
 import './Auth.css';
-
+import { toast } from 'react-toastify';
 function Auth() {
     const [key, setKey] = useState('login'); 
     const [formData, setFormData] = useState({
@@ -21,6 +21,19 @@ function Auth() {
 
     const userred = useSelector((state) => state.user);
     console.log("userInfooo", userred);
+
+    const displayToast = (message) => {
+        toast(message, {
+            position: "bottom-left",
+            autoClose: 1200,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    }
 
 
 
@@ -39,34 +52,36 @@ function Auth() {
     
                 if (actionResult.type === 'auth/login/fulfilled') {
                     await dispatch(SetUser());
+                    displayToast('Đăng nhập thành công')
                    
                      navigate('/');
                 } else {
-                    console.error('Đăng nhập thất bại:', actionResult.error?.message || 'Không rõ nguyên nhân');
+                    displayToast('Đăng nhập thất bại')
                 }
             } else if (key === 'register') {
                 if (formData.password !== formData.confirmPassword) {
-                    alert('Mật khẩu không khớp!');
+                    displayToast('Mật khẩu không khớp');
                     return;
                 }  
                 try {
                     // Gọi API đăng ký tài khoản
                     const result = await registerUser({ UserName: formData.email, Password: formData.password });
-                    alert('Đăng ký thành công!');
+                    displayToast('Đăng ký thành công')
+
                     if (result) {
                         navigate('/dang-nhap');
                     }
                     else {
-                        alert('Đăng ký thất bại!');
+                        displayToast('Đăng ký thất bại')
                     }
                     
                 } catch (error) {
-                    console.error('Đăng ký thất bại:', error)
+                    displayToast('Đăng ký thất bại')
                     
                 }
             }
         } catch (error) {
-            console.error('Lỗi xảy ra:', error);
+            displayToast('Đăng ký thất bại')
         }
     };
 

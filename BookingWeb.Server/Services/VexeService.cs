@@ -51,8 +51,8 @@ namespace BookingWeb.Server.Services
             var startDateOnly = DateOnly.FromDateTime(startParsedDate);
             var endDateOnly = DateOnly.FromDateTime(endParsedDate);
 
-            var data = await _unitOfWork.vexes.GetByConditionAsync(vx =>
-                vx.NgayKhoiHanh >= startDateOnly && vx.NgayKhoiHanh <= endDateOnly);
+            //var data = await _unitOfWork.vexes.GetByConditionAsync(vx =>
+            //    vx.NgayKhoiHanh >= startDateOnly && vx.NgayKhoiHanh <= endDateOnly);
 
             var veXe = new List<VeXeVM>();
 

@@ -13,8 +13,6 @@ public partial class Vexe
 
     public int IdChuyenXe { get; set; }
 
-    public DateOnly NgayKhoiHanh { get; set; }
-
     public bool TrangThai { get; set; }
 
     public virtual Chuyenxe IdChuyenXeNavigation { get; set; } = null!;

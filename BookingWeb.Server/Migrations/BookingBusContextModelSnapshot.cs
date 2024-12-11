@@ -69,6 +69,9 @@ namespace BookingWeb.Server.Migrations
                         .HasColumnType("int")
                         .HasColumnName("ID_Xe");
 
+                    b.Property<DateOnly>("NgayKhoiHanh")
+                        .HasColumnType("date");
+
                     b.Property<string>("ThoiGianDen")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(50)
@@ -391,9 +394,6 @@ namespace BookingWeb.Server.Migrations
                     b.Property<int?>("IdPhieu")
                         .HasColumnType("int")
                         .HasColumnName("ID_Phieu");
-
-                    b.Property<DateOnly>("NgayKhoiHanh")
-                        .HasColumnType("date");
 
                     b.Property<bool>("TrangThai")
                         .HasColumnType("bit");
