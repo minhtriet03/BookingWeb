@@ -129,7 +129,6 @@ builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 var app = builder.Build();
 
-
 app.UseDefaultFiles();
 app.UseStaticFiles();
 

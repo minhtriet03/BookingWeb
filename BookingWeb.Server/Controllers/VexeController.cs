@@ -117,6 +117,26 @@ namespace BookingWeb.Server.Controllers
             }
         }
 
+        [HttpGet("chuyenxe/{id}")]
+        public async Task<ActionResult<List<object>>> GetByChuyenXe(int id)
+        {
+            try
+            {
+                List<Vexe> data = await _vexeService.getByChuyenXe(id);
+
+                var result = data.Select(v => v.ViTriGhe).ToList();
+
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(new { message = "Đã xảy ra lỗi", error = ex.Message });
+            }
+        }
+
+
         [HttpPost]
         public async Task<ActionResult<bool>> addVexe(Vexe vexe)
         {

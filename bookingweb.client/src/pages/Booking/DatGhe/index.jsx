@@ -1,47 +1,91 @@
 ﻿import { Container, Row, Col, Alert, Button } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
+import { useState, useEffect,useMemo } from 'react';
 import './datghe.css';
+import { GetVeXeSelected } from "@/redux/actions/VeXeAction";
+import { setVeXeOrder } from "@/redux/slices/VeXeSlice";
+import { createOrder } from '@/apis';
 import { useSelector } from 'react-redux';
 import RenderSeats from './renderSeats';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 function DatGhe({ handleDisplay }) {
-    const userData = useSelector((state) => state.user);
-    const navigate = useNavigate();
+
     const legend = [
         { color: "#D5D9DD", label: "Đã đặt" }, // Đã đặt
         { color: "#DEF3FF", label: "Còn trống" }, // Ghế trống
         { color: "#FDEDE8", label: "Đang chọn" }, // Ghế đang chọn
     ];
+    const queryParams = new URLSearchParams(window.location.search);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const userRedux = useSelector((state) => state.user);
+    const userData = {
+        idUser: userRedux?.userInfo?.userInfo?.idUser,
+        hoTen: userRedux?.userInfo?.userInfo?.hoTen,
+        email: userRedux?.userInfo?.userInfo?.email,
+        phone: userRedux?.userInfo?.userInfo?.phone,
+    };
+
+    const id_chuyenxe = useSelector((state) => state.chuyenxe.idcx);
+
+    const chuyenXeData = useSelector((state) => state.chuyenxe);
+    const chuyenXe = chuyenXeData.cxInfo.$values.find((item) => item.$id === id_chuyenxe);
+
+    const vexedata = useSelector((state) => state.vexe);
+    const vexeselectedList = vexedata?.vexeSelected?.$values||[];
+
+
+    const ngayXuatBen = queryParams.get("ngaydi");
+    const [bookedSeats, setBookedSeats] = useState([]);
     const [selectedSeats, setSelectedSeats] = useState({});
-    const [bookedSeats, setBookedSeats] = useState({});
     const [selectedSeatCount, setSelectedSeatCount] = useState(0);
     const [showLimitAlert, setShowLimitAlert] = useState(false);
-
-    const chuyenXeList = useSelector((state) => state.chuyenxe);
-
-    console.log("cxl",chuyenXeList);
-
+    const [tongTien, setTongTien] = useState(0);
 
     const handleBack = () => {
         handleDisplay();
     }
     // Xử lý khi nhấn nút trong div khác
     const handleExternalSubmit = (e) => {
-        //if (validate()) {
-            e.preventDefault();
-            alert("Biểu mẫu hợp lệ!");
-            navigate("/thanh-toan");
-        //}
+        e.preventDefault();
+        if (selectedSeatCount === 0) {
+            alert("Vui lòng chọn ghế trước khi thanh toán!");
+            return;
+        }
+        if (!userData.idUser) {
+            alert("Vui lòng đăng nhập trước khi thanh toán!");
+            return;
+        }
+        if (!userData.hoTen || !userData.phone || !userData.email) {
+            alert("Vui lòng cập nhật thông tin cá nhân trước khi thanh toán!");
+            return;
+        }
+
+        const orderData = {
+            idUser: userData.idUser,
+                ngayLap: ngayXuatBen,
+                tongTien: tongTien,
+                trangThai: false,
+        }
+        createOrder(orderData)
+        dispatch(setVeXeOrder(selectedSeatIds));
+        navigate("/thanh-toan");
     };
 
     useEffect(() => {
-        const fetchedBookedSeats = ["A01", "B03", "A06"];
-        const bookedSeatsObj = fetchedBookedSeats.reduce((acc, seatId) => {
-            acc[seatId] = true;
-            return acc;
-        }, {});
+        // Lấy vé xe đã chọn từ store
+        dispatch(GetVeXeSelected(id_chuyenxe));
+    }, [id_chuyenxe, dispatch]);
+
+    const bookedSeatsObj = useMemo(() => {
+        return vexeselectedList.map(seatId => seatId);
+    }, [vexeselectedList]);
+    
+    // Bây giờ bạn có thể an toàn cập nhật trạng thái
+    useEffect(() => {
         setBookedSeats(bookedSeatsObj);
-    }, []);
+    }, [bookedSeatsObj]);
 
     const handleSeatSelection = (seatId) => {
         if (bookedSeats[seatId]) return;
@@ -53,13 +97,17 @@ function DatGhe({ handleDisplay }) {
 
         setSelectedSeats((prev) => {
             const updated = { ...prev, [seatId]: !prev[seatId] };
-            setSelectedSeatCount(Object.values(updated).filter(Boolean).length);
+            const soLuongGhe = Object.values(updated).filter(Boolean).length;
+            setSelectedSeatCount(soLuongGhe);
+            setTongTien(soLuongGhe * chuyenXe.giaVe);
             setShowLimitAlert(false);
             return updated;
         });
     };
 
     const selectedSeatIds = Object.keys(selectedSeats).filter(seatId => selectedSeats[seatId]);
+
+
 
     return (
         <>
@@ -99,70 +147,69 @@ function DatGhe({ handleDisplay }) {
                     <Col>
                         <Row className="border bg-white rounded-4 p-3 mb-1">
                             <Row className="d-flex justify-content-between my-3">
-                                <Col xs={9}>
+                                <Col xs={8}>
                                     <h5  className=" ">Thông tin khách hàng</h5>
                                 </Col>
                                 <Col>
-                                    <a href="/thong-tin-ca-nhan">Chỉnh sửa</a>
+                                    <a href={userData.idUser ? "/thong-tin-ca-nhan" : "/dang-nhap"}>{userData.idUser ? "Cập nhật" : "Đăng nhập"}</a>
                                 </Col>
                             </Row>
                             <Row className="d-flex justify-content-between">
-                                <Col xs={4} className="text-gray">
-                                    Họ và tên:
+                                <Col xs={7} className="text-gray">
+                                    Họ và tên:  
                                 </Col>
-                                <Col xs={8} className="text-end text-black">
-                                    {userData.userInfo.hoTen ? userData.userInfo.hoTen : "--"}
+                                <Col className="text-end text-black">
+                                    {userData.hoTen ? userData.hoTen : "--"}
                                 </Col>
                             </Row>
                             <Row className="mt-2 d-flex justify-content-between">
-                                <Col xs={5} className="text-gray">
+                                <Col xs={7} className="text-gray">
                                     Số điện thoại:
                                 </Col>
-                                <Col xs={7} className="text-end text-black">
-                                    {userData.userInfo.phone ? userData.userInfo.phone : "--"}
+                                <Col className="text-end text-black">
+                                    {userData.phone ? userData.phone : "--"}
                                 </Col>
                             </Row>
                             <Row className="mt-2 d-flex justify-content-between">
-                                <Col xs={5} className="text-gray">
+                                <Col xs={4} className="text-gray">
                                     Email:
                                 </Col>
-                                <Col xs={7} className="text-end text-black">
-                                    {userData.userInfo.email ? userData.userInfo.email: "--"}
+                                <Col className="text-end text-black">
+                                    {userData.email ? userData.email: "--"}
                                 </Col>
                             </Row>
                         </Row>
                         <Row className="border bg-white rounded-4 p-3 mb-3">
                             <h5 className="my-3">Thông tin lượt đi</h5>
                             <Row className="d-flex justify-content-between">
-                                <Col xs={4} className="text-gray">
-                                    Tuyến xe:
+                                <Col xs={7} className="text-gray">
+                                    Tuyến đường:
                                 </Col>
-                                <Col xs={8} className="text-end text-black">
-                                    Long Xuyên - Miền Tây
-                                    {/*{Noi_KhoiHanh || ''} - {Noi_Den || ''}*/}
+                                <Col className="text-end text-black">
+                                    {chuyenXe.noiKhoiHanhTinhThanh} - {chuyenXe.noiDenTinhThanh}
                                 </Col>
                             </Row>
                             <Row className="mt-2 d-flex justify-content-between">
-                                <Col xs={5} className="text-gray">
+                                <Col xs={7} className="text-gray">
                                     Thời gian xuất bến:
                                 </Col>
-                                <Col xs={7} className="text-end text-black">
-                                    00:00 01/01/2024 {/*{Noi_KhoiHanh || ''} - {Noi_Den || ''}*/}
+                                <Col  className="text-end text-black">
+                                    {ngayXuatBen}
                                 </Col>
                             </Row>
                             <Row className="mt-2 d-flex justify-content-between">
-                                <Col xs={5} className="text-gray">
+                                <Col xs={7} className="text-gray">
                                     Số ghế đã chọn: 
                                 </Col>
-                                <Col xs={7} className="text-end text-black">
+                                <Col className="text-end text-black">
                                     {selectedSeatCount}
-                                </Col>
+                                </Col>  
                             </Row>
                             <Row className="mt-2 d-flex justify-content-between">
-                                <Col xs={5} className="text-gray">
+                                <Col xs={4} className="text-gray">
                                     Số ghế:
                                 </Col>
-                                <Col xs={7} className="text-end text-black">
+                                <Col className="text-end text-black">
                                     {selectedSeatCount > 0
                                         ? selectedSeatIds.slice().reverse().join(", ") // Đảo ngược mảng và nối chuỗi
                                         : <div>--</div>}
@@ -181,13 +228,12 @@ function DatGhe({ handleDisplay }) {
                             <h5 className="my-3 ">Thông tin giá</h5>
                             <div className="mt-2 d-flex justify-content-between">
                                 <h5 className="text-end text-black p-2">
-                                    190.000đ
+                                    {tongTien} VNĐ
                                 </h5>
                                 <Button variant="" onClick={handleExternalSubmit}>
                                         Thanh toán
                                 </Button>
                             </div>
-
                         </Row>
                     </Col>
                 </Row>
