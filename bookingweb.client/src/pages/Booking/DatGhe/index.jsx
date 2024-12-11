@@ -1,6 +1,7 @@
 ﻿import { Container, Row, Col, Alert, Button } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import './datghe.css';
+import { createOrder } from '@/apis';
 import { useSelector } from 'react-redux';
 import RenderSeats from './renderSeats';
 import { useNavigate } from 'react-router-dom';
@@ -34,11 +35,11 @@ function DatGhe({ handleDisplay }) {
     // Xử lý khi nhấn nút trong div khác
     const handleExternalSubmit = (e) => {
         e.preventDefault();
-        const { hoTen, email, phone } = userData.userInfo;
+        const { hoTen, email, phone } = userData.userInfo.userInfo;
         if (!hoTen || !phone || !email) {
-            alert("Biểu mẫu không hợp lệ!");
+            alert("Vui lòng cập nhật thông tin cá nhân trước khi thanh toán!");
         } else {
-            alert("Biểu mẫu hợp lệ!");
+            createOrder(orderData);
             navigate("/thanh-toan");
         }
 
@@ -72,6 +73,13 @@ function DatGhe({ handleDisplay }) {
     };
 
     const selectedSeatIds = Object.keys(selectedSeats).filter(seatId => selectedSeats[seatId]);
+
+    const orderData = {
+        idUser: userData.userInfo.userInfo.$id,
+        ngayLap: ngayXuatBen,
+        tongTien: tongTien,
+        trangThai: false,
+    }
 
     return (
         <>
@@ -115,7 +123,7 @@ function DatGhe({ handleDisplay }) {
                                     <h5  className=" ">Thông tin khách hàng</h5>
                                 </Col>
                                 <Col>
-                                    <a href={userData.userInfo.$id ? "/thong-tin-ca-nhan" : "/dang-nhap"}>{userData.userInfo.$id ? "Cập nhật" : "Đăng nhập"}</a>
+                                    <a href={userData.userInfo.$id ? "/thong-tin-ca-nhan" : "/dang-nhap"}>{userData.userInfo.userInfo.$id ? "Cập nhật" : "Đăng nhập"}</a>
                                 </Col>
                             </Row>
                             <Row className="d-flex justify-content-between">
@@ -123,7 +131,7 @@ function DatGhe({ handleDisplay }) {
                                     Họ và tên:  
                                 </Col>
                                 <Col className="text-end text-black">
-                                    {userData.userInfo.hoTen ? userData.userInfo.hoTen : "--"}
+                                    {userData.userInfo.hoTen ? userData.userInfo.userInfo.hoTen : "--"}
                                 </Col>
                             </Row>
                             <Row className="mt-2 d-flex justify-content-between">
@@ -131,7 +139,7 @@ function DatGhe({ handleDisplay }) {
                                     Số điện thoại:
                                 </Col>
                                 <Col className="text-end text-black">
-                                    {userData.userInfo.phone ? userData.userInfo.phone : "--"}
+                                    {userData.userInfo.phone ? userData.userInfo.userInfo.phone : "--"}
                                 </Col>
                             </Row>
                             <Row className="mt-2 d-flex justify-content-between">
@@ -139,7 +147,7 @@ function DatGhe({ handleDisplay }) {
                                     Email:
                                 </Col>
                                 <Col className="text-end text-black">
-                                    {userData.userInfo.email ? userData.userInfo.email: "--"}
+                                    {userData.userInfo.email ? userData.userInfo.userInfo.email: "--"}
                                 </Col>
                             </Row>
                         </Row>

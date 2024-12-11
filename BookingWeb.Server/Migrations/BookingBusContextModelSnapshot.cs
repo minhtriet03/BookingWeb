@@ -166,7 +166,7 @@ namespace BookingWeb.Server.Migrations
                         .HasColumnType("nvarchar(15)")
                         .HasDefaultValueSql("(NULL)");
 
-                    b.Property<bool>("TrangThai")
+                    b.Property<bool?>("TrangThai")
                         .HasColumnType("bit");
 
                     b.HasKey("IdUser")
@@ -400,7 +400,8 @@ namespace BookingWeb.Server.Migrations
 
                     b.Property<string>("ViTriGhe")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ViTriGhe");
 
                     b.HasKey("IdVe")
                         .HasName("PK__vexe__8B63A19CBA40D288");

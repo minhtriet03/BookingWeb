@@ -38,9 +38,8 @@ public partial class BookingBusContext : DbContext
     public virtual DbSet<Vexe> Vexes { get; set; }
 
 
-
     public virtual DbSet<Xe> Xes { get; set; }
-    
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Benxe>(entity =>
@@ -258,8 +257,9 @@ public partial class BookingBusContext : DbContext
             entity.ToTable("vexe");
 
             entity.Property(e => e.IdVe).HasColumnName("ID_Ve");
+            entity.Property(e => e.ViTriGhe).HasColumnName("ViTriGhe");
+            entity.Property(e => e.IdChuyenXe).HasColumnName("ID_ChuyenXe");
             entity.Property(e => e.IdPhieu).HasColumnName("ID_Phieu");
-            entity.Property(e => e.IdViTriGhe).HasColumnName("ID_ViTriGhe");
 
             entity.HasOne(d => d.IdChuyenXeNavigation).WithMany(p => p.Vexes)
                 .HasForeignKey(d => d.IdChuyenXe)
@@ -268,9 +268,11 @@ public partial class BookingBusContext : DbContext
 
             entity.HasOne(d => d.IdPhieuNavigation).WithMany(p => p.Vexes)
                 .HasForeignKey(d => d.IdPhieu)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_vexe_phieudat");
+
         });
-                .HasColumnName("ViTri");
-        });
+
 
         modelBuilder.Entity<Xe>(entity =>
         {

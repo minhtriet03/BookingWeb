@@ -70,16 +70,11 @@ public class OrderService
         return orderVMs;
     }
 
-    public async Task<bool> AddOrderAsync(int userId
-            ,decimal giaTien
-            , decimal soLuong
-            , Phieudat order
+    public async Task<bool> AddOrderAsync(Phieudat order
         )
     {
         try
         {
-            order.IdUser = userId;
-            order.TongTien = giaTien * soLuong;
             order.TrangThai = false;
             
             await _unitOfWork.orderRepository.AddAsync(order);
