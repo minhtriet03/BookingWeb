@@ -21,14 +21,14 @@ namespace BookingWeb.Server.Controllers
         }
          
         [HttpGet("user={id}")]
-        public async Task<ActionResult<List<VexeVM>>> GetVeXeByPhieu(int id) {
+        public async Task<ActionResult<List<vxVM>>> GetVeXeByPhieu(int id) {
             var phieus = await _orderService.GetByIdUser(id);
             if (phieus == null || !phieus.Any())
             {
                 return NotFound("Không tìm thấy phiếu nào cho người dùng này.");
             }
 
-            var vexeVMs = new List<VexeVM>();
+            var vexeVMs = new List<vxVM>();
 
             foreach (var phieu in phieus)
             {
@@ -42,20 +42,23 @@ namespace BookingWeb.Server.Controllers
 
                     if (tuyenduong == null) continue;
 
-                    // Lấy thông tin Bến xe nơi khởi hành và nơi đến
                     var noiKhoiHanh = tuyenduong.NoiKhoiHanhNavigation?.TenBenXe ?? "Không xác định";
+                    Console.WriteLine(noiKhoiHanh);
                     var noiDen = tuyenduong.NoiDenNavigation?.TenBenXe ?? "Không xác định";
-
+                    Console.WriteLine(noiDen);
                     var diaDiem = $"{noiKhoiHanh} - {noiDen}";
 
-                    // Tạo ViewModel VexeVM với thông tin
-                    var vexeVm = new VexeVM
+                
+                    var xe = v.IdChuyenXeNavigation?.IdXeNavigation?.BienSo ?? "Không xác định";
+
+                    var vexeVm = new vxVM
                     {
                         IdVe = v.IdVe,
-                        IdPhieu = v.IdPhieu,
-                        IdViTriGhe = v.IdViTriGhe,
+                        IdPhieu = v.IdPhieu.HasValue ? v.IdPhieu.Value : throw new Exception("IdPhieu is null"),
+                        ViTriGhe = v.ViTriGhe,
                         GiaVe = tuyenduong.GiaVe,
-                        tuyenduong = diaDiem, // Hiển thị thông tin bến xe
+                        tuyenduong = diaDiem,
+                        Xe = xe,
                         NgayKhoiHanh = v.NgayKhoiHanh,
                         TrangThai = v.TrangThai
                     };
@@ -96,6 +99,21 @@ namespace BookingWeb.Server.Controllers
 
             }
         }
+        
+        [HttpGet("Date")]
+        public async Task<ActionResult<List<VeXeVM>>> GetByDate(string startDate, string endDate)
+        {
+            try
+            {
+                var data = await _vexeService.GetByDate(startDate, endDate);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        
         [HttpPost]
         public async Task<ActionResult<bool>> addVexe(Vexe vexe)
         {

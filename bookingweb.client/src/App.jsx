@@ -41,7 +41,7 @@ function App() {
         return (
             <div className="d-flex justify-content-center align-items-center vh-100">
                 <Spinner animation="border" variant="warning" className="spinner-border-lg" />
-                <div>Loading...</div>
+                <div className="ml-2 font-weight-bold h5">Loading...</div>
             </div>
         );
     }

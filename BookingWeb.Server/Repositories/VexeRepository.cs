@@ -20,16 +20,25 @@ namespace BookingWeb.Server.Repositories
 
         public async Task<List<Vexe>> GetByIdPhieuAsync(int idPhieu)
         {
-            return await _dbContext.Vexes
-             .Include(v => v.IdChuyenXeNavigation) // Include Chuyenxe
-                 .ThenInclude(cx => cx.IdTuyenDuongNavigation) // Include Tuyenduong
-                     .ThenInclude(td => td.NoiKhoiHanhNavigation) // Include NoiKhoiHanh (Bến xe nơi khởi hành)
-             .Include(v => v.IdChuyenXeNavigation)
-                 .ThenInclude(cx => cx.IdTuyenDuongNavigation) // Include Tuyenduong
-                     .ThenInclude(td => td.NoiDenNavigation) // Include NoiDen (Bến xe nơi đến)
-             .Where(v => v.IdPhieu == idPhieu)
-             .ToListAsync();
-        } 
+            var vexeList = await _dbContext.Vexes
+                .Where(v => v.IdPhieu == idPhieu)
+                .Include(v => v.IdChuyenXeNavigation)
+                    .ThenInclude(c => c.IdTuyenDuongNavigation)
+                        .ThenInclude(t => t.NoiKhoiHanhNavigation)
+                    .Include(v => v.IdChuyenXeNavigation)
+                        .ThenInclude(c => c.IdTuyenDuongNavigation)
+                        .ThenInclude(t => t.NoiDenNavigation)
+                    .Include(v => v.IdChuyenXeNavigation)
+                        .ThenInclude(c => c.IdXeNavigation)
+                .ToListAsync();
+
+            return vexeList;
+        }
+
+        //public async Task CreateTickketByChuyen(int idChuyen)
+        //{
+
+        //}
 
         public async Task<List<Vexe>> GetByPageAsync(int pageNumber, int pageSize)
         {
@@ -72,7 +81,6 @@ namespace BookingWeb.Server.Repositories
                 throw;
             }
         }
-        
       
         public async Task<bool> deleteVexe(int id)
         {
@@ -92,5 +100,6 @@ namespace BookingWeb.Server.Repositories
                 return false;
             }
         }
+      
     }
 }

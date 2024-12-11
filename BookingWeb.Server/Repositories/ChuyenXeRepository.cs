@@ -1,6 +1,7 @@
 ﻿using BookingWeb.Server.Dto;
 using BookingWeb.Server.Interfaces;
 using BookingWeb.Server.Models;
+using BookingWeb.Server.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookingWeb.Server.Repositories
@@ -23,23 +24,61 @@ namespace BookingWeb.Server.Repositories
                     .ThenInclude(nd => nd.IdTinhThanhNavigation) // Nạp thông tin Tỉnh Thành (Nơi Đến)
                 .ToListAsync();
         }
-        
+
         public async Task<List<Chuyenxe>> GetPagedAsync(int skip, int take)
         {
             return await _dbContext.Chuyenxes
                 .Include(cx => cx.IdXeNavigation) // Nạp thông tin Xe
-                    .ThenInclude(x => x.IdLoaiNavigation) // Nạp thông tin Loại Xe
+                .ThenInclude(x => x.IdLoaiNavigation) // Nạp thông tin Loại Xe
                 .Include(cx => cx.IdTuyenDuongNavigation) // Nạp thông tin Tuyến Đường
-                    .ThenInclude(td => td.NoiKhoiHanhNavigation) // Nạp thông tin Nơi Khởi Hành
-                        .ThenInclude(nkh => nkh.IdTinhThanhNavigation) // Nạp thông tin Tỉnh Thành (Nơi Khởi Hành)
+                .ThenInclude(td => td.NoiKhoiHanhNavigation) // Nạp thông tin Nơi Khởi Hành
+                .ThenInclude(nkh => nkh.IdTinhThanhNavigation) // Nạp thông tin Tỉnh Thành (Nơi Khởi Hành)
                 .Include(cx => cx.IdTuyenDuongNavigation.NoiDenNavigation) // Nạp thông tin Nơi Đến
-                    .ThenInclude(nd => nd.IdTinhThanhNavigation) // Nạp thông tin Tỉnh Thành (Nơi Đến)
+                .ThenInclude(nd => nd.IdTinhThanhNavigation) // Nạp thông tin Tỉnh Thành (Nơi Đến)
                 .Skip(skip)
                 .Take(take)
                 .ToListAsync();
         }
 
-        public async Task<List<ChuyenxeDetailDto>> GetChuyenXeTheoTenTinhAsync(string tenTinhKhoiHanh, string tenTinhDen, DateOnly date)
+        public async Task<List<Chuyenxe>> GetChuyenXeByTime(string timeStart, string timeEnd, int IdTuyenDuong)
+            {
+
+                if (string.Compare(timeStart, timeEnd) >= 0)
+                {
+                    var data = await _dbContext.Chuyenxes
+                        .Where(cx => cx.IdTuyenDuong == IdTuyenDuong &&
+                                     (string.Compare(cx.ThoiGianKh, timeStart) >= 0 && string.Compare(cx.ThoiGianKh, timeEnd) <= 0) ||
+                                     (string.Compare(cx.ThoiGianKh, timeStart) >= 0 && string.Compare(cx.ThoiGianKh, timeEnd) >= 0) ||
+                                     (string.Compare(cx.ThoiGianDen, timeStart) >= 0 && string.Compare(cx.ThoiGianDen, timeEnd) <= 0) ||
+                                     (string.Compare(cx.ThoiGianKh, timeStart) <= 0 && string.Compare(cx.ThoiGianDen, timeEnd) >= 0)
+
+                        )
+                        .Include(cx => cx.IdXeNavigation)
+                        .Include(cx => cx.IdTuyenDuongNavigation)
+                        .ToListAsync();
+
+                    return data;
+                }
+                else
+                {
+                    var data = await _dbContext.Chuyenxes
+                        .Where(cx => cx.IdTuyenDuong == IdTuyenDuong &&
+                                     (string.Compare(cx.ThoiGianKh, timeStart) >= 0 && string.Compare(cx.ThoiGianKh, timeEnd) <= 0) ||
+                                     (string.Compare(cx.ThoiGianDen, timeStart) >= 0 && string.Compare(cx.ThoiGianDen, timeEnd) <= 0) ||
+                                     (string.Compare(cx.ThoiGianKh, timeStart) <= 0 && string.Compare(cx.ThoiGianDen, timeEnd) >= 0)
+
+                        )
+                        .Include(cx => cx.IdXeNavigation)
+                        .Include(cx => cx.IdTuyenDuongNavigation)
+                        .ToListAsync();
+                    return data;
+
+                }
+                return null;
+            }
+
+
+            public async Task<List<ChuyenxeDetailDto>> GetChuyenXeTheoTenTinhAsync(string tenTinhKhoiHanh, string tenTinhDen, DateOnly date)
         {
             var chuyenXeList = await _dbContext.Chuyenxes
          .Include(cx => cx.IdTuyenDuongNavigation)
@@ -72,7 +111,7 @@ namespace BookingWeb.Server.Repositories
             }).ToList();
         }
 
-        private string GetFormattedDuration(string startTimeString, string endTimeString)
+        public string GetFormattedDuration(string startTimeString, string endTimeString)
         {
             if (DateTime.TryParse(startTimeString, out var startTime) &&
                 DateTime.TryParse(endTimeString, out var endTime))
@@ -90,7 +129,9 @@ namespace BookingWeb.Server.Repositories
                 else
                 return $"{(int)duration.TotalHours} giờ {duration.Minutes} phút";
             }
-            return "Không hợp lệ";
-        }
+            return null;
+          }
+
     }
 }
+

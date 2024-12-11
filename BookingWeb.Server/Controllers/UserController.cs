@@ -86,7 +86,7 @@ namespace BookingWeb.Server.Controllers
         public async Task<IActionResult> UpdateUser([FromBody] Nguoidung user)
         {
             try
-            {
+            {              
                 var result = await _userService.UpdateUserAsync(user);
                 Console.WriteLine(user.IdUser);
                 Console.WriteLine(user.HoTen);

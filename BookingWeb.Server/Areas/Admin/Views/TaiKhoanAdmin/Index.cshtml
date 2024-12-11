@@ -1,0 +1,62 @@
+﻿@model BookingWeb.Server.ViewModels.PagedList<BookingWeb.Server.ViewModels.TaiKhoanVM>
+
+@{
+ViewData["Title"] = "Phiếu đặt";
+var currentDate = DateTime.Now.ToString("yyyy-MM-dd");
+var startDateDefault = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
+}
+<h1 class="h3 mb-2 text-gray-800">Quản lý tài khoản</h1>
+@Html.Partial("./../Shared/Alert.cshtml")
+
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive">   @*style="max-height: 400px; overflow-y: auto;"*@
+            <table class="table table-bordered table-fixed" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>UserName</th>
+                    <th>Trạng thái</th>
+                    <th>Hành dộng</th>
+                </tr>
+                </thead>
+                <tbody id="idTable" >
+                @foreach (var tk in Model.Items)
+                {
+                    <tr>
+                        <td >@tk.IdAccount</td>
+                        <td >@tk.UserName</td>
+                        <td>@(tk.TrangThai == true ? "Hoạt động" : "Đã khóa")</td>
+                        <td>
+                            <a href="@Url.Action("Detail", "TaiKhoanAdmin", new { id =@tk.IdAccount })" class="btn btn-info">Chi tiết</a>
+                            @if (@tk.TrangThai == true)
+                            {
+                                <a type="submit" class="btn btn-danger" onclick="confirmDeactivate(@tk.IdAccount)">Khóa</a>
+                            }
+                            else if (@tk.TrangThai == false)
+                            {
+                                <a type="submit" class="btn btn-success" onclick="confirmDeactivate(@tk.IdAccount)">Mở khóa</a>
+                            }
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+            <nav class="d-flex justify-content-between">
+                <ul class="pagination">
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("Index", new { pageNumber = i })">@i</a>
+                        </li>
+                    }
+                </ul>
+                <div>
+                    <a class="btn btn-success" id="btnThemMoiTuyenDuong" data-bs-toggle="modal" data-bs-target="#addChuyenXe">Thêm mới</a>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/admin/taiKhoan.js"></script>

@@ -33,6 +33,42 @@ public class OrderService
         
         return orderVMs;
     }
+    
+    public async Task<List<OrderVM>> GetByDate(string startDate, string endDate)
+    {
+        if (!DateTime.TryParse(startDate, out DateTime startParsedDate))
+        {
+            throw new ArgumentException("Ngày bắt đầu không hợp lệ", nameof(startDate));
+        }
+
+        if (!DateTime.TryParse(endDate, out DateTime endParsedDate))
+        {
+            throw new ArgumentException("Ngày kết thúc không hợp lệ", nameof(endDate));
+        }
+        
+        var startDateOnly = DateOnly.FromDateTime(startParsedDate);
+        var endDateOnly = DateOnly.FromDateTime(endParsedDate);
+
+        var data = await _unitOfWork.orderRepository.GetByConditionAsync(order =>
+            order.NgayLap >= startDateOnly && order.NgayLap <= endDateOnly);
+        
+        var orderVMs = data.Select(order => new OrderVM
+        {
+            IdPhieu = order.IdPhieu,
+            IdUser = order.IdUser,
+            NgayLap = order.NgayLap,
+            TongTien = order.TongTien,
+            TrangThai = order.TrangThai,
+            UserVM = order.IdUserNavigation == null ? null : new UserVM
+            {
+                HoTen = order.IdUserNavigation.HoTen,
+                Email = order.IdUserNavigation.Email,
+                Phone = order.IdUserNavigation.Phone
+            }
+        }).ToList();
+
+        return orderVMs;
+    }
 
     public async Task<List<OrderVM>> GetByIdUser(int id)
     {
