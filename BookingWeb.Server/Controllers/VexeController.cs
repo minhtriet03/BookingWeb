@@ -51,6 +51,11 @@ namespace BookingWeb.Server.Controllers
         {
             try
             {
+                
+                Console.WriteLine("Start date: " + startDate);
+                Console.WriteLine("End date: " + endDate);
+                
+                
                 var data = await _vexeService.GetByDate(startDate, endDate);
                 return Ok(data);
             }

@@ -30,6 +30,22 @@ namespace BookingWeb.Server.Repositories
                 .Take(pageSize)
                 .ToListAsync();
         }
+        public async Task<List<Vexe>> GetByDateAsync(DateOnly startDate, DateOnly endDate)
+        {
+            var data = await _dbContext.Vexes
+                .Where(vx => vx.NgayKhoiHanh >= startDate && vx.NgayKhoiHanh <= endDate)
+                .Include(vx => vx.IdChuyenXeNavigation)
+                    .ThenInclude(cx => cx.IdTuyenDuongNavigation)
+                        .ThenInclude(td => td.NoiDenNavigation)
+                            .ThenInclude(bx => bx.IdTinhThanhNavigation)
+                .Include(vx => vx.IdChuyenXeNavigation)
+                    .ThenInclude(cx => cx.IdTuyenDuongNavigation)
+                        .ThenInclude(td => td.NoiKhoiHanhNavigation)
+                            .ThenInclude(bx => bx.IdTinhThanhNavigation)
+                .ToListAsync();
+            
+            return data;
+        }
 
 
         public async Task<Vexe> GetByIdAsync(int id)
