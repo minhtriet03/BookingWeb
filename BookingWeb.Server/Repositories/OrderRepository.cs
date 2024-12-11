@@ -9,6 +9,7 @@ public class OrderRepository : GenericRepository<Phieudat>, IOrderRepository
 {
     public OrderRepository(BookingBusContext dbContext) : base(dbContext)
     {
+        
     }
     public async Task<List<Phieudat>> GetByIdUser(int id)
     {

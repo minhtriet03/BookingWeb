@@ -21,7 +21,24 @@ public class ChuyenXeAdminController : Controller
     }
     
     [HttpGet]
-    public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 5)
+    public async Task<IActionResult> Index()
+    {
+        var viewModel = await _chuyenXeService.GetAllChuyenXeVM();
+        var xeList = await _xeService.GetTrangThaiByConditionAsync();
+        var tuyenDuongList = await _tuyenDuong.GetAllTuyenDuongAsync();
+
+        ViewBag.XeList = xeList;    
+        ViewBag.TuyenDuongList = tuyenDuongList;
+
+        if(viewModel == null)
+        {
+            return BadRequest("Không tìm thấy");
+        }
+        return View(viewModel);
+    }
+    
+    /*[HttpGet]
+    public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 7)
     {
         var viewModel = await _chuyenXeService.GetByPageAsync(pageNumber, pageSize);
         var xeList = await _xeService.GetTrangThaiByConditionAsync();
@@ -35,7 +52,7 @@ public class ChuyenXeAdminController : Controller
             return BadRequest("Không tìm thấy");
         }
         return View(viewModel);
-    }
+    }*/
 
     [HttpGet]
     [Route("Detail")]
@@ -83,14 +100,6 @@ public class ChuyenXeAdminController : Controller
         Console.WriteLine("ThoiGianDen: " + model.ThoiGianDen);
         Console.WriteLine("Trang Thái: " + model.TrangThai);
         Console.WriteLine("==============================");
-        
-        /*if (!ModelState.IsValid)
-        {
-            TempData["AlertMessage"] = "Dữ liệu không hợp lệ";
-            TempData["AlertType"] = "warning";
-            return RedirectToAction("Index");
-        }*/
-
         try
         {
             if (model.TuyenDuongVM == null || model.XeVM == null)
@@ -112,6 +121,7 @@ public class ChuyenXeAdminController : Controller
                 TrangThai = model.TrangThai,
                 IdXe = model.XeVM.IdXe,
                 IdTuyenDuong = model.TuyenDuongVM.IdTuyenDuong,
+                NgayKhoiHanh = model.NgayKhoiHanh
             };
 
             var result = await _chuyenXeService.UpdateChuyenXe(data);
@@ -151,17 +161,6 @@ public class ChuyenXeAdminController : Controller
         Console.WriteLine("==============================");
         
         
-            
-        
-        /*
-        if (!ModelState.IsValid)
-        {
-            TempData["AlertMessage"] = "Dữ liệu không hợp lệ";
-            TempData["AlertType"] = "warning";
-            return RedirectToAction("Index");
-        }
-        */
-
         try
         {
             if (model.TuyenDuongVM == null || model.XeVM == null)
@@ -178,6 +177,7 @@ public class ChuyenXeAdminController : Controller
                 TrangThai = true,
                 IdXe = model.XeVM.IdXe,
                 IdTuyenDuong = model.TuyenDuongVM.IdTuyenDuong,
+                NgayKhoiHanh = model.NgayKhoiHanh
             };
 
             var result = await _chuyenXeService.AddChuyenXe(data);
@@ -194,6 +194,30 @@ public class ChuyenXeAdminController : Controller
         {
             Console.WriteLine($"Lỗi: {ex.Message}");
             TempData["AlertMessage"] = "Có lỗi xảy ra khi thêm loại xe. Vui lòng thử lại.";
+            TempData["AlertType"] = "danger";
+            return RedirectToAction("Index");
+        }
+    }
+    
+    [HttpPost("DeactivateAsync")]
+    public async Task<IActionResult> DeactivateAsync([FromQuery] int id)
+    {
+        try
+        {
+            var result = await _chuyenXeService.DeactivateChuyenXe(id);
+            if (result)
+            {
+                TempData["AlertMessage"] = "Cập nhật thành công";
+                TempData["AlertType"] = "success";
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("Index");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Lỗi: {ex.Message}");
+            TempData["AlertMessage"] = "Có lỗi xảy ra khi cập nhật loại xe. Vui lòng thử lại.";
             TempData["AlertType"] = "danger";
             return RedirectToAction("Index");
         }
