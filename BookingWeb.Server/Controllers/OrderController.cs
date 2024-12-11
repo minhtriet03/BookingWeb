@@ -9,7 +9,7 @@ namespace BookingWeb.Server.Controllers
     [Route("api/[controller]")]
     public class OrderController : ControllerBase
     {
-        private readonly OrderService _orderService;
+        private OrderService _orderService;
 
         public OrderController(OrderService orderService)
         {
@@ -45,31 +45,34 @@ namespace BookingWeb.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddOrder([FromForm] OrderVM order
-        )
+        public async Task<IActionResult> AddOrder([FromBody] Phieudat order)
         {
+            // Kiểm tra nếu đối tượng order là null
             if (order == null)
             {
-                BadRequest("Dữ liệu không hợp lệ");
+                // Trả về BadRequest nếu dữ liệu không hợp lệ
+                return BadRequest("Dữ liệu không hợp lệ");
             }
 
             try
             {
-                ////bool result = await _orderService.AddOrderAsync(order);
-                //if (result)
-                //{
-                //    return Ok("Tạo phiếu đặt thành công");
-                //}
-                //else
-                //{
-                    return StatusCode(500, "Đỏ lè đỏ loét luôn");
-                //}
+                int result = await _orderService.AddOrderAsync(order);
+
+                if (result > 0) // Kiểm tra nếu ID trả về lớn hơn 0
+                {
+                    return Ok(new { orderId = result });
+                }
+                else
+                {
+                    return StatusCode(500, "Đã xảy ra lỗi khi tạo phiếu đặt");
+                }
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500, $"Lỗi hệ thống: {ex.Message}");
             }
         }
+
 
         [HttpPut]
         public async Task<IActionResult> UpdateOrder([FromBody] Phieudat order)

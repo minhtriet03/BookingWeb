@@ -2,8 +2,6 @@
 
 function RenderSeats({ title, bookedSeats, selectedSeats, onSeatSelect }) {
 
-    // Khai báo danh sách ghế bên trong component
-    console.log("bookedSeats", bookedSeats);
     const seats = title === "Tầng dưới"
         ? [
             "A01", "00", "A02", "A03", "A04", "A05", "A06", "A07", "A08", "A09",

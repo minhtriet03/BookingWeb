@@ -2,8 +2,8 @@
 import { useState, useEffect,useMemo } from 'react';
 import './datghe.css';
 import { GetVeXeSelected } from "@/redux/actions/VeXeAction";
-import { setVeXeOrder } from "@/redux/slices/VeXeSlice";
-//import { createOrder } from '@/apis';
+import { setVeXeOrder, setIdPhieuDat } from "@/redux/slices/VeXeSlice";
+import { createPhieuDat } from '@/apis';
 import { useSelector } from 'react-redux';
 import RenderSeats from './renderSeats';
 import { useNavigate } from 'react-router-dom';
@@ -46,7 +46,7 @@ function DatGhe({ handleDisplay }) {
         handleDisplay();
     }
     // Xử lý khi nhấn nút trong div khác
-    const handleExternalSubmit = (e) => {
+    const handleExternalSubmit = async (e) => {
         e.preventDefault();
         if (selectedSeatCount === 0) {
             alert("Vui lòng chọn ghế trước khi thanh toán!");
@@ -67,7 +67,8 @@ function DatGhe({ handleDisplay }) {
                 tongTien: tongTien,
                 trangThai: false,
         }
-        //createOrder(orderData);
+        const response = await createPhieuDat(orderData);
+        dispatch(setIdPhieuDat(response.orderId));
         dispatch(setVeXeOrder(selectedSeatIds));
         navigate("/thanh-toan");
     };
