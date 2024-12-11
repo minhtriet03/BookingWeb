@@ -24,7 +24,6 @@ namespace BookingWeb.Server.Repositories
                 .ToListAsync();
         }
 
-
         public async Task<List<ChuyenxeDetailDto>> GetLichtrinhAsync(int skip, int take)
         {
             // Lấy dữ liệu từ cơ sở dữ liệu trước

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { logout } from "@/redux/actions/authAction"; 
+import { logout } from "@/redux/actions/authAction";
 import { isTokenExpired } from "@/utils/jwtHelper";
 
 
@@ -30,11 +30,11 @@ const axiosInstance = axios.create({
 //                            console.warn("Yêu cầu tới API yêu cầu xác thực nhưng không có token!");
 //                            throw new axios.Cancel("No token, access denied.");
 //                        }
-        
+
 //                        // Nếu không phải API yêu cầu xác thực, cho phép tiếp tục
 //                        return config;
 //                    }
-        
+
 //                    // Trường hợp token không hợp lệ hoặc hết hạn
 //                    if (isTokenExpired(token)) {
 //                        console.warn("Token hết hạn.");
@@ -42,7 +42,7 @@ const axiosInstance = axios.create({
 //                        window.location.href = "/login";
 //                        throw new axios.Cancel("Token expired, redirecting to login.");
 //                    }
-        
+
 
 //                config.headers.Authorization = `Bearer ${token}`;
 //                return config;
@@ -58,5 +58,3 @@ const axiosInstance = axios.create({
 //    );
 //};
 export { axiosInstance };
-
-

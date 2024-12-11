@@ -11,7 +11,6 @@ namespace BookingWeb.Server.Interfaces
 
         Task<List<Chuyenxe>> GetChuyenXeByTime(string timeStart, string timeEnd, int IdTuyenDuong);
 
-
         Task<List<ChuyenxeDetailDto>> GetChuyenXeTheoTenTinhAsync(string idTinhKhoiHanh, string idTinhDen, DateOnly date);
 
     }

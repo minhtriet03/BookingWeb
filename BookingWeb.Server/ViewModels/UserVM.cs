@@ -17,7 +17,7 @@ public class UserVM
 
 public class PagedUserVM
 {
-    public List<UserVM> Users { get; set; } = new List<UserVM>(); // Danh sách người dùng
-    public int CurrentPage { get; set; } // Trang hiện tại
-    public int TotalPages { get; set; } // Tổng số trang
+    public List<UserVM> Users { get; set; } = new List<UserVM>(); 
+    public int CurrentPage { get; set; } 
+    public int TotalPages { get; set; }
 }

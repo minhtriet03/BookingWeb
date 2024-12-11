@@ -6,6 +6,7 @@ namespace BookingWeb.Server.Interfaces
     {
         Task<bool> deleteVexe(int id);
         Task<List<Vexe>> GetByPageAsync(int skip, int take);
-
+        Task<List<Vexe>> GetByIdPhieuAsync(int id);
+        Task CreateTickketByChuyen(int idChuyen);
     }
 }
