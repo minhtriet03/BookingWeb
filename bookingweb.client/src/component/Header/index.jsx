@@ -17,9 +17,11 @@ function Header () {
 
     const handleClickLogout = async () => {
         const result = await dispatch(logout());
-        if (logout.fulfilled.match(result)) {
-            await dispatch(SetUser());
-            navigate("/dang-nhap");
+        if (result.meta.requestStatus === "fulfilled") {
+            dispatch(SetUser(null)); 
+            navigate("/dang-nhap"); 
+        } else {
+            console.error("Logout failed:", result.payload);
         }
     };
 
