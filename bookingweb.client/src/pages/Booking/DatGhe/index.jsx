@@ -1,10 +1,13 @@
 ﻿import { Container, Row, Col, Alert, Button } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
+import { useState, useEffect,useMemo } from 'react';
 import './datghe.css';
+import { GetVeXeSelected } from "@/redux/actions/VeXeAction";
+import { setVeXeOrder } from "@/redux/slices/VeXeSlice";
 import { createOrder } from '@/apis';
 import { useSelector } from 'react-redux';
 import RenderSeats from './renderSeats';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 function DatGhe({ handleDisplay }) {
 
     const legend = [
@@ -14,17 +17,27 @@ function DatGhe({ handleDisplay }) {
     ];
     const queryParams = new URLSearchParams(window.location.search);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    const userData = useSelector((state) => state.user.userInfo.userInfo);
-    const { $id, hoTen, email, phone } = userData;
+    const userRedux = useSelector((state) => state.user);
+    const userData = {
+        idUser: userRedux?.userInfo?.userInfo?.idUser,
+        hoTen: userRedux?.userInfo?.userInfo?.hoTen,
+        email: userRedux?.userInfo?.userInfo?.email,
+        phone: userRedux?.userInfo?.userInfo?.phone,
+    };
 
     const id_chuyenxe = useSelector((state) => state.chuyenxe.idcx);
+
     const chuyenXeData = useSelector((state) => state.chuyenxe);
     const chuyenXe = chuyenXeData.cxInfo.$values.find((item) => item.$id === id_chuyenxe);
 
-    const ngayXuatBen = queryParams.get("ngaydi");
+    const vexedata = useSelector((state) => state.vexe);
+    const vexeselectedList = vexedata?.vexeSelected?.$values||[];
 
-    const [bookedSeats, setBookedSeats] = useState({});
+
+    const ngayXuatBen = queryParams.get("ngaydi");
+    const [bookedSeats, setBookedSeats] = useState([]);
     const [selectedSeats, setSelectedSeats] = useState({});
     const [selectedSeatCount, setSelectedSeatCount] = useState(0);
     const [showLimitAlert, setShowLimitAlert] = useState(false);
@@ -36,26 +49,43 @@ function DatGhe({ handleDisplay }) {
     // Xử lý khi nhấn nút trong div khác
     const handleExternalSubmit = (e) => {
         e.preventDefault();
-        if (!hoTen || !phone || !email) {
+        if (selectedSeatCount === 0) {
+            alert("Vui lòng chọn ghế trước khi thanh toán!");
+            return;
+        }
+        if (!userData.idUser) {
+            alert("Vui lòng đăng nhập trước khi thanh toán!");
+            return;
+        }
+        if (!userData.hoTen || !userData.phone || !userData.email) {
             alert("Vui lòng cập nhật thông tin cá nhân trước khi thanh toán!");
-        } else {
-            if (createOrder(orderData)) {
-                navigate("/thanh-toan");
-            } else {
-                alert("Đặt vé không thành công!");
-            }
+            return;
         }
 
+        const orderData = {
+            idUser: userData.idUser,
+                ngayLap: ngayXuatBen,
+                tongTien: tongTien,
+                trangThai: false,
+        }
+        createOrder(orderData)
+        dispatch(setVeXeOrder(selectedSeatIds));
+        navigate("/thanh-toan");
     };
 
     useEffect(() => {
-        const fetchedBookedSeats = ["A01", "B03", "A06"];
-        const bookedSeatsObj = fetchedBookedSeats.reduce((acc, seatId) => {
-            acc[seatId] = true;
-            return acc;
-        }, {});
+        // Lấy vé xe đã chọn từ store
+        dispatch(GetVeXeSelected(id_chuyenxe));
+    }, [id_chuyenxe, dispatch]);
+
+    const bookedSeatsObj = useMemo(() => {
+        return vexeselectedList.map(seatId => seatId);
+    }, [vexeselectedList]);
+    
+    // Bây giờ bạn có thể an toàn cập nhật trạng thái
+    useEffect(() => {
         setBookedSeats(bookedSeatsObj);
-    }, []);
+    }, [bookedSeatsObj]);
 
     const handleSeatSelection = (seatId) => {
         if (bookedSeats[seatId]) return;
@@ -77,12 +107,7 @@ function DatGhe({ handleDisplay }) {
 
     const selectedSeatIds = Object.keys(selectedSeats).filter(seatId => selectedSeats[seatId]);
 
-    const orderData = {
-        idUser: $id,
-        ngayLap: ngayXuatBen,
-        tongTien: tongTien,
-        trangThai: false,
-    }
+
 
     return (
         <>
@@ -126,7 +151,7 @@ function DatGhe({ handleDisplay }) {
                                     <h5  className=" ">Thông tin khách hàng</h5>
                                 </Col>
                                 <Col>
-                                    <a href={$id ? "/thong-tin-ca-nhan" : "/dang-nhap"}>{$id ? "Cập nhật" : "Đăng nhập"}</a>
+                                    <a href={userData.idUser ? "/thong-tin-ca-nhan" : "/dang-nhap"}>{userData.idUser ? "Cập nhật" : "Đăng nhập"}</a>
                                 </Col>
                             </Row>
                             <Row className="d-flex justify-content-between">
@@ -134,7 +159,7 @@ function DatGhe({ handleDisplay }) {
                                     Họ và tên:  
                                 </Col>
                                 <Col className="text-end text-black">
-                                    {hoTen ? hoTen : "--"}
+                                    {userData.hoTen ? userData.hoTen : "--"}
                                 </Col>
                             </Row>
                             <Row className="mt-2 d-flex justify-content-between">
@@ -142,7 +167,7 @@ function DatGhe({ handleDisplay }) {
                                     Số điện thoại:
                                 </Col>
                                 <Col className="text-end text-black">
-                                    {phone ? phone : "--"}
+                                    {userData.phone ? userData.phone : "--"}
                                 </Col>
                             </Row>
                             <Row className="mt-2 d-flex justify-content-between">
@@ -150,7 +175,7 @@ function DatGhe({ handleDisplay }) {
                                     Email:
                                 </Col>
                                 <Col className="text-end text-black">
-                                    {email ? email: "--"}
+                                    {userData.email ? userData.email: "--"}
                                 </Col>
                             </Row>
                         </Row>

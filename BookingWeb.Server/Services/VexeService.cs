@@ -23,6 +23,10 @@ namespace BookingWeb.Server.Services
         {
             return await _unitOfWork.vexes.GetByPageAsync(page, 10);
         }
+        public async Task<List<Vexe>> getByChuyenXe(int id_chuyenxe)
+        {
+            return await _unitOfWork.vexes.GetByConditionAsync(vx => vx.IdChuyenXe == id_chuyenxe);
+        }
         public async Task<bool> addVeXe(Vexe vexe)
         {
             return await _unitOfWork.vexes.AddAsync(vexe);

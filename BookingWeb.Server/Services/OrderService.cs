@@ -20,7 +20,7 @@ public class OrderService
 
     public async Task<List<OrderVM>> GetAllOrders()
     {
-        var data= await _unitOfWork.orderRepository.GetAllAsync();
+        var data = await _unitOfWork.orderRepository.GetAllAsync();
 
         var orderVMs = data.Select(order => new OrderVM
         {
@@ -30,10 +30,10 @@ public class OrderService
             TongTien = order.TongTien,
             TrangThai = order.TrangThai
         }).ToList();
-        
+
         return orderVMs;
     }
-    
+
     public async Task<List<OrderVM>> GetByDate(string startDate, string endDate)
     {
         if (!DateTime.TryParse(startDate, out DateTime startParsedDate))
@@ -45,13 +45,13 @@ public class OrderService
         {
             throw new ArgumentException("Ngày kết thúc không hợp lệ", nameof(endDate));
         }
-        
+
         var startDateOnly = DateOnly.FromDateTime(startParsedDate);
         var endDateOnly = DateOnly.FromDateTime(endParsedDate);
 
         var data = await _unitOfWork.orderRepository.GetByConditionAsync(order =>
             order.NgayLap >= startDateOnly && order.NgayLap <= endDateOnly);
-        
+
         var orderVMs = data.Select(order => new OrderVM
         {
             IdPhieu = order.IdPhieu,
@@ -70,16 +70,20 @@ public class OrderService
         return orderVMs;
     }
 
-    public async Task<bool> AddOrderAsync(Phieudat order
-        )
+    public async Task<bool> AddOrderAsync(OrderVM order)
     {
         try
         {
-            order.TrangThai = false;
-            
-            await _unitOfWork.orderRepository.AddAsync(order);
+            Phieudat orderNew = new Phieudat
+            {
+                IdUser = order.IdUser,
+                NgayLap = order.NgayLap,
+                TongTien = order.TongTien,
+                TrangThai = order.TrangThai
+            };
+
+            await _unitOfWork.orderRepository.AddAsync(orderNew);
             await _unitOfWork.SaveChangesAsync();
-            
             return true;
         }
         catch (Exception e)
@@ -95,10 +99,10 @@ public class OrderService
             var checkIdUser = _unitOfWork.userRepository.GetByIdAsync(order.IdUser);
             if (checkIdUser == null)
                 throw new ArgumentException("Không tìm thấy người dùng có id: " + order.IdUser);
-            
+
             var resutl = await _unitOfWork.orderRepository.UpdateAsync(order);
 
-            if(resutl)
+            if (resutl)
             {
                 await _unitOfWork.SaveChangesAsync();
                 return true;

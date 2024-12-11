@@ -1,7 +1,9 @@
 ﻿import { Table, Image } from "react-bootstrap";
 
 function RenderSeats({ title, bookedSeats, selectedSeats, onSeatSelect }) {
+
     // Khai báo danh sách ghế bên trong component
+    console.log("bookedSeats", bookedSeats);
     const seats = title === "Tầng dưới"
         ? [
             "A01", "00", "A02", "A03", "A04", "A05", "A06", "A07", "A08", "A09",
@@ -35,27 +37,42 @@ function RenderSeats({ title, bookedSeats, selectedSeats, onSeatSelect }) {
                             ) : (
                                 <td
                                     key={seatId}
-                                    className={`justify-content-center align-items-center ${bookedSeats[seatId] ? 'booked' : ''}`}
+                                    className={`justify-content-center align-items-center ${bookedSeats.includes(seatId) ? 'booked' : ''}`}
                                     style={{ position: 'relative' }}
                                 >
-                                        <div className="position-relative d-flex justify-content-center align-items-center"
-                                            onClick={() => onSeatSelect(seatId)}
-                                        >
-                                            <Image
-                                                className="seatIcon"
+                                    <div className="position-relative d-flex justify-content-center align-items-center"
+                                        
+                                    >
+                                        <Image
+                                            className="seatIcon"
                                             width={40}
-                                            src={bookedSeats[seatId]
+                                            src={bookedSeats.includes(seatId)
                                                 ? "https://futabus.vn/images/icons/seat_disabled.svg"
                                                 : (selectedSeats[seatId]
                                                     ? "https://futabus.vn/images/icons/seat_selecting.svg"
                                                     : "https://futabus.vn/images/icons/seat_active.svg")
                                             }
-                                            alt="seat icon"
+                                                alt="seat icon"
+                                                onClick={(e) => {
+                                                    if (bookedSeats.includes(seatId)) {
+                                                        e.preventDefault(); // Ngừng sự kiện nếu ghế đã đặt
+                                                        return;
+                                                    }
+                                                    onSeatSelect(seatId); // Nếu ghế chưa được đặt, gọi onSeatSelect
+                                                }}
                                         />
                                         <span
-                                            className="position-absolute seatSpan"
+                                                className="position-absolute seatSpan"
+                                                onClick={(e) => {
+                                                    if (bookedSeats.includes(seatId)) {
+                                                        e.preventDefault(); // Ngừng sự kiện nếu ghế đã đặt
+                                                        return;
+                                                    }
+                                                    onSeatSelect(seatId); // Nếu ghế chưa được đặt, gọi onSeatSelect
+                                                }}
+
                                             style={{
-                                                color: bookedSeats[seatId]
+                                                color: bookedSeats.includes(seatId)
                                                     ? "#B0B0B0"
                                                     : selectedSeats[seatId]
                                                         ? "#EF5222"
@@ -71,6 +88,7 @@ function RenderSeats({ title, bookedSeats, selectedSeats, onSeatSelect }) {
                     </tr>
                 ))}
             </tbody>
+
         </Table>
     );
 }

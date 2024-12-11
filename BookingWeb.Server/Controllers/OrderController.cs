@@ -31,7 +31,8 @@ namespace BookingWeb.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddOrder(Phieudat order)
+        public async Task<IActionResult> AddOrder([FromForm] OrderVM order
+        )
         {
             if (order == null)
             {
@@ -43,7 +44,7 @@ namespace BookingWeb.Server.Controllers
                 bool result = await _orderService.AddOrderAsync(order);
                 if (result)
                 {
-                    return Ok("Đặt vé thành công");
+                    return Ok("Tạo phiếu đặt thành công");
                 }
                 else
                 {
@@ -53,6 +54,28 @@ namespace BookingWeb.Server.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateOrder([FromBody] Phieudat order)
+        {
+            try
+            {
+                bool result = await _orderService.UpdateOrderAsync(order);
+
+                if (result)
+                    return Ok("Chỉnh sửa phiếu đặt thành công");
+
+                return NotFound("Không tìm thấy thông tin phiếu đặt");
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Có lỗi xảy ra khi cập nhật");
             }
         }
 
