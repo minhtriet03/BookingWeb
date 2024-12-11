@@ -126,7 +126,6 @@ namespace BookingWeb.Server.Controllers
 
                 var result = data.Select(v => v.ViTriGhe).ToList();
 
-
                 return Ok(result);
             }
             catch (Exception ex)

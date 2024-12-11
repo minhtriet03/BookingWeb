@@ -42,3 +42,12 @@ export const getVeXeUser = async (id) => {
         throw error;
     }
 };
+
+export const createPhieuDat = async (data) => {
+    try {
+        const response = await axiosInstance.post('/api/order', data);
+        return response.data;
+    } catch (error) {
+        throw error.response?.data || error.message || "An unexpected error occurred.";
+    }
+}
