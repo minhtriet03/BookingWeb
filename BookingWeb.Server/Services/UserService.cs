@@ -169,7 +169,7 @@ public class UserService
             if (string.IsNullOrEmpty(user.Email))
                 throw new ArgumentException("Email không được để trống!");
 
-            //Kiem tra xem email co bi trung hay la khong
+           
             var existingUser = await _unitOfWork.userRepository.GetByUsername(user.Email);
             if (existingUser != null && existingUser.IdUser != user.IdUser)
             {

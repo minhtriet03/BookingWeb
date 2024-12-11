@@ -30,7 +30,7 @@ namespace BookingWeb.Server.Controllers
             if (idAccount == -1) return BadRequest();
             var user = await _userService.GetUserByIdAccount(idAccount);
             Console.WriteLine("day la user" + user);
-            return Ok(new { userInfo = user, idAccount = idAccount });
+            return Ok(new { userInfo = user,idAccount = idAccount});
         }
 
         [HttpGet]
@@ -80,30 +80,21 @@ namespace BookingWeb.Server.Controllers
                 throw;
             }
         }
-        
+
 
         [HttpPut]
         public async Task<IActionResult> UpdateUser([FromBody] Nguoidung user)
         {
             try
-            {
-                
-                //Cái này mày làm mày tự bỏ ra nha
-                /*int userId = MiddleWare.GetUserIdFromCookie(Request);*/
-
-                int userId = 6;
-                
-                user.IdUser = userId;
-                
-                Console.WriteLine(user.HoTen);
-                Console.WriteLine(user.Email);
-                Console.WriteLine(user.Phone);
-                Console.WriteLine(user.IdUser);
-                Console.WriteLine(user.IdAccount);
-                Console.WriteLine(user.TrangThai);
-                
-                
+            {              
                 var result = await _userService.UpdateUserAsync(user);
+                Console.WriteLine(user.IdUser);
+                Console.WriteLine(user.HoTen);
+                Console.WriteLine(user.Phone);
+                Console.WriteLine(user.DiaChi);
+                Console.WriteLine(user.Email);
+                Console.WriteLine(user.TrangThai);
+                Console.WriteLine(user.IdAccount);
 
                 if (result)
                     return Ok("Cập nhật thành công");
