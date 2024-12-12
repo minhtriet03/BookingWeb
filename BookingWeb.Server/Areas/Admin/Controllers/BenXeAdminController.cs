@@ -1,4 +1,5 @@
-﻿using BookingWeb.Server.Models;
+﻿using BookingWeb.Server.Filters;
+using BookingWeb.Server.Models;
 using BookingWeb.Server.Services;
 using BookingWeb.Server.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ namespace BookingWeb.Server.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("/Admin/[controller]")]
+    [AuthorizeJWT]
     public class BenXeAdminController : Controller
     {
         private readonly BenxeService _benXeService;
@@ -30,6 +32,25 @@ namespace BookingWeb.Server.Areas.Admin.Controllers
             ViewBag.TinhThanhList = tinhThanh;
             
             return View(viewModel);
+        }
+        
+        [HttpGet("Detail/{id}")]
+        public async Task<IActionResult> Detail(string id)
+        {
+            if (!int.TryParse(id, out int parsedId))
+            {
+                return BadRequest("ID không hợp lệ.");
+            }
+            
+            var tinhThanh = await _tinhThanhService.getAll();
+            ViewBag.TinhThanhList = tinhThanh;
+            var benXe = await _benXeService.GetByIdAsync(parsedId);
+            if (benXe == null)
+            {
+                return NotFound();
+            }
+
+            return View(benXe);
         }
         
         [HttpPost]
@@ -56,6 +77,50 @@ namespace BookingWeb.Server.Areas.Admin.Controllers
             TempData["AlertMessage"] = "Thêm bến xe thất bại";
             TempData["AlertType"] = "danger";
             return RedirectToAction("Index");
+        }
+        
+        [HttpPost("Edit")]
+        public async Task<IActionResult> EditLoaiXe([FromForm] BenXeVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["ErrorMessage"] = "Dữ liệu không hợp lệ. Vui lòng thử lại.";
+                return RedirectToAction("Index");
+            }
+
+            try
+            {
+                var data = new Benxe
+                {
+                    IdBenXe = model.IdBenXe,
+                    TenBenXe = model.TenBenXe,
+                    IdTinhThanh = model.IdTinhThanh,
+                    TrangThai = model.TrangThai
+                };
+
+                var result = await _benXeService.updateBenxe(data);
+
+                if (result < 0)
+                {
+                    TempData["AlertMessage"] = "Có lỗi xảy ra khi cập nhật loại xe. Vui lòng thử lại.";
+                    TempData["AlertType"] = "danger";
+
+                    return RedirectToAction("Detail");
+                }
+            
+                TempData["AlertMessage"] = "Cập nhật thành công";
+                TempData["AlertType"] = "success";
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                // Ghi log lỗi nếu cần
+                Console.WriteLine($"Lỗi khi thêm Loại Xe: {ex.Message}");
+
+                // Hiển thị thông báo l}
+                return RedirectToAction("Detail");
+            }
         }
         
         [HttpPost("Change")]

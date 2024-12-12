@@ -1,0 +1,119 @@
+﻿@model List<BookingWeb.Server.ViewModels.VeXeVM>
+
+@{
+    ViewData["Title"] = "Vé xe";
+    var currentDate = DateTime.Now.ToString("yyyy-MM-dd");
+    var startDateDefault = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
+}
+
+<style>
+    .table-container {
+        height: 550px;
+        overflow: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th {
+        background: #fff;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        text-align: left;
+        padding: 8px;
+    }
+
+    td {
+        padding: 8px;
+        border-bottom: 1px solid #eee;
+    }
+</style>
+
+<h1 class="h3 mb-2 text-gray-800">Quản lý phiếu đặt</h1>
+@Html.Partial("./../Shared/Alert.cshtml")
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+        <h6 class="m-0 font-weight-bold text-primary">Bảng dữ liệu</h6>
+        <!-- Topbar Search -->
+        <div class="input-group justify-content-end" style="width: 60%;">
+            <div class="d-flex">
+                <form asp-action="Index"  asp-controller="VeXeAdmin" method="get" class="d-flex">
+                    <input type="search" class="form-control bg-light border-0 small me-1" placeholder="Search for..." name="SearchString" aria-label="Search">
+                </form>
+            </div>
+            <div class="ml-4 mr-4">
+                <a asp-action="Index" asp-controller="VeXeAdmin">Xem tất cả</a>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-success" id="btn-them-tu-dong">Thêm tự động</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive table-container">
+            @*style="max-height: 400px; overflow-y: auto;"*@
+            <table class="table table-bordered table-fixed" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <td>ID</td>
+                    <td>Biển số xe</td>
+                    <td>Chuyến xe</td>
+                    <td>Vị trí ghế</td>
+                    <td>Giá vé</td>
+                    <td>Khoảng cách</td>
+                    <td>Trạng thái</td>
+                </tr>
+                </thead>
+                <tbody id="idTable">
+                    @foreach (var vx in Model)
+                    {
+                        <tr>
+                            <td>@vx.IdVe</td>
+                            <td>@vx.IdChuyenXeNavigation?.XeVM?.BienSo</td>
+                            <td>
+                                Từ ( @vx.IdChuyenXeNavigation?.TuyenDuongVM?.NoiKhoiHanh ) - Đến ( @vx.IdChuyenXeNavigation?.TuyenDuongVM?.NoiDen )
+                                <br>
+                                Bến xe đi ( @vx.IdChuyenXeNavigation?.TuyenDuongVM?.TenBenXeDi ) - Bến xe về ( @vx.IdChuyenXeNavigation?.TuyenDuongVM?.TenBenXeDen )
+                                <br>
+                                Từ @vx.IdChuyenXeNavigation?.ThoiGianKh - Đến @vx.IdChuyenXeNavigation?.ThoiGianDen
+                                <br>
+                                Ngày ( @vx.IdChuyenXeNavigation.NgayKhoiHanh)
+                            </td>
+                            <td>@vx.ViTriGhe</td>
+                            <td>@vx.IdChuyenXeNavigation?.TuyenDuongVM?.GiaVe</td>
+                            <td>@vx.IdChuyenXeNavigation?.TuyenDuongVM?.KhoangCach Km</td>
+                            <td>@(vx.TrangThai == true ? "Đã đặt" : "Chưa đặt")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="~/js/admin/search.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#btn-them-tu-dong").click(function () {
+
+            alert("Thêm chuyến xe tự động");
+
+            $.ajax({
+                url: '/api/Vexe/CreateVeXe',
+                type: 'POST',
+                success: function (response) {
+                    console.log(response);
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Lỗi API:', error);
+                }
+            });
+        });
+    });
+</script>
