@@ -187,7 +187,7 @@ function DatGhe({ handleDisplay }) {
                                 ))}
                             </Row>
                         </Row>
-                        {/*<Row className="mt-2 w-100 border m-auto" />*/}
+
                     </Col>
                     <Col>
                         <Row className="border bg-white rounded-4 p-3 mb-1">
