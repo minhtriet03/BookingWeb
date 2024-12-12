@@ -9,6 +9,7 @@ import RenderSeats from './renderSeats';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { axiosInstance } from '@/utils/axiosInstance';
+import { toast } from 'react-toastify';
 function DatGhe({ handleDisplay }) {
 
     const legend = [
@@ -51,16 +52,16 @@ function DatGhe({ handleDisplay }) {
     // Xử lý khi nhấn nút trong div khác
     const handleExternalSubmit = async (e) => {
         e.preventDefault();
-        if (selectedSeatCount === 0) {
-            alert("Vui lòng chọn ghế trước khi thanh toán!");
-            return;
-        }
         if (!userData.idUser) {
-            alert("Vui lòng đăng nhập trước khi thanh toán!");
+            displayToast("Vui lòng đăng nhập trước khi thanh toán!");
             return;
         }
         if (!userData.hoTen || !userData.phone || !userData.email) {
-            alert("Vui lòng cập nhật thông tin cá nhân trước khi thanh toán!");
+            displayToast("Vui lòng cập nhật thông tin cá nhân trước khi thanh toán!");
+            return;
+        }
+        if (selectedSeatCount === 0) {
+            displayToast("Vui lòng chọn ghế trước khi thanh toán!");
             return;
         }
 
@@ -140,10 +141,22 @@ function DatGhe({ handleDisplay }) {
     };
 
 
+    const displayToast = (message) => {
+        toast(message, {
+            position: "bottom-left",
+            autoClose: 1200,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    }
 
     return (
         <>
-            <button onClick={handleBack}>Quay lại</button>
+            <button className="btn btn-outline-secondary" onClick={handleBack}>Quay lại</button>
             <Container className="my-4 ">
                 <Row>
                     <Col md={7} className="border bg-white rounded-4 me-3 p-3">
@@ -174,7 +187,7 @@ function DatGhe({ handleDisplay }) {
                                 ))}
                             </Row>
                         </Row>
-                        {/*<Row className="mt-2 w-100 border m-auto" />*/}
+
                     </Col>
                     <Col>
                         <Row className="border bg-white rounded-4 p-3 mb-1">
@@ -182,8 +195,8 @@ function DatGhe({ handleDisplay }) {
                                 <Col xs={8}>
                                     <h5 className=" ">Thông tin khách hàng</h5>
                                 </Col>
-                                <Col>
-                                    <a href={userData.idUser ? "/user-info" : "/dang-nhap"}>{userData.idUser ? "Cập nhật" : "Đăng nhập"}</a>
+                                <Col className="pb-1 px-3">
+                                    <a className="mx-2" href={userData.idUser ? "/user-info" : "/dang-nhap"}>{userData.idUser ? "Cập nhật" : "Đăng nhập"}</a>
                                 </Col>
                             </Row>
                             <Row className="d-flex justify-content-between">
@@ -262,9 +275,9 @@ function DatGhe({ handleDisplay }) {
                                 <h5 className="text-end text-black p-2">
                                     {tongTien} VNĐ
                                 </h5>
-                                <Button variant="" onClick={handleExternalSubmit}>
-                                    Thanh toán
-                                </Button>
+                                <button className="btn_thanhtoan" onClick={handleExternalSubmit}>
+                                        Thanh toán
+                                </button>
                             </div>
                         </Row>
                     </Col>
