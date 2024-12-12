@@ -23,3 +23,25 @@
         margin-left: 8px;
         margin-right: 8px;
     }
+
+.btn_datghe {
+    background-color: #EA4C0F;
+    color: white;
+    border: solid 1px white;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+}
+    .btn_datghe:hover {
+        background-color: white;
+        border: solid 1px #FF6F61;
+        color: #FF6F61;
+    }
+    .btn_datghe:active {
+        background-color: white;
+        border: solid 1px #FF6F61;
+        color: #FF6F61;
+        box-shadow: 0 0 5px 0 #EA4C0F;
+    }

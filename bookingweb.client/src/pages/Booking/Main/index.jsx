@@ -166,7 +166,7 @@ function BookingMain({ handleDisplay }) {
                 </header>
 
 
-                    <Row className="mb-3" onClick={handleRoute}>
+                    <Row className="mb-3">
                         {filteredChuyenXeData.map((chuyenXe, index) => (
                             <Card
                                 key={index}
@@ -182,7 +182,7 @@ function BookingMain({ handleDisplay }) {
                                 <Card.Body>
                                     <Row className="d-flex justify-content-around" >
                                         <Col xs={7} className="d-flex align-items-center">
-                                            <h5 className="font-weight-bold">{chuyenXe.tgkh}</h5>
+                                            <h4 className="font-weight-bold">{chuyenXe.tgkh}</h4>
                                             <div className="d-flex align-items-center justify-content-center flex-grow-1 mx-3">
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -205,7 +205,7 @@ function BookingMain({ handleDisplay }) {
                                                     height={19}
                                                 />
                                             </div>
-                                            <h5 className="font-weight-bold">{chuyenXe.tgkt}</h5>
+                                            <h4 className="font-weight-bold">{chuyenXe.tgkt}</h4>
                                         </Col>
 
                                         <Col xs={4} className="mt-2 d-flex flex-column justify-content-end">
@@ -215,9 +215,10 @@ function BookingMain({ handleDisplay }) {
                                                     {30 - chuyenXe.soLuongVeDaDat} chỗ trống
                                                 </span>
                                             </div>
-                                            <span className="mt-2 text-end text-lg fw-bold text-warning">
-                                                {chuyenXe.giaVe.toLocaleString()}
+                                            <span className="mt-2 text-end text-lg fw-bold text-danger">
+                                                {chuyenXe.giaVe.toLocaleString()} VNĐ
                                             </span>
+
                                         </Col>
                                     </Row>
 
@@ -228,6 +229,9 @@ function BookingMain({ handleDisplay }) {
                                         <Col className="text-right p-0">
                                             <strong>{chuyenXe.noiDenTinhThanh}</strong>
                                         </Col>
+                                    </Row>
+                                    <Row xs={3} className="justify-content-end">
+                                        <button className="btn_datghe" onClick={handleRoute}> Đặt ghế </button>
                                     </Row>
                                 </Card.Body>
                             </Card>

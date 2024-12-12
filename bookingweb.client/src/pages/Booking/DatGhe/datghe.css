@@ -23,3 +23,24 @@
 .booked .seatSpan, .booked .seatIcon {
     cursor: not-allowed;
 }
+.btn_thanhtoan {
+    background-color: #EA4C0F;
+    color: white;
+    border: solid 1px white;
+    padding: 0px 30px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+}
+    .btn_thanhtoan:hover {
+        background-color: white;
+        border: solid 1px #FF6F61;
+        color: #FF6F61;
+    }
+    .btn_thanhtoan:active {
+        background-color: white;
+        border: solid 1px #FF6F61;
+        color: #FF6F61;
+        box-shadow: 0 0 5px 0 #EA4C0F;
+    }
