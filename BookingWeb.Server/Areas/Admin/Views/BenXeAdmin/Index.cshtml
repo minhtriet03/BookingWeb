@@ -1,25 +1,15 @@
 ﻿@model BookingWeb.Server.ViewModels.PagedList<BookingWeb.Server.ViewModels.BenXeVM>
 
 @{
-	ViewData["Title"] = "Tuyến đường";
+	ViewData["Title"] = "Bến xe";
 }
-<h1 class="h3 mb-2 text-gray-800">Quản lý tuyến đường</h1>
+<h1 class="h3 mb-2 text-gray-800">Quản lý bến xe</h1>
 @Html.Partial("./../Shared/Alert.cshtml")
 
 <div class="card shadow mb-4">
 
     <div class="card-header py-3 d-flex justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Bảng dữ liệu</h6>
-        <!-- Topbar Search -->
-        <div class="input-group w-25">
-            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                   aria-label="Search" aria-describedby="basic-addon2">
-            <div class="input-group-append">
-                <button class="btn btn-primary" type="button">
-                    <i class="fas fa-search fa-sm"></i>
-                </button>
-            </div>
-        </div>
     </div>
     
     <div class="card-body">
@@ -54,7 +44,7 @@
                 }
                 </tbody>
             </table>
-            <nav>
+            <nav class="d-flex justify-content-between">
                 <ul class="pagination">
                     @for (int i = 1; i <= Model.TotalPages; i++)
                     {
