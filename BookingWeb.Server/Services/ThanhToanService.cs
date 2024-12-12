@@ -26,5 +26,27 @@ namespace BookingWeb.Server.Services
             }
 
         }
+
+        public async Task<bool> UpdateAsync(Thanhtoan thanhtoan)
+        {
+            try
+            {
+                await _unitOfWork.thanhToanRepository.UpdateAsync(thanhtoan);
+                await _unitOfWork.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<Thanhtoan> GetByOrderIdAsync(int id)
+        {
+            List<Thanhtoan> reusult = await _unitOfWork.thanhToanRepository.GetByConditionAsync(tt => tt.IdPhieuDat == id);
+            return reusult.FirstOrDefault();
+
+        }
+
     }
 }

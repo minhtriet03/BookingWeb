@@ -167,5 +167,10 @@ namespace BookingWeb.Server.Services
 
             return result;
         }
+        public async Task<Benxe> GetByIdAsync(int id)
+        {
+            return await _unitOfWork.benXes.GetByIdAsync(id);
+        }
+
     }
 }
