@@ -5,12 +5,16 @@ const VeXeSlice = createSlice({
     name: "vexe",
     initialState: {
         vexeOrder: null,
+        idPhieuDat: null,
         vexeSelected: null, // Vé xe được chọn
     },
     reducers: {
         setVeXeOrder: (state, action) => {
             state.vexeOrder = action.payload;
         },
+        setIdPhieuDat: (state, action) => {
+            state.idPhieuDat = action.payload;
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -25,5 +29,5 @@ const VeXeSlice = createSlice({
     }
 });
 
-export const { setVeXeOrder } = VeXeSlice.actions; // Export các actions để sử dụng
+export const { setVeXeOrder, setIdPhieuDat } = VeXeSlice.actions; // Export các actions để sử dụng
 export default VeXeSlice.reducer;

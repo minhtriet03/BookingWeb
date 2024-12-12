@@ -85,29 +85,34 @@ public class OrderService
         return orderVMs;
     }
 
-    public async Task<bool> AddOrderAsync(int userId
-            ,decimal giaTien
-            , decimal soLuong
-            , Phieudat order
-        )
+    public async Task<int> AddOrderAsync(Phieudat order)
     {
         try
         {
-            Phieudat orderNew = new Phieudat
-            {
-                IdUser = order.IdUser,
-                NgayLap = order.NgayLap,
-                TongTien = order.TongTien,
-                TrangThai = order.TrangThai
-            };
-
-            await _unitOfWork.orderRepository.AddAsync(orderNew);
+            await _unitOfWork.orderRepository.AddAsync(order);
             await _unitOfWork.SaveChangesAsync();
-            return true;
+            var addedOrder = await GetPhieuDatGanNhat(order);
+            return addedOrder.IdPhieu;
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            throw new Exception(e.Message);
+            // Ném lỗi có thông tin chi tiết
+            throw new ApplicationException("Lỗi service khi thêm phiếu đặt", ex);
+        }
+    }
+
+
+    public async Task<Phieudat> GetPhieuDatGanNhat(Phieudat order)
+    {
+        try
+        {
+            var data = await _unitOfWork.orderRepository.GetByConditionAsync(
+     x => x.IdUser == order.IdUser && x.NgayLap == order.NgayLap);
+
+            return data.OrderByDescending(x => x.IdPhieu).FirstOrDefault();
+
+        } catch (Exception ex) {
+            throw new ApplicationException("Lỗi service khi lấy phiếu đặt gần nhất", ex);
         }
     }
 
@@ -154,5 +159,29 @@ public class OrderService
             throw new Exception(e.Message);
 
         }
+    }
+    
+    
+    public async Task<List<ThongKeVM>> ThongKePhieuDatTheoThang()
+    {
+        // Lấy dữ liệu từ Repository
+        var thongKe  = await _unitOfWork.orderRepository.GetAllAsync();
+
+        return thongKe
+            .GroupBy(p => new 
+            { 
+                Thang = p.NgayLap.Value.Month, 
+                Nam = p.NgayLap.Value.Year 
+            })
+            .Select(g => new ThongKeVM
+            {
+                Thang = g.Key.Thang,
+                Nam = g.Key.Nam,
+                SoLuongPhieu = g.Count(),
+                TongTien = g.Sum(p => p.TongTien ?? 0)
+            })
+            .OrderBy(tk => tk.Nam)
+            .ThenBy(tk => tk.Thang)
+            .ToList();
     }
 }

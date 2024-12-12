@@ -1,5 +1,9 @@
 ﻿@model BookingWeb.Server.Models.Chuyenxe
 
+@{
+    TempData["title"] = "Chi tiết chuyến xe";
+}
+
 <h1 class="h3 mb-2 text-gray-800">Chi Tiết Chuyến Xe</h1>
 
 <div class="card shadow mb-4">
@@ -54,6 +58,10 @@
                 <input type="time" class="form-control" id="thoiGianKT" name="ThoiGianDen" required value="@Model.ThoiGianDen">
             </div>
             <div class="form-group">
+                <label for="NgayKhoiHanh">Ngày khởi hành</label>
+                <input type="date" class="form-control" id="NgayKhoiHanh" name="NgayKhoiHanh" required value="@Model.NgayKhoiHanh.ToString("yyyy-MM-dd")">
+            </div>
+            <div class="form-group">
                 <label for="TrangThai">Trang Thái</label>
                 <input type="text" class="form-control" id="idTrangThai" name="TrangThai" required value="@Model.TrangThai.ToString()"/>
             </div>
@@ -98,7 +106,7 @@
                         const hasChuyenXe = data.some(function(item) {
                             return item.xeVM.idXe == idXeCheck; 
                         });
-                        if (hasChuyenXe) {
+                        if (hasChuyenXe && idXeCheck != @Model.IdXe) {
                             Swal.fire({
                                 icon: 'warning',
                                 title: 'Cảnh báo',

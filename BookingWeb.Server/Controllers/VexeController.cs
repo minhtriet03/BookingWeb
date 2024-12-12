@@ -102,13 +102,13 @@ namespace BookingWeb.Server.Controllers
 
             }
         }
-        
+
         [HttpGet("Date")]
-        public async Task<ActionResult<List<VeXeVM>>> GetByDate(string startDate, string endDate)
+        public async Task<ActionResult<List<VeXeVM>>> GetByDate()
         {
             try
             {
-                var data = await _vexeService.GetByDate(startDate, endDate);
+                var data = await _vexeService.GetByDate();
                 return Ok(data);
             }
             catch (Exception ex)
@@ -116,6 +116,7 @@ namespace BookingWeb.Server.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
         [HttpGet("chuyenxe/{id}")]
         public async Task<ActionResult<List<object>>> GetByChuyenXe(int id)
         {
@@ -125,7 +126,6 @@ namespace BookingWeb.Server.Controllers
 
                 var result = data.Select(v => v.ViTriGhe).ToList();
 
-
                 return Ok(result);
             }
             catch (Exception ex)
@@ -134,6 +134,7 @@ namespace BookingWeb.Server.Controllers
                 return BadRequest(new { message = "Đã xảy ra lỗi", error = ex.Message });
             }
         }
+
 
         [HttpPost]
         public async Task<ActionResult<bool>> addVexe(Vexe vexe)
@@ -160,6 +161,35 @@ namespace BookingWeb.Server.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet("GetIDChuyenXe")]
+        public async Task<IActionResult> GetIDChuyenXe()
+        {
+            try
+            {
+                var data = await _vexeService.LayIDChuyenXeChuaCoVe();
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        
+        [HttpPost("CreateVeXe")]
+        public async Task<IActionResult> TaoVeChoChuyenChuaCoVe()
+        {
+            var ketQua = await _vexeService.CreateVeXe();
+    
+            if (ketQua)
+            {
+                return Ok(ketQua);
+            }
+            else
+            {
+                return BadRequest("Có lỗi xảy ra khi tạo vé");
             }
         }
     }

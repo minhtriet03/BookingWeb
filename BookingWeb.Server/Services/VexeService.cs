@@ -30,7 +30,7 @@ namespace BookingWeb.Server.Services
         }
         public async Task<List<Vexe>> getByChuyenXe(int id_chuyenxe)
         {
-            return await _unitOfWork.vexes.GetByConditionAsync(vx => vx.IdChuyenXe == id_chuyenxe);
+            return await _unitOfWork.vexes.GetByConditionAsync(vx => vx.IdChuyenXe == id_chuyenxe && vx.IdPhieu != null);
         }
         public async Task<bool> addVeXe(Vexe vexe)
         {
@@ -40,69 +40,114 @@ namespace BookingWeb.Server.Services
         {
             return await _unitOfWork.vexes.deleteVexe(id);
         }
-        public async Task<List<VeXeVM>> GetByDate(string startDate, string endDate)
+        public async Task<List<VeXeVM>> GetByDate()
         {
-            if (!DateTime.TryParse(startDate, out DateTime startParsedDate))
+            var data = await _unitOfWork.vexes.GetByDateAsync();
+
+            if (data == null || !data.Any())
             {
-                throw new ArgumentException("Ngày bắt đầu không hợp lệ", nameof(startDate));
+                return null;
             }
 
-            if (!DateTime.TryParse(endDate, out DateTime endParsedDate))
+            var veXe = data.Select(vx => new VeXeVM
             {
-                throw new ArgumentException("Ngày kết thúc không hợp lệ", nameof(endDate));
-            }
-        
-            var startDateOnly = DateOnly.FromDateTime(startParsedDate);
-            var endDateOnly = DateOnly.FromDateTime(endParsedDate);
+                IdVe = vx.IdVe,
+                IdPhieu = vx.IdPhieu,
+                IdChuyenXe = vx.IdChuyenXe,
+                ViTriGhe = vx.ViTriGhe,
+                TrangThai = vx.TrangThai,
+                IdChuyenXeNavigation = vx.IdChuyenXeNavigation == null
+                    ? null
+                    : new ChuyenXeVM
+                    {
+                        IdChuyenXe = vx.IdChuyenXeNavigation.IdChuyenXe,
+                        ThoiGianKh = vx.IdChuyenXeNavigation?.ThoiGianKh,
+                        ThoiGianDen = vx.IdChuyenXeNavigation?.ThoiGianDen,
+                        NgayKhoiHanh = vx.IdChuyenXeNavigation.NgayKhoiHanh,
+                        TrangThai = vx.IdChuyenXeNavigation.TrangThai,
+                        XeVM = vx.IdChuyenXeNavigation.IdXeNavigation == null ?  null : new XeVM
+                        {
+                            BienSo = vx.IdChuyenXeNavigation.IdXeNavigation.BienSo,
+                            TinhTrang = vx.IdChuyenXeNavigation.IdXeNavigation.TinhTrang
+                        },
+                        TuyenDuongVM = vx.IdChuyenXeNavigation?.IdTuyenDuongNavigation == null
+                            ? null
+                            : new TuyenDuongVM
+                            {
+                                IdTuyenDuong = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.IdTuyenDuong,
+                                NoiKhoiHanh = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.NoiKhoiHanhNavigation.IdTinhThanhNavigation.TenTinhThanh,
+                                KhoangCach = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.KhoangCach,
+                                NoiDen = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.NoiDenNavigation.IdTinhThanhNavigation.TenTinhThanh,
+                                GiaVe = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.GiaVe,
+                                TenBenXeDi = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.NoiKhoiHanhNavigation.TenBenXe,
+                                TenBenXeDen = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.NoiDenNavigation.TenBenXe,
+                                TrangThai = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.TrangThai
+                            },
 
-            //var data = await _unitOfWork.vexes.GetByConditionAsync(vx =>
-            //    vx.NgayKhoiHanh >= startDateOnly && vx.NgayKhoiHanh <= endDateOnly);
-
-            var veXe = new List<VeXeVM>();
-
-            //var veXe = data.Select(vx => new VeXeVM
-            //{
-            //    IdVe = vx.IdVe,
-            //    IdPhieu = vx.IdPhieu,
-            //    IdChuyenXe = vx.IdChuyenXe,
-            //    IdViTriGhe = vx.IdViTriGhe,
-            //    NgayKhoiHanh = vx.NgayKhoiHanh,
-            //    TrangThai = vx.TrangThai,
-            //    IdViTriGheNavigation = vx.IdViTriGheNavigation == null
-            //        ? null
-            //        : new ViTriVM
-            //        {
-            //            IdViTriGhe = vx.IdViTriGheNavigation.IdViTriGhe,
-            //            ViTri = vx.IdViTriGheNavigation.ViTri1,
-            //            TrangThai = vx.IdViTriGheNavigation.TrangThai
-            //        },
-            //    IdChuyenXeNavigation = vx.IdChuyenXeNavigation == null
-            //        ? null
-            //        : new ChuyenXeVM
-            //        {
-            //            IdChuyenXe = vx.IdChuyenXeNavigation.IdChuyenXe,
-            //            ThoiGianKh = vx.IdChuyenXeNavigation.ThoiGianKh,
-            //            ThoiGianDen = vx.IdChuyenXeNavigation.ThoiGianDen,
-            //            TuyenDuongVM = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation == null
-            //                ? null
-            //                : new TuyenDuongVM
-            //                {
-            //                    IdTuyenDuong = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.IdTuyenDuong,
-            //                    NoiKhoiHanh = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.NoiKhoiHanhNavigation.IdTinhThanhNavigation.TenTinhThanh,
-            //                    KhoangCach = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.KhoangCach,
-            //                    NoiDen = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.NoiDenNavigation.IdTinhThanhNavigation.TenTinhThanh,
-            //                    GiaVe = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.GiaVe,
-            //                    TenBenXeDi = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.NoiKhoiHanhNavigation.TenBenXe,
-            //                    TenBenXeDen = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.NoiDenNavigation.TenBenXe,
-            //                    TrangThai = vx.IdChuyenXeNavigation.IdTuyenDuongNavigation.TrangThai
-            //                },
-
-            //        }
-            //}).ToList();
+                    }
+                
+            }).ToList();
 
             return veXe;
         }
+        
+        public async Task<List<int>> LayIDChuyenXeChuaCoVe()
+        {
+            var tatCaChuyenXe = await _unitOfWork.chuyenXeRepository.GetAllIDChuyenXe();
+            var chuyenXeDaCoVe = await _unitOfWork.vexes.GetAllIDChuyenXeInVeXe();
+            
+            var chuyenXeChuaCoVe = tatCaChuyenXe
+                .Except(chuyenXeDaCoVe)
+                .ToList();
+            
+            return chuyenXeChuaCoVe;
+        }
+        
+        public async Task<bool> CreateVeXe()
+        {
+            var chuyenXeChuaCoVe = await LayIDChuyenXeChuaCoVe();
+            
+            var viTriGhes = new List<string>();
+            for (int i = 1; i <= 17; i++)
+            {
+                viTriGhes.Add($"A{i}");
+            }
+            for (int i = 1; i <= 17; i++)
+            {
+                viTriGhes.Add($"B{i}");
+            }
+            var danhSachVeXe = new List<Vexe>();
+            
+            foreach (var idChuyenXe in chuyenXeChuaCoVe)
+            {
+                foreach (var viTriGhe in viTriGhes)
+                {
+                    var veXe = new Vexe
+                    {
+                        IdChuyenXe = idChuyenXe,
+                        ViTriGhe = viTriGhe,
+                        TrangThai = true
+                    };
+
+                    danhSachVeXe.Add(veXe);
+                }
+            }
+            try
+            {
+                foreach (var veXe in danhSachVeXe)
+                {
+                    await _unitOfWork.vexes.AddAsync(veXe);
+                    await _unitOfWork.SaveChangesAsync(); // Lưu từng vé một
+
+                }        
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            
+        }
+        
     }
-
-
 }

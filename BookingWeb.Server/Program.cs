@@ -83,7 +83,9 @@ builder.Services.AddScoped<UserService>();
 //Order
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IGenericRepository<Taikhoan>, GenericRepository<Taikhoan>>();
+
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IGenericRepository<Phieudat>, GenericRepository<Phieudat>>();
 builder.Services.AddScoped<OrderService>();
 
 

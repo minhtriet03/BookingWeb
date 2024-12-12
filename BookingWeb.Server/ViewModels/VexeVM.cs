@@ -4,9 +4,11 @@
     {
         public int IdVe { get; set; }
 
-        public int IdPhieu { get; set; }
+        public int? IdPhieu { get; set; }
 
         public int IdViTriGhe { get; set; }
+        
+        public string? ViTriGhe { get; set; } = null!;
 
         public int IdChuyenXe { get; set; }
 
@@ -17,7 +19,5 @@
         public  ChuyenXeVM? IdChuyenXeNavigation { get; set; } = null!;
 
         public  PhieuDatVM? IdPhieuNavigation { get; set; } = null!;
-
-        public  ViTriVM? IdViTriGheNavigation { get; set; } = null!;
     }
 }

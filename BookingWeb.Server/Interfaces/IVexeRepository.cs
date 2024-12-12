@@ -8,5 +8,8 @@ namespace BookingWeb.Server.Interfaces
         Task<List<Vexe>> GetByPageAsync(int skip, int take);
         Task<List<Vexe>> GetByIdPhieuAsync(int id);
         Task CreateTickketByChuyen(int idChuyen);
+
+        Task<List<Vexe>> GetByDateAsync();
+        Task<List<int>> GetAllIDChuyenXeInVeXe();
     }
 }

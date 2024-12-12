@@ -18,6 +18,7 @@ namespace BookingWeb.Server.Repositories
             return await _dbContext.Vexes.ToListAsync();
         }
 
+
         public async Task<List<Vexe>> GetByIdPhieuAsync(int idPhieu)
         {
             var vexeList = await _dbContext.Vexes
@@ -89,12 +90,34 @@ namespace BookingWeb.Server.Repositories
                 .Take(pageSize)
                 .ToListAsync();
         }
+        public async Task<List<Vexe>> GetByDateAsync()
+        {
+            var data = await _dbContext.Vexes
+                .AsNoTracking()
+                .Include(vx => vx.IdChuyenXeNavigation)
+                    .ThenInclude(cx => cx.IdTuyenDuongNavigation)
+                        .ThenInclude(td => td.NoiDenNavigation)
+                            .ThenInclude(bx => bx.IdTinhThanhNavigation)
+                .Include(vx => vx.IdChuyenXeNavigation)
+                    .ThenInclude(cx => cx.IdTuyenDuongNavigation)
+                        .ThenInclude(td => td.NoiKhoiHanhNavigation)
+                            .ThenInclude(bx => bx.IdTinhThanhNavigation)
+                .Include(vx => vx.IdChuyenXeNavigation)
+                .ThenInclude(cx => cx.IdXeNavigation)
+                .OrderByDescending(vx => vx.IdVe)
+
+                .ToListAsync();
+
+            return data;
+        }
+
 
 
         public async Task<Vexe> GetByIdAsync(int id)
         {
             try
             {
+
                 return await _dbContext.Vexes.FirstOrDefaultAsync(v => v.IdVe == id); 
             }
             catch
@@ -107,8 +130,8 @@ namespace BookingWeb.Server.Repositories
             try
             {
                 var data = await _dbContext.Vexes
-                .Where(v => v.TrangThai == Status)
-                .ToListAsync();
+                    .Where(v => v.TrangThai == Status)
+                    .ToListAsync();
 
                 return data;
             }
@@ -117,6 +140,8 @@ namespace BookingWeb.Server.Repositories
                 throw;
             }
         }
+
+
       
         public async Task<bool> deleteVexe(int id)
         {
@@ -136,6 +161,12 @@ namespace BookingWeb.Server.Repositories
                 return false;
             }
         }
-      
+        public async Task<List<int>> GetAllIDChuyenXeInVeXe()
+        {
+            return await _dbContext.Vexes
+                .Select(vx => vx.IdChuyenXe)
+                .Distinct()
+                .ToListAsync();
+        }
     }
 }
