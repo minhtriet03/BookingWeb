@@ -123,7 +123,7 @@ namespace BookingWeb.Server.Controllers
         {
             var taikhoan = await _accountService.getAccountByUsername(loginModel.Email);
 
-            if (taikhoan == null)
+            if (taikhoan == null || taikhoan.IdQuyen == 2)
             {
                 return NotFound("Tài khoản không tồn tại");
             }

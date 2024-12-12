@@ -1,8 +1,11 @@
-﻿using Azure.Core;
+﻿using Azure;
+using Azure.Core;
 using BookingWeb.Server.Dto;
+using BookingWeb.Server.Models;
 using BookingWeb.Server.Services;
 using BookingWeb.Server.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -11,80 +14,103 @@ using System.Text;
 public class ThanhToanController : ControllerBase
 {
     private readonly VnPayService _vnPayservice;
+    private readonly ThanhToanService _thanhtoanService;
+    private readonly OrderService _orderService;
+    private readonly VexeService _vexeService;
 
-    public ThanhToanController(VnPayService vnPayservice)
+    public ThanhToanController(VnPayService vnPayservice,ThanhToanService thanhToanService, OrderService orderService, VexeService vexeService )
     {
         _vnPayservice = vnPayservice;
+        _thanhtoanService = thanhToanService;
+        _orderService = orderService;
+        _vexeService = vexeService;
     }
 
 
     [HttpPost("create-payment")]
-    public IActionResult CreatePayment([FromBody] VnPaymentRequestModel request)
+    public async Task<IActionResult> CreatePayment([FromBody] VnPaymentRequestModel request)
     {
-        //if (request == null || request.Amount <= 0 || string.IsNullOrEmpty(request.OrderId))
-        //    return BadRequest("Invalid request");
-
-
-        //string paymentUrl = _vnPayservice.CreatePaymentUrl(500000, "ORD123456", "https://localhost:5173/payment-success");
-
-        //Console.WriteLine("Generated Payment URL: " + paymentUrl);
-        //return Ok(new { url = paymentUrl });
 
         var vnPayModel = new VnPaymentRequestModel
         {
-            Amount = 100000,
+            Amount = request.Amount,
             CreatedDate = DateTime.Now,
             Description = "hahaha",
             FullName = "hihihi",
-            OrderId = new Random().Next(1000, 100000)
+            OrderId = request.OrderId,
+            IdPhieuDat = request.IdPhieuDat,
+            idcx = request.idcx,
+            vexe = request.vexe,
         };
         string paymentUrl = _vnPayservice.CreatePaymentUrl(HttpContext, vnPayModel);
+
+        if (string.IsNullOrEmpty(paymentUrl))
+        {
+            return BadRequest("Payment failed");
+        }
+
+        var thanhToan = new Thanhtoan
+        {
+            IdPhieuDat = request.IdPhieuDat,
+            SoTien = Convert.ToDecimal(request.Amount),
+            PhuongThucTt = "VNPAY",
+            TrangThai = true
+        };
+
+
+        Console.WriteLine("Thanh toan: " + thanhToan.IdPhieuDat + " - " + thanhToan.SoTien + " - " + thanhToan.PhuongThucTt);
+
+        await _orderService.UpdateOrderStatusById(request.IdPhieuDat);
+
+        await _vexeService.setIdPhieuByVitriGheAndIdChuyenXe(request.vexe, request.idcx, request.IdPhieuDat);
+
+
+        // Lưu đối tượng vào database
+        var result = await _thanhtoanService.AddAsync(thanhToan);
+
+        Console.WriteLine("Result: " + result);
+        if (!result)
+        {
+            return BadRequest("Payment failed");
+        }
+
         return Ok(new { url = paymentUrl });
-        //return Redirect(_vnPayservice.CreatePaymentUrl(HttpContext, vnPayModel));
     }
 
     [HttpGet("callback")]
-    //public IActionResult Callback([FromQuery] IDictionary<string, string> queryParams)
-    //{
-    //    if (!queryParams.ContainsKey("9CFWQS4WMZU8Y6H1OHFZOLDUWQNNTZHA"))
-    //        return BadRequest("Invalid callback data");
-
-    //    // Kiểm tra chữ ký vnp_SecureHash
-    //    var secureHash = queryParams["vnp_SecureHash"];
-    //    queryParams.Remove("vnp_SecureHash");
-
-    //    // Tạo hash mới để xác thực
-    //    string rawData = string.Join('&', queryParams.OrderBy(k => k.Key).Select(k => $"{k.Key}={k.Value}"));
-    //    using var hmac = new HMACSHA512(Encoding.UTF8.GetBytes("9CFWQS4WMZU8Y6H1OHFZOLDUWQNNTZHA"));
-    //    string computedHash = BitConverter.ToString(hmac.ComputeHash(Encoding.UTF8.GetBytes(rawData))).Replace("-", "").ToLower();
-
-    //    if (secureHash != computedHash)
-    //        return BadRequest("Invalid secure hash");
-
-    //    // Xử lý trạng thái thanh toán
-    //    var responseCode = queryParams["vnp_ResponseCode"];
-    //    if (responseCode == "00") // Thành công
-    //    {
-    //        // Cập nhật trạng thái giao dịch trong cơ sở dữ liệu
-    //        return Ok("Payment successful");
-    //    }
-    //    else
-    //    {
-    //        return BadRequest("Payment failed");
-    //    }
-    //}
-
-    public IActionResult PaymentCallBack()
+    public async Task<IActionResult> PaymentCallBack()
     {
+        // Xử lý phản hồi từ VNPAY
         var response = _vnPayservice.PaymentExecute(Request.Query);
 
         if (response == null || response.VnPayResponseCode != "00")
         {
-          return BadRequest("Payment failed");
+            return BadRequest("Payment failed");
         }
 
+        // Lấy IdPhieuDat và Amount từ query string
+        int idPhieuDat = int.Parse(Request.Query["idPhieuDat"]);
+        decimal amount = decimal.Parse(Request.Query["amount"]);
 
-        // Lưu đơn hàng vô database
+        // Tạo đối tượng thanh toán
+        var thanhToan = new Thanhtoan
+        {
+            IdPhieuDat = idPhieuDat,
+            SoTien = amount,
+            PhuongThucTt = response.PaymentMethod,
+            TrangThai = true
+        };
+
+        Console.WriteLine("Thanh toan: " + thanhToan.IdPhieuDat + " - " + thanhToan.SoTien + " - " + thanhToan.PhuongThucTt);
+
+
+        // Lưu đối tượng vào database
+        var result = await _thanhtoanService.AddAsync(thanhToan);
+        Console.WriteLine("Result: " + result);
+        if (!result)
+        {
+            return BadRequest("Payment failed");
+        }
 
         return Ok("Payment successful");
     }

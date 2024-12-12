@@ -18,7 +18,7 @@ function Home() {
         fontFamily:'Arial'
       }}>
         <SearchForm />
-        <PromoSection />
+        <PromoSection/>
         <PopularRoutes />
       </Container>
      
