@@ -54,15 +54,15 @@ public class ThanhToanController : ControllerBase
             IdPhieuDat = request.IdPhieuDat,
             SoTien = Convert.ToDecimal(request.Amount),
             PhuongThucTt = "VNPAY",
-            TrangThai = true
+            TrangThai = false
         };
 
 
         Console.WriteLine("Thanh toan: " + thanhToan.IdPhieuDat + " - " + thanhToan.SoTien + " - " + thanhToan.PhuongThucTt);
 
-        await _orderService.UpdateOrderStatusById(request.IdPhieuDat);
+        //await _orderService.UpdateOrderStatusById(request.IdPhieuDat);
 
-        await _vexeService.setIdPhieuByVitriGheAndIdChuyenXe(request.vexe, request.idcx, request.IdPhieuDat);
+        //await _vexeService.setIdPhieuByVitriGheAndIdChuyenXe(request.vexe, request.idcx, request.IdPhieuDat);
 
 
         // Lưu đối tượng vào database
@@ -77,42 +77,68 @@ public class ThanhToanController : ControllerBase
         return Ok(new { url = paymentUrl });
     }
 
-    [HttpGet("callback")]
-    public async Task<IActionResult> PaymentCallBack()
+    //[HttpGet("callback")]
+    //public async Task<IActionResult> PaymentCallBack()
+    //{
+    //    // Xử lý phản hồi từ VNPAY
+    //    var response = _vnPayservice.PaymentExecute(Request.Query);
+
+    //    if (response == null || response.VnPayResponseCode != "00")
+    //    {
+    //        return BadRequest("Payment failed");
+    //    }
+
+    //    // Lấy IdPhieuDat và Amount từ query string
+    //    int idPhieuDat = int.Parse(Request.Query["idPhieuDat"]);
+    //    decimal amount = decimal.Parse(Request.Query["amount"]);
+
+    //    // Tạo đối tượng thanh toán
+    //    var thanhToan = new Thanhtoan
+    //    {
+    //        IdPhieuDat = idPhieuDat,
+    //        SoTien = amount,
+    //        PhuongThucTt = response.PaymentMethod,
+    //        TrangThai = true
+    //    };
+
+    //    Console.WriteLine("Thanh toan: " + thanhToan.IdPhieuDat + " - " + thanhToan.SoTien + " - " + thanhToan.PhuongThucTt);
+
+
+    //    // Lưu đối tượng vào database
+    //    var result = await _thanhtoanService.AddAsync(thanhToan);
+    //    Console.WriteLine("Result: " + result);
+    //    if (!result)
+    //    {
+    //        return BadRequest("Payment failed");
+    //    }
+
+    //    return Ok("Payment successful");
+    //}
+
+
+    [HttpPost("update-status")]
+    public async Task<IActionResult> UpdatePaymentStatus([FromBody] UpdatePaymentStatusRequest request)
     {
-        // Xử lý phản hồi từ VNPAY
-        var response = _vnPayservice.PaymentExecute(Request.Query);
-
-        if (response == null || response.VnPayResponseCode != "00")
+        try
         {
-            return BadRequest("Payment failed");
+            var thanhToan = await _thanhtoanService.GetByOrderIdAsync(request.IdPhieuDat);
+            if (thanhToan == null)
+            {
+                return NotFound("Payment not found.");
+            }
+
+            thanhToan.TrangThai = true;
+
+            await _thanhtoanService.UpdateAsync(thanhToan);
+            await _orderService.UpdateOrderStatusById(request.IdPhieuDat);
+            await _vexeService.setIdPhieuByVitriGheAndIdChuyenXe(request.vexe, request.idcx, request.IdPhieuDat);
+
+            return Ok(new { success = true });
         }
-
-        // Lấy IdPhieuDat và Amount từ query string
-        int idPhieuDat = int.Parse(Request.Query["idPhieuDat"]);
-        decimal amount = decimal.Parse(Request.Query["amount"]);
-
-        // Tạo đối tượng thanh toán
-        var thanhToan = new Thanhtoan
+        catch (Exception ex)
         {
-            IdPhieuDat = idPhieuDat,
-            SoTien = amount,
-            PhuongThucTt = response.PaymentMethod,
-            TrangThai = true
-        };
-
-        Console.WriteLine("Thanh toan: " + thanhToan.IdPhieuDat + " - " + thanhToan.SoTien + " - " + thanhToan.PhuongThucTt);
-
-
-        // Lưu đối tượng vào database
-        var result = await _thanhtoanService.AddAsync(thanhToan);
-        Console.WriteLine("Result: " + result);
-        if (!result)
-        {
-            return BadRequest("Payment failed");
+            return BadRequest(new { success = false, message = ex.Message });
         }
-
-        return Ok("Payment successful");
     }
 
 }

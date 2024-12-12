@@ -38,6 +38,12 @@ namespace BookingWeb.Server.Controllers
 
                 foreach (var v in vexes)
                 {
+
+                    if (!v.IdPhieu.HasValue)
+                    {
+                        continue; // Bỏ qua nếu không có IdPhieu
+                    }
+
                     // Lấy tuyến đường thông qua IdChuyenXeNavigation
                     var tuyenduong = v.IdChuyenXeNavigation?.IdTuyenDuongNavigation;
 
