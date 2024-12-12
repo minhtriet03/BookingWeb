@@ -1,13 +1,14 @@
 ﻿import { Container, Row, Col, Alert, Button } from 'react-bootstrap';
-import { useState, useEffect,useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import './datghe.css';
 import { GetVeXeSelected } from "@/redux/actions/VeXeAction";
 import { setVeXeOrder } from "@/redux/slices/VeXeSlice";
-import { createOrder } from '@/apis';
+//import { createOrder } from '@/apis';
 import { useSelector } from 'react-redux';
 import RenderSeats from './renderSeats';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { axiosInstance } from '@/utils/axiosInstance';
 function DatGhe({ handleDisplay }) {
 
     const legend = [
@@ -30,10 +31,10 @@ function DatGhe({ handleDisplay }) {
     const id_chuyenxe = useSelector((state) => state.chuyenxe.idcx);
 
     const chuyenXeData = useSelector((state) => state.chuyenxe);
-    const chuyenXe = chuyenXeData.cxInfo.$values.find((item) => item.$id === id_chuyenxe);
+    const chuyenXe = chuyenXeData.cxInfo.$values.find((item) => item.id === id_chuyenxe);
 
     const vexedata = useSelector((state) => state.vexe);
-    const vexeselectedList = vexedata?.vexeSelected?.$values||[];
+    const vexeselectedList = vexedata?.vexeSelected?.$values || [];
 
 
     const ngayXuatBen = queryParams.get("ngaydi");
@@ -64,13 +65,15 @@ function DatGhe({ handleDisplay }) {
 
         const orderData = {
             idUser: userData.idUser,
-                ngayLap: ngayXuatBen,
-                tongTien: tongTien,
-                trangThai: false,
+            ngayLap: ngayXuatBen,
+            tongTien: tongTien,
+            trangThai: false,
         }
-        createOrder(orderData)
+
+        //createOrder(orderData);
         dispatch(setVeXeOrder(selectedSeatIds));
-        navigate("/thanh-toan");
+
+        handlePayment();
     };
 
     useEffect(() => {
@@ -81,7 +84,7 @@ function DatGhe({ handleDisplay }) {
     const bookedSeatsObj = useMemo(() => {
         return vexeselectedList.map(seatId => seatId);
     }, [vexeselectedList]);
-    
+
     // Bây giờ bạn có thể an toàn cập nhật trạng thái
     useEffect(() => {
         setBookedSeats(bookedSeatsObj);
@@ -106,6 +109,31 @@ function DatGhe({ handleDisplay }) {
     };
 
     const selectedSeatIds = Object.keys(selectedSeats).filter(seatId => selectedSeats[seatId]);
+
+
+    const handlePayment = async () => {
+        try {
+            // Chuẩn bị dữ liệu gửi
+            const paymentData = {
+                orderId: 'ORD123456', // ID đơn hàng
+                fullName: 'John Doe', // Tên đầy đủ
+                description: 'Test Payment', // Mô tả
+                amount: tongTien, // Tổng tiền
+                createdDate: new Date().toISOString(), // Ngày giờ hiện tại
+                idPhieuDat: 1
+            };
+
+            // Gửi yêu cầu đến backend
+            const response = await axiosInstance.post('/api/thanh-toan/create-payment', paymentData);
+
+            // Kiểm tra phản hồi và điều hướng nếu thành công
+            if (response.data.url) {
+                window.location.href = response.data.url; // Chuyển hướng tới URL thanh toán
+            }
+        } catch (error) {
+            console.error('Error initiating payment:', error);
+        }
+    };
 
 
 
@@ -148,15 +176,15 @@ function DatGhe({ handleDisplay }) {
                         <Row className="border bg-white rounded-4 p-3 mb-1">
                             <Row className="d-flex justify-content-between my-3">
                                 <Col xs={8}>
-                                    <h5  className=" ">Thông tin khách hàng</h5>
+                                    <h5 className=" ">Thông tin khách hàng</h5>
                                 </Col>
                                 <Col>
-                                    <a href={userData.idUser ? "/thong-tin-ca-nhan" : "/dang-nhap"}>{userData.idUser ? "Cập nhật" : "Đăng nhập"}</a>
+                                    <a href={userData.idUser ? "/user-info" : "/dang-nhap"}>{userData.idUser ? "Cập nhật" : "Đăng nhập"}</a>
                                 </Col>
                             </Row>
                             <Row className="d-flex justify-content-between">
                                 <Col xs={7} className="text-gray">
-                                    Họ và tên:  
+                                    Họ và tên:
                                 </Col>
                                 <Col className="text-end text-black">
                                     {userData.hoTen ? userData.hoTen : "--"}
@@ -175,7 +203,7 @@ function DatGhe({ handleDisplay }) {
                                     Email:
                                 </Col>
                                 <Col className="text-end text-black">
-                                    {userData.email ? userData.email: "--"}
+                                    {userData.email ? userData.email : "--"}
                                 </Col>
                             </Row>
                         </Row>
@@ -193,17 +221,17 @@ function DatGhe({ handleDisplay }) {
                                 <Col xs={7} className="text-gray">
                                     Thời gian xuất bến:
                                 </Col>
-                                <Col  className="text-end text-black">
+                                <Col className="text-end text-black">
                                     {ngayXuatBen}
                                 </Col>
                             </Row>
                             <Row className="mt-2 d-flex justify-content-between">
                                 <Col xs={7} className="text-gray">
-                                    Số ghế đã chọn: 
+                                    Số ghế đã chọn:
                                 </Col>
                                 <Col className="text-end text-black">
                                     {selectedSeatCount}
-                                </Col>  
+                                </Col>
                             </Row>
                             <Row className="mt-2 d-flex justify-content-between">
                                 <Col xs={4} className="text-gray">
@@ -231,7 +259,7 @@ function DatGhe({ handleDisplay }) {
                                     {tongTien} VNĐ
                                 </h5>
                                 <Button variant="" onClick={handleExternalSubmit}>
-                                        Thanh toán
+                                    Thanh toán
                                 </Button>
                             </div>
                         </Row>

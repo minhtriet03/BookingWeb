@@ -116,6 +116,11 @@ builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IGenericRepository<Phanquyen>, GenericRepository<Phanquyen>>();
 builder.Services.AddScoped<RoleService>();
 
+//thanh toan
+builder.Services.AddScoped<IThanhToanRepository, ThanhToanRepository>();
+builder.Services.AddScoped<IGenericRepository<Thanhtoan>, GenericRepository<Thanhtoan>>();
+builder.Services.AddScoped<ThanhToanService>();
+
 
 // Đăng ký UnitOfWork
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

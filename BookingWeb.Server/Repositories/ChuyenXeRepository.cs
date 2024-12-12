@@ -98,12 +98,13 @@ namespace BookingWeb.Server.Repositories
 
             return chuyenXeList.Select(cx => new ChuyenxeDetailDto
             {
+                Id = cx.IdChuyenXe,
                 NoiKhoiHanhTinhThanh = cx.IdTuyenDuongNavigation.NoiKhoiHanhNavigation.TenBenXe,
                 NoiDenTinhThanh = cx.IdTuyenDuongNavigation.NoiDenNavigation.TenBenXe,
                 GiaVe = cx.IdTuyenDuongNavigation.GiaVe ?? 0, // Lấy giá vé từ Tuyenduong
                 KhoangCach = cx.IdTuyenDuongNavigation.KhoangCach ?? 0,
                 TrangThai = cx.TrangThai,
-                SoLuongVeDaDat = cx.Vexes.Count(vx => vx.IdChuyenXe == cx.IdChuyenXe),
+                SoLuongVeDaDat = cx.Vexes.Count(vx => vx.IdChuyenXe == cx.IdChuyenXe && vx.IdPhieu != null),
                 LoaiXe = cx.IdXeNavigation?.IdLoaiNavigation?.TenLoai ?? "Không xác định",
                 TongThoiGian = GetFormattedDuration(cx.ThoiGianKh, cx.ThoiGianDen),
                 TGKH = cx.ThoiGianKh,

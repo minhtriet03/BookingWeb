@@ -55,15 +55,15 @@ namespace BookingWeb.Server.Controllers
 
             try
             {
-                bool result = await _orderService.AddOrderAsync(order);
-                if (result)
-                {
-                    return Ok("Tạo phiếu đặt thành công");
-                }
-                else
-                {
+                //bool result = await _orderService.AddOrderAsync(order);
+                //if (result)
+                //{
+                //    return Ok("Tạo phiếu đặt thành công");
+                //}
+                //else
+                //{
                     return StatusCode(500, "Đỏ lè đỏ loét luôn");
-                }
+                //}
             }
             catch (Exception ex)
             {
