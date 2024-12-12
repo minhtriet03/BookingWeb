@@ -1,4 +1,5 @@
 ﻿using BookingWeb.Server.Controllers;
+using BookingWeb.Server.Filters;
 using BookingWeb.Server.Models;
 using BookingWeb.Server.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ namespace BookingWeb.Server.Areas.Admin.Controllers
 
     [Area("Admin")]
     [Route("/Admin/[controller]")]
+    [AuthorizeJWT]
     public class TaiKhoanAdminController : Controller
     {
         private readonly AccountService _accountService;

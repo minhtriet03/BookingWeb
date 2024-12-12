@@ -1,11 +1,12 @@
-import Image from 'react-bootstrap/Image';
+﻿import Image from 'react-bootstrap/Image';
 import { Carousel, Row, Col } from 'react-bootstrap';
 import './PromoSection.css'; // Ensure you have created and imported this CSS file
 
 function PromoSection() {
     return (
         <>
-            <Carousel style={{ zIndex: '-999' }}>
+            <h2 className="home-title text-green">KHUYẾN MÃI</h2>
+            <Carousel style={{ zIndex: '-999', marginBottom: '50px' }}>
                 <Carousel.Item>
                     <Row>
                         <Col xs={6} md={4}>

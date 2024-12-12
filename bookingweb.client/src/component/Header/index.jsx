@@ -15,11 +15,10 @@ function Header () {
     navigate('/dang-nhap'); 
     };
 
-
     const handleClickLogout = async () => {
         const result = await dispatch(logout());
         if (logout.fulfilled.match(result)) {
-            await dispatch(SetUser());
+            await dispatch(SetUser(null));
             navigate("/dang-nhap");
         }
     };
@@ -41,16 +40,22 @@ function Header () {
               />
             </Navbar.Brand>
 
-            <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
-              <Nav>
+                      <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
+                          <Nav className="gap-2">
                               { !isLogin ? (
-                <Button variant="outline-light" className="d-flex align-items-center" onClick={handleClick}>
+                <Button variant="outline-light" className="d-flex align-items-center mx-2" onClick={handleClick}>
                   <span className="mx-2">Đăng nhập/Đăng ký</span>
                  </Button>
-                 ) : (
+                              ) : (
+                                      <>
+                  <Button variant="outline-light" className="d-flex align-items-center" onClick={() => navigate('/user-info')}>
+                  <span className="mx-2">Thông tin người dùng</span>
+                   </Button>
                  <Button variant="outline-light" className="d-flex align-items-center" onClick={handleClickLogout}>
                   <span className="mx-2">Đăng xuất</span>
-                                  </Button>
+                  </Button>
+
+                 </>
                 )}
               </Nav>
             </Navbar.Collapse>

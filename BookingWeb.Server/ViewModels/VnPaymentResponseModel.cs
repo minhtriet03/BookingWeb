@@ -14,10 +14,16 @@
 
     public class VnPaymentRequestModel
     {
-        public int OrderId { get; set; }
+        public string OrderId { get; set; } // Đổi kiểu từ int sang string
         public string? FullName { get; set; }
         public string? Description { get; set; }
         public double Amount { get; set; }
+
+        public string[] vexe { get; set; }
+
+        public int idcx { get; set; }
+
+        public int IdPhieuDat { get; set; } 
         public DateTime CreatedDate { get; set; }
     }
 }

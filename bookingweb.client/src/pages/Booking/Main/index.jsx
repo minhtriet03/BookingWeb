@@ -177,7 +177,7 @@ function BookingMain({ handleDisplay }) {
                                     border: selectedIndex === index ? '2px solid #F2744E' : '1px solid #ddd',
                                     boxShadow: selectedIndex === index ? '0 0 10px 0 #F2744E' : 'none',
                                 }}
-                                onClick={() => handleSelected(index), handleCX(chuyenXe.$id) }
+                                onClick={() => handleSelected(index), handleCX(chuyenXe.id) }
                             >
                                 <Card.Body>
                                     <Row className="d-flex justify-content-around" >

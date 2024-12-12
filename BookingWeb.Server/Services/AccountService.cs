@@ -130,6 +130,8 @@ namespace BookingWeb.Server.Services
 
                 if (taikhoan == null) return false;
 
+                if (taikhoan.TrangThai == false) return false;
+
                 var passwordHasher = new PasswordHasher<Taikhoan>();
                 var verificationResult = passwordHasher.VerifyHashedPassword(taikhoan, taikhoan.Password, password);
 

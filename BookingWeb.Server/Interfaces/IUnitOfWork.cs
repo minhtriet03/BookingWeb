@@ -12,5 +12,7 @@ public interface IUnitOfWork : IDisposable
     IXeRepository xeRepository { get; }
     IChuyenXeRepository chuyenXeRepository { get; }
     ITuyenDuongRepository tuyenDuongRepository { get; }
+
+    IThanhToanRepository thanhToanRepository { get; }
     Task<int> SaveChangesAsync();
 }

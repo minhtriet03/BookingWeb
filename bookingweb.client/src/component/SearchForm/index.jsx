@@ -6,6 +6,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import './SearchForm.css';
 import SelectForm from './SelectForm';
 import switchIcon from '@/assets/image/switch_location.svg';
+import { addDays } from 'date-fns';
+
 
 function SearchForm() {
     const [showSelectDeparture, setShowSelectDeparture] = useState(false);
@@ -17,6 +19,9 @@ function SearchForm() {
     const [selectedDate, setSelectedDate] = useState(null);
     const [returnDate, setReturnDate] = useState(null);
     const [tripType, setTripType] = useState("oneWay"); // Default is one way
+    const today = new Date();
+    const minDate = today;
+    const maxDate = addDays(today, 7);
 
     console.log("selectedDate", selectedDate);
 
@@ -167,6 +172,9 @@ function SearchForm() {
                                         selected={selectedDate}
                                         onChange={handleSelectDate}
                                         inline
+                                        minDate={minDate}
+                                        maxDate={maxDate}
+
                                     />
                                 </div>
                             )}
