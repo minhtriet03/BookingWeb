@@ -41,8 +41,8 @@ var startDateDefault = DateTime.Now.AddDays(-3).ToString("yyyy-MM-dd");
         <!-- Topbar Search -->
         <div class="input-group " style="width: 40%;">
             <form asp-action="Index" asp-controller="PhieuDatAdmin" method="get" class="d-flex w-100">
-                <input type="date" name="startDate" class="form-control bg-light border-0 small me-2" value="@startDateDefault">
-                <input type="date" name="endDate" class="form-control bg-light border-0 small me-2" value="@currentDate">
+                <input type="date" name="startDate" class="form-control bg-light small me-2" value="@startDateDefault">
+                <input type="date" name="endDate" class="form-control bg-light small me-2" value="@currentDate">
                 <button class="btn btn-primary" type="submit">
                     <span class="material-symbols-outlined">
                         filter_alt
