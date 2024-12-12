@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@if (ViewContext.RouteData.Values["controller"].ToString() != "Login")
+{
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -110,3 +113,10 @@
 </body>
 
 </html>
+}
+else
+{
+    // Sử dụng một layout khác cho trang login
+    Layout = "_LayoutLogin";
+    @RenderBody()
+}

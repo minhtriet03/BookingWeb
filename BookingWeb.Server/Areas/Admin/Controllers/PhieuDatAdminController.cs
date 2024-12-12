@@ -1,4 +1,5 @@
-﻿using BookingWeb.Server.Services;
+﻿using BookingWeb.Server.Filters;
+using BookingWeb.Server.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookingWeb.Server.Areas.Admin.Controllers
@@ -6,6 +7,7 @@ namespace BookingWeb.Server.Areas.Admin.Controllers
     
     [Area("Admin")]
     [Route("/Admin/[controller]")]
+    [AuthorizeJWT]
     public class PhieuDatAdminController : Controller
     {
         private readonly OrderService _orderService;
