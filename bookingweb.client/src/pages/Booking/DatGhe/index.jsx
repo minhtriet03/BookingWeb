@@ -36,6 +36,8 @@ function DatGhe({ handleDisplay }) {
     const vexedata = useSelector((state) => state.vexe);
     const vexeselectedList = vexedata?.vexeSelected?.$values || [];
 
+    const vexeOrder = vexedata?.vexeOrder || [];
+
     const ngayXuatBen = queryParams.get("ngaydi");
     const [bookedSeats, setBookedSeats] = useState([]);
     const [selectedSeats, setSelectedSeats] = useState({});
@@ -72,7 +74,7 @@ function DatGhe({ handleDisplay }) {
         dispatch(setIdPhieuDat(response.orderId));
         dispatch(setVeXeOrder(selectedSeatIds));
 
-        handlePayment();
+        handlePayment(response.orderId, selectedSeatIds);
     };
 
     useEffect(() => {
@@ -110,16 +112,19 @@ function DatGhe({ handleDisplay }) {
     const selectedSeatIds = Object.keys(selectedSeats).filter(seatId => selectedSeats[seatId]);
 
 
-    const handlePayment = async () => {
+    const handlePayment = async (orderId, selectedSeatIds) => {
         try {
             // Chuẩn bị dữ liệu gửi
+            console.log("orderId", vexeOrder);
             const paymentData = {
                 orderId: 'ORD123456', // ID đơn hàng
                 fullName: 'John Doe', // Tên đầy đủ
                 description: 'Test Payment', // Mô tả
                 amount: tongTien, // Tổng tiền
                 createdDate: new Date().toISOString(), // Ngày giờ hiện tại
-                idPhieuDat: 1
+                idPhieuDat: orderId, 
+                idcx: id_chuyenxe,
+                vexe: selectedSeatIds,
             };
 
             // Gửi yêu cầu đến backend

@@ -102,7 +102,45 @@ namespace BookingWeb.Server.Services
             
             return chuyenXeChuaCoVe;
         }
-        
+
+        public async Task<bool> setIdPhieuByVitriGheAndIdChuyenXe(string[] vexe, int idcx, int idPhieuDat)
+        {
+            try
+            {
+                Console.WriteLine("ID Chuyen Xe: " + idcx);
+                Console.WriteLine("ID Phieu Dat: " + idPhieuDat);
+                Console.WriteLine("Chuỗi vexe: " + string.Join(", ", vexe));
+                var veXes = await _unitOfWork.vexes.GetByConditionAsync(vx => vx.IdChuyenXe == idcx && vexe.Contains(vx.ViTriGhe));
+                if (veXes == null || !veXes.Any())
+                {
+                    // Thêm một số kiểm tra để đảm bảo rằng dữ liệu vé xe được lưu trữ và cập nhật đúng cách
+                    var veXesInDb = await _unitOfWork.vexes.GetAllAsync();
+                    if (veXesInDb == null || !veXesInDb.Any())
+                    {
+                        throw new ArgumentException("Không tìm thấy vé xe trong cơ sở dữ liệu");
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Không tìm thấy vé xe khớp với điều kiện");
+                    }
+                }
+
+                foreach (var veXe in veXes)
+                {
+                    veXe.IdPhieu = idPhieuDat;
+                    await _unitOfWork.vexes.UpdateAsync(veXe);
+
+                }
+
+                await _unitOfWork.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public async Task<bool> CreateVeXe()
         {
             var chuyenXeChuaCoVe = await LayIDChuyenXeChuaCoVe();

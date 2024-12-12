@@ -1,4 +1,5 @@
-﻿using Azure.Core;
+﻿using Azure;
+using Azure.Core;
 using BookingWeb.Server.Dto;
 using BookingWeb.Server.Models;
 using BookingWeb.Server.Services;
@@ -14,16 +15,20 @@ public class ThanhToanController : ControllerBase
 {
     private readonly VnPayService _vnPayservice;
     private readonly ThanhToanService _thanhtoanService;
+    private readonly OrderService _orderService;
+    private readonly VexeService _vexeService;
 
-    public ThanhToanController(VnPayService vnPayservice,ThanhToanService thanhToanService )
+    public ThanhToanController(VnPayService vnPayservice,ThanhToanService thanhToanService, OrderService orderService, VexeService vexeService )
     {
         _vnPayservice = vnPayservice;
         _thanhtoanService = thanhToanService;
+        _orderService = orderService;
+        _vexeService = vexeService;
     }
 
 
     [HttpPost("create-payment")]
-    public IActionResult CreatePayment([FromBody] VnPaymentRequestModel request)
+    public async Task<IActionResult> CreatePayment([FromBody] VnPaymentRequestModel request)
     {
 
         var vnPayModel = new VnPaymentRequestModel
@@ -33,9 +38,42 @@ public class ThanhToanController : ControllerBase
             Description = "hahaha",
             FullName = "hihihi",
             OrderId = request.OrderId,
-            IdPhieuDat = request.IdPhieuDat
+            IdPhieuDat = request.IdPhieuDat,
+            idcx = request.idcx,
+            vexe = request.vexe,
         };
         string paymentUrl = _vnPayservice.CreatePaymentUrl(HttpContext, vnPayModel);
+
+        if (string.IsNullOrEmpty(paymentUrl))
+        {
+            return BadRequest("Payment failed");
+        }
+
+        var thanhToan = new Thanhtoan
+        {
+            IdPhieuDat = request.IdPhieuDat,
+            SoTien = Convert.ToDecimal(request.Amount),
+            PhuongThucTt = "VNPAY",
+            TrangThai = true
+        };
+
+
+        Console.WriteLine("Thanh toan: " + thanhToan.IdPhieuDat + " - " + thanhToan.SoTien + " - " + thanhToan.PhuongThucTt);
+
+        await _orderService.UpdateOrderStatusById(request.IdPhieuDat);
+
+        await _vexeService.setIdPhieuByVitriGheAndIdChuyenXe(request.vexe, request.idcx, request.IdPhieuDat);
+
+
+        // Lưu đối tượng vào database
+        var result = await _thanhtoanService.AddAsync(thanhToan);
+
+        Console.WriteLine("Result: " + result);
+        if (!result)
+        {
+            return BadRequest("Payment failed");
+        }
+
         return Ok(new { url = paymentUrl });
     }
 

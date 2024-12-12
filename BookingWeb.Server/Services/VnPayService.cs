@@ -26,7 +26,7 @@ namespace BookingWeb.Server.Services
             vnpay.AddRequestData("vnp_Version", _config["VnPay:Version"]);
             vnpay.AddRequestData("vnp_Command", _config["VnPay:Command"]);
             vnpay.AddRequestData("vnp_TmnCode", _config["VnPay:TmnCode"]);
-            vnpay.AddRequestData("vnp_Amount", (model.Amount * 100).ToString());
+            vnpay.AddRequestData("vnp_Amount", (model.Amount * 100).ToString()); // Nhân 100 để khớp định dạng của VNPAY
             vnpay.AddRequestData("vnp_CreateDate", model.CreatedDate.ToString("yyyyMMddHHmmss"));
             vnpay.AddRequestData("vnp_CurrCode", _config["VnPay:CurrCode"]);
             vnpay.AddRequestData("vnp_IpAddr", Utils.GetIpAddress(context));
@@ -34,16 +34,15 @@ namespace BookingWeb.Server.Services
             vnpay.AddRequestData("vnp_OrderInfo", "Thanh toán cho đơn hàng:" + model.OrderId);
             vnpay.AddRequestData("vnp_OrderType", "other");
 
-            string returnUrl = $"{_config["VnPay:PaymentBackReturnUrl"]}";
-            string callbackUrl = $"{_config["VnPay:CallbackUrl"]}?idPhieuDat={model.IdPhieuDat}&amount={model.Amount}";
+            // Truyền Amount và IdPhieuDat trong callback URL
+            string returnUrl = $"{_config["VnPay:PaymentBackReturnUrl"]}?idPhieuDat={model.IdPhieuDat}&amount={model.Amount}";
             vnpay.AddRequestData("vnp_ReturnUrl", returnUrl);
-            vnpay.AddRequestData("vnp_IpnUrl", callbackUrl);
+
             vnpay.AddRequestData("vnp_TxnRef", $"{model.OrderId}_{DateTime.Now:yyyyMMddHHmmss}");
 
             string paymentUrl = vnpay.CreateRequestUrl(_config["VnPay:BaseUrl"], _config["VnPay:HashSecret"]);
             return paymentUrl;
         }
-
 
 
         public VnPaymentResponseModel PaymentExecute(IQueryCollection collections)

@@ -19,7 +19,11 @@
         public string? Description { get; set; }
         public double Amount { get; set; }
 
-        public int? IdPhieuDat { get; set; } 
+        public string[] vexe { get; set; }
+
+        public int idcx { get; set; }
+
+        public int IdPhieuDat { get; set; } 
         public DateTime CreatedDate { get; set; }
     }
 }

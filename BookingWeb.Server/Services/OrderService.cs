@@ -116,6 +116,27 @@ public class OrderService
         }
     }
 
+    public async Task<Phieudat> UpdateOrderStatusById(int id)
+    {
+        try
+        {
+            var order = await _unitOfWork.orderRepository.GetByIdAsync(id);
+            if (order == null)
+            {
+                throw new ArgumentException("Không tìm thấy thông tin phiếu đặt");
+            }
+
+            order.TrangThai = true;
+            await _unitOfWork.orderRepository.UpdateAsync(order);
+            await _unitOfWork.SaveChangesAsync();
+            return order;
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationException("Lỗi service khi cập nhật trạng thái phiếu đặt", ex);
+        }
+    }
+
     public async Task<bool> UpdateOrderAsync(Phieudat order)
     {
         try
