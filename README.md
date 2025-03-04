@@ -1,16 +1,16 @@
 
 ## ĐỒ ÁN: WEB ĐẶT VÉ XE 
 ## Database
-![ảnh](https://github.com/user-attachments/assets/fd93452a-1632-4dc3-8c85-3f862b7da3d0)  
+![ảnh](https://github.com/user-attachments/assets/fd93452a-1632-4dc3-8c85-3f862b7da3d0)   
 ## Screenshots  
 Login:  
-![ảnh](https://github.com/user-attachments/assets/3fd9ed4e-9164-4f66-afa9-17152acc4429)  
+![ảnh](https://github.com/user-attachments/assets/3fd9ed4e-9164-4f66-afa9-17152acc4429)   
 Admin Dashboard:  
-![ảnh](https://github.com/user-attachments/assets/1ffee6fc-b813-4667-bb8c-cad66b3fe2e6)  
+![ảnh](https://github.com/user-attachments/assets/e4b01484-6c0f-4c06-b07b-8ef77a42f2d6)    
 Home:   
-![ảnh](https://github.com/user-attachments/assets/e4b01484-6c0f-4c06-b07b-8ef77a42f2d6)  
+![ảnh](https://github.com/user-attachments/assets/42cd0d05-094b-48f7-9107-d7049f2cd76b)  
 Booking:  
-![ảnh](https://github.com/user-attachments/assets/a89b28e8-3dbe-4105-8cb0-d8ad0cd7b8b7)  
+![ảnh](https://github.com/user-attachments/assets/a89b28e8-3dbe-4105-8cb0-d8ad0cd7b8b7)   
 
 
 ## Authors
